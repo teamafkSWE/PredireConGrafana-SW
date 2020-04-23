@@ -11,5 +11,6 @@ body{
 .header{
     border-bottom-width: medium;
     border-bottom-style: solid;
-    border-bottom-color: #282828;
+    border-image-source: linear-gradient(90deg,#f05a28 30%,#fbca0a 99%);
+    border-image-slice: 1;
 }
