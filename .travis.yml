@@ -2,4 +2,4 @@ language: node_js
 
 before_script: 
   - cd prova
-  - npm install --save react react-dom react-scripts
+  - npm install 
