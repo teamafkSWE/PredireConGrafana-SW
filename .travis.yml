@@ -1,6 +1,9 @@
 language: node_js
 
-before_script: 
+before_install: 
+  - cd prova
   - npm install -g npm@latest
+  
+before_script: 
   - cd prova
   - npm install 
