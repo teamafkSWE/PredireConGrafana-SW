@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-
-
 /*
  * Di default <input> prende un solo file
  * mentre <input multiple> permette di prendere più file

@@ -10,8 +10,8 @@ import App from "./davide-fouad/App";
 ReactDom.render(
     <React.StrictMode>
         <Header/>
-        <App />
         <States/>
+        <App />
     </React.StrictMode>,
     document.getElementById("root")
 );

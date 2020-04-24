@@ -1,11 +1,14 @@
 import React,{Component} from "react";
 import Regression from "./regression";
 var fs=require('fs');
+
+
 class Reg extends Component{
     state={
       count:0,
        reg: new Regression({ numX: 3, numY: 1 })
     };
+
     insert(){
         this.state.reg.push({ x: [1, 5.5], y: [4.2] });
         this.state.reg.push({ x: [1,1,1], y: [10] });
@@ -16,7 +19,7 @@ class Reg extends Component{
     }
      downloadFile =  () => {
         const myData = this.state.reg.calculateCoefficients(); // I am assuming that "this.state.myData"
-         var data = JSON.stringify(myData,null,2);
+         var data = JSON.stringify(myData,null, 1);
 
          var element = document.createElement('a');
          element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
@@ -33,9 +36,10 @@ class Reg extends Component{
         this.insert();
         return(
         <div>
-            <button onClick={this.downloadFile}>Download Dati</button>
-            <span></span>
-            <span>{console.log('coefficienti '+this.state.reg.calculateCoefficients())}</span>
+            <p></p>
+            <p>Scarica il file JSON</p>
+            <p></p>
+            <button onClick={this.downloadFile} className="btn btn-dark">Download File JSON</button>
         </div>);
     }
 
