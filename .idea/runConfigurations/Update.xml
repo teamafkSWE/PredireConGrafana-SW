@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Update" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/prova/package.json" />
+    <package-json value="$PROJECT_DIR$/prediction_tool/package.json" />
     <command value="install" />
     <node-interpreter value="project" />
     <envs />
