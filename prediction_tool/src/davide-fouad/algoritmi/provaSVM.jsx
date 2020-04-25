@@ -63,10 +63,8 @@ class SupportVM extends Component{
     render() {
         //this.testsvm();
         return(
-            <div>
-                <p></p>
+            <div className="mt-4 mb-2">
                 <p>Scarica il file JSON della SVM</p>
-                <p></p>
                 <button onClick={this.downloadFile} className="btn btn-dark">Download File JSON</button>
             </div>);
     }
