@@ -1,7 +1,8 @@
 import React,{Component} from "react";
 
 //Simple implementation of Support Vector Machine algorithm for binary classification in javascript.
-let SVM = require ("ml-svm");
+let SVM = require ("./svm");
+
 
 class Svm extends Component{
 
@@ -19,12 +20,12 @@ class Svm extends Component{
     };
     insert(){
         this.svm = new SVM(this.state.options);
-        // Train the classifier - we give him an xor
+        // Train the classifier - we give him an and
         this.features = [[0,0],[0,1],[1,1],[1,0]];
-        this.labels = [-1, 1, -1, 1];
+        this.labels = [0, 1, 0, 1];
 
         this.svm.train(this.features, this.labels);
-        this.point = [0,0];
+        this.point = [0,1];
 
         // Let's see if it is separable by testing on the training data
         //this.svm.predict(this.features); // [-1, 1, -1, 1] ok funziona
@@ -32,7 +33,7 @@ class Svm extends Component{
 
     downloadFile =  () => {
         //const myData =  this.svm.predict(this.point);
-        const myData =  this.svm.predict(this.point);
+        const myData =  this.svm.toJSON(this.svm.predict(this.features));
         var data = JSON.stringify(myData,null, 1);
 
         var element = document.createElement('a');

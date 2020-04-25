@@ -1,4 +1,3 @@
-'use strict';
 const Kernel = require('ml-kernel');
 const stat = require('ml-stat').array;
 
