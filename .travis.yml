@@ -3,6 +3,6 @@ node_js:
   - "12.16.2"
   
 before_script: 
-  - cd prova
+  - cd prediction_tool
   - npm install
   - react-scripts test
