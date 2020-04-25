@@ -1,11 +1,9 @@
 import React,{Component} from "react";
 import Regression from "./regression";
-var fs=require('fs');
 
 
 class Reg extends Component{
     state={
-      count:0,
        reg: new Regression({ numX: 3, numY: 1 })
     };
 
@@ -37,7 +35,7 @@ class Reg extends Component{
         return(
         <div>
             <p></p>
-            <p>Scarica il file JSON</p>
+            <p>Scarica il file JSON della RL</p>
             <p></p>
             <button onClick={this.downloadFile} className="btn btn-dark">Download File JSON</button>
         </div>);
