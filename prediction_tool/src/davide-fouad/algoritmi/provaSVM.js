@@ -40,7 +40,7 @@ class SupportVM extends Component{
 
         //console.log(svm.getAlphas(data));
 
-        return { Alpha: svm.getAlphas(), b: svm.getBeta() , Predictions: svm.predict(data)} ;
+        return { Alpha: svm.getAlphas(), b: svm.getBeta() } ;
 
     }
 
