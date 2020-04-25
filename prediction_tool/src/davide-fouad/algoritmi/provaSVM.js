@@ -8,7 +8,7 @@ let svm = new svmjs.SVM();
 class SupportVM extends Component{
     testsvm = () => {
         // Linearly non-separable test
-        var N = 10;
+        var N = 5;
         var data = new Array(N);
         var labels = new Array(N);
         //X
@@ -35,11 +35,13 @@ class SupportVM extends Component{
         labels[8] = -1;
         labels[9] = -1;
 
+
         svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
 
-        return { Weights: svm.getWeights(data), Margins: svm.margins(data), Predictions: svm.predict(data) } ;
+        //console.log(svm.getAlphas(data));
 
-        //return svm.margins(data);
+        return { Alpha: svm.getAlphas(), b: svm.getBeta() , Predictions: svm.predict(data)} ;
+
     }
 
     downloadFile =  () => {
@@ -59,6 +61,7 @@ class SupportVM extends Component{
     }
 
     render() {
+        //this.testsvm();
         return(
             <div>
                 <p></p>

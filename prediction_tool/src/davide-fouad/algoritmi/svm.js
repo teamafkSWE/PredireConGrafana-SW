@@ -185,7 +185,15 @@ var svmjs = (function(exports){
       var trainstats = {};
       trainstats.iters= iter;
       return trainstats;
-    }, 
+    },
+
+    getAlphas: function(){
+      return this.alpha;
+    },
+
+    getBeta: function(){
+      return this.b;
+    },
     
     // inst is an array of length D. Returns margin of given example
     // this is the core prediction function. All others are for convenience mostly
