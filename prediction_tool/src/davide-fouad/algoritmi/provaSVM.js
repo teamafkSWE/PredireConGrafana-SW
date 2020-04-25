@@ -11,6 +11,7 @@ class SupportVM extends Component{
         var N = 10;
         var data = new Array(N);
         var labels = new Array(N);
+        //X
         data[0] = [-0.4326, 1.1909];
         data[1] = [3.0, 4.0]; // this point makes data non-separable
         data[2] = [0.1253, -0.0376];
@@ -22,6 +23,7 @@ class SupportVM extends Component{
         data[8] = [4.1832, 1.9044];
         data[9] = [1.8636, 1.1677];
 
+        // Y
         labels[0] = 1;
         labels[1] = 1;
         labels[2] = 1;
@@ -33,13 +35,15 @@ class SupportVM extends Component{
         labels[8] = -1;
         labels[9] = -1;
 
-        let dataTrained = svm.train(data, labels, {C: 1.0}); // C is a parameter to SVM
-        console.log(svm.predict(dataTrained));
+        svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
+
+        return { Weights: svm.getWeights(data), Margins: svm.margins(data), Predictions: svm.predict(data) } ;
+
+        //return svm.margins(data);
     }
 
     downloadFile =  () => {
-        //const myData =  this.svm.predict(this.point);
-        const myData =  svm.toJSON(this.testsvm());
+        const myData =  this.testsvm();
         var data = JSON.stringify(myData,null, 1);
 
         var element = document.createElement('a');
@@ -56,7 +60,6 @@ class SupportVM extends Component{
 
     render() {
         return(
-            console.log(this.testsvm);
             <div>
                 <p></p>
                 <p>Scarica il file JSON della SVM</p>

@@ -4,16 +4,15 @@ import Regression from "./regression";
 
 class Reg extends Component{
     state={
-       reg: new Regression({ numX: 3, numY: 1 })
+       reg: new Regression({ numX: 2, numY: 1 })
     };
 
     insert(){
-        this.state.reg.push({ x: [1, 5.5], y: [4.2] });
-        this.state.reg.push({ x: [1,1,1], y: [10] });
-        this.state.reg.push({ x: [1,2,1], y: [9] });
-        this.state.reg.push({ x: [1,1,2], y: [7] });
-        this.state.reg.push({ x: [1,2,2], y: [6] });
-
+        this.state.reg.push({ x: [1,1], y: [2] });
+        this.state.reg.push({ x: [1,2], y: [5] });
+        this.state.reg.push({ x: [1,3], y: [6] });
+        this.state.reg.push({ x: [1,4], y: [7] });
+        this.state.reg.push({ x: [1,5], y: [10] });
     }
      downloadFile =  () => {
         const myData = this.state.reg.calculateCoefficients(); // I am assuming that "this.state.myData"

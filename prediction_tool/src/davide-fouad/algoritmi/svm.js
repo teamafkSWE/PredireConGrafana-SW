@@ -251,7 +251,7 @@ var svmjs = (function(exports){
     // THIS FUNCTION IS NOW DEPRECATED. WORKS FINE BUT NO NEED TO USE ANYMORE. 
     // LEAVING IT HERE JUST FOR BACKWARDS COMPATIBILITY FOR A WHILE.
     // if we trained a linear svm, it is possible to calculate just the weights and the offset
-    // prediction is then yhat = sign(X * w + b)
+    // prediction is then that = sign(X * w + b)
     getWeights: function() {
       
       // DEPRECATED
