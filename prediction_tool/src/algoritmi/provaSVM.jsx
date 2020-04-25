@@ -38,9 +38,8 @@ class SupportVM extends Component{
 
         svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
 
-        //console.log(svm.getAlphas(data));
 
-        return { Alpha: svm.getAlphas(), b: svm.getBeta() } ;
+        return svm.getWeights()  ;
 
     }
 
