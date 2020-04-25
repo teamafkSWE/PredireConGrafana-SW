@@ -1,39 +1,45 @@
 import React,{Component} from "react";
 
+let svmjs = require ("./svm");
+let svm = new svmjs.SVM();
+
 //Simple implementation of Support Vector Machine algorithm for binary classification in javascript.
-let SVM = require ("./svm");
 
+class SupportVM extends Component{
+    testsvm = () => {
+        // Linearly non-separable test
+        var N = 10;
+        var data = new Array(N);
+        var labels = new Array(N);
+        data[0] = [-0.4326, 1.1909];
+        data[1] = [3.0, 4.0]; // this point makes data non-separable
+        data[2] = [0.1253, -0.0376];
+        data[3] = [0.2877, 0.3273];
+        data[4] = [-1.1465, 0.1746];
+        data[5] = [1.8133, 2.1139];
+        data[6] = [2.7258, 3.0668];
+        data[7] = [1.4117, 2.0593];
+        data[8] = [4.1832, 1.9044];
+        data[9] = [1.8636, 1.1677];
 
-class Svm extends Component{
+        labels[0] = 1;
+        labels[1] = 1;
+        labels[2] = 1;
+        labels[3] = 1;
+        labels[4] = 1;
+        labels[5] = -1;
+        labels[6] = -1;
+        labels[7] = -1;
+        labels[8] = -1;
+        labels[9] = -1;
 
-    state = {
-        options: {
-            C: 0.01,
-            tol: 10e-4,
-            maxPasses: 10,
-            maxIterations: 10000,
-            kernel: 'rbf',
-            kernelOptions: {
-                sigma: 0.5
-            }
-        }
-    };
-    insert(){
-        this.svm = new SVM(this.state.options);
-        // Train the classifier - we give him an and
-        this.features = [[0,0],[0,1],[1,1],[1,0]];
-        this.labels = [0, 1, 0, 1];
-
-        this.svm.train(this.features, this.labels);
-        this.point = [0,1];
-
-        // Let's see if it is separable by testing on the training data
-        //this.svm.predict(this.features); // [-1, 1, -1, 1] ok funziona
+        let dataTrained = svm.train(data, labels, {C: 1.0}); // C is a parameter to SVM
+        console.log(svm.predict(dataTrained));
     }
 
     downloadFile =  () => {
         //const myData =  this.svm.predict(this.point);
-        const myData =  this.svm.toJSON(this.svm.predict(this.features));
+        const myData =  svm.toJSON(this.testsvm());
         var data = JSON.stringify(myData,null, 1);
 
         var element = document.createElement('a');
@@ -49,8 +55,8 @@ class Svm extends Component{
     }
 
     render() {
-        this.insert();
         return(
+            console.log(this.testsvm);
             <div>
                 <p></p>
                 <p>Scarica il file JSON della SVM</p>
@@ -60,4 +66,4 @@ class Svm extends Component{
     }
 }
 
-export default Svm;
+export default SupportVM;
