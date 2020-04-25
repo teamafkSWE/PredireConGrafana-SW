@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import InputCSV from "./input_component"
+import App from "../davide-fouad/App";
 
 /*
  * Questo componente si occupa di dirigere il flow delle sue sottocomponenti
@@ -18,6 +19,7 @@ class State_controller extends Component {
         return (
             <div className="mt-4 mb-4 text-center">
                 <InputCSV fileName={this.getFileName()} onFileInput={this.handleFileInput}/>
+                <App />
             </div>);
     }
 

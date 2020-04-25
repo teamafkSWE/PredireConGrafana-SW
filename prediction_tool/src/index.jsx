@@ -11,7 +11,7 @@ ReactDom.render(
     <React.StrictMode>
         <Header/>
         <States/>
-        <App />
+
     </React.StrictMode>,
     document.getElementById("root")
 );
