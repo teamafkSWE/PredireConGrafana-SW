@@ -19,13 +19,12 @@ class InputComponent extends Component {
 
     render() {
         return (
-            <form>
+            <form className="text-center">
                 <fieldset>
                     <legend className="d-none">File</legend>
                     <label className="btn btn-dark" htmlFor="fIn">Seleziona File</label>
                     <input className="d-none" id="fIn" type="file" onChange={() => this.props.onFileInput(this.fileInput.current.files)} ref={this.fileInput} accept=".csv"/>
                     <p>File: {this.getFileName()}</p>
-                    <button type="submit" className="btn btn-lg btn-dark">Conferma</button>
                 </fieldset>
             </form>
         );

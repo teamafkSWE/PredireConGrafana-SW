@@ -4,7 +4,10 @@ class Header extends Component {
 
     render() {
         return (
-            <h1 className="text-light text-center header">Tool di addestramento</h1>
+            <div className="header mb-2">
+                <h1 className="text-white text-center">Prediction Tool</h1>
+                <h2 className="text-dark text-center"><small>get your prediction here!</small></h2>
+            </div>
         );
     }
 }

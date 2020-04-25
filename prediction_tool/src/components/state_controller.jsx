@@ -16,7 +16,7 @@ class State_controller extends Component {
 
     render() {
         return (
-            <div>
+            <div className="mt-4 mb-4 text-center">
                 <InputCSV fileName={this.getFileName()} onFileInput={this.handleFileInput}/>
             </div>);
     }
