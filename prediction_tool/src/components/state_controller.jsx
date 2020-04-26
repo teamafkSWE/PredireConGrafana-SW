@@ -21,9 +21,10 @@ class State_controller extends Component {
     render() {
         return (
             <React.Fragment>
+                <label className="btn btn-dark" htmlFor="1">Selezionare il file:</label>
                 <CSVReader
-                    className="btn btn-dark"
-                    label="Select CSV file to import"
+                    inputId="1"
+                    cssClass="d-none"
                     onFileLoaded={this.handleForce}
                 />
                 <Select_Prediction data={this.state.data}/>
