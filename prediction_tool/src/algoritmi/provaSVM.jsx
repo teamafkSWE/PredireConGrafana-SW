@@ -39,7 +39,7 @@ class SupportVM extends Component{
         svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
 
 
-        return svm.getWeights()  ;
+        return svm.getWeights();
 
     }
 
@@ -64,7 +64,7 @@ class SupportVM extends Component{
         return(
             <div className="mt-4 mb-2">
                 <p>Scarica il file JSON della SVM</p>
-                <button onClick={this.downloadFile} className="btn btn-dark">Download File JSON</button>
+                <button onClick={this.downloadFile} className="btn btn-dark">Download</button>
             </div>);
     }
 }

@@ -32,9 +32,9 @@ class Reg extends Component{
     render() {
         this.insert();
         return(
-        <div className="mt-2 mb-4">
+        <div className="mt-4 mb-2">
             <p>Scarica il file JSON della RL</p>
-            <button onClick={this.downloadFile} className="btn btn-dark">Download File JSON</button>
+            <button onClick={this.downloadFile} className="btn btn-dark">Download</button>
         </div>);
     }
 
