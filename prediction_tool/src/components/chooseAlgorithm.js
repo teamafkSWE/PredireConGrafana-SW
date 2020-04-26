@@ -2,6 +2,8 @@ import React, {Component} from "react";
 
 import SVM from "../algoritmi/provaSVM";
 import Reg from "../algoritmi/provaReg";
+import CSVReader from "react-csv-reader";
+import {readString} from "react-papaparse";
 
 class Select_Prediction extends Component{
     state = {
@@ -20,8 +22,19 @@ class Select_Prediction extends Component{
         else
             return;
     }
+    controlFile=()=>{
+
+        let file = this.props.onFileLoaded;
+
+        if(file!==null){
+
+                    console.log(file);
+        }
+
+    }
 
     render() {
+        this.controlFile();
         return(
             <div>
                 <select id="algo" className="btn btn-dark" onChange={this.change.bind(this)} value={this.state.value}>
