@@ -11,11 +11,12 @@ import CSVReader from "react-csv-reader";
 class State_controller extends Component {
 
     state = {
-        data: []
+        data: [],
+        hasFile: false
     }
 
     handleForce = data => {
-        this.setState({data: data});
+        this.setState({data:data,hasFile:true});
     };
 
     render() {
@@ -27,7 +28,7 @@ class State_controller extends Component {
                     cssClass="d-none"
                     onFileLoaded={this.handleForce}
                 />
-                <Select_Prediction data={this.state.data}/>
+                <Select_Prediction data={this.state.data} hasFile={this.state.hasFile}/>
             </React.Fragment>
         );
     }
