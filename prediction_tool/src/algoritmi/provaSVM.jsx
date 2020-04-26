@@ -6,7 +6,6 @@ let svm = new svmjs.SVM();
 
 class SupportVM extends Component{
     trainSvm = () => {
-
         let dataSVM=this.props.dataSVM;
 
         let data = [dataSVM.length-1];
@@ -21,10 +20,10 @@ class SupportVM extends Component{
             }
                 labels[i]=dataSVM[i+1][dataSVM[i+1].length-1];
         }
+
         svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
 
         return svm.getWeights();
-
     }
 
     downloadFile =  () => {

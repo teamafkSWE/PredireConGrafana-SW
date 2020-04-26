@@ -9,7 +9,6 @@ import CSVReader from "react-csv-reader";
  * Al momento input_component scrive su files l'array di file che l'utente ha dato in input, e ne legge il nome selezionato
  */
 class State_controller extends Component {
-
     state = {
         data: [],
         hasFile: false
