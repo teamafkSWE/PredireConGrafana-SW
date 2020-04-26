@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import CSVReader from 'react-csv-reader';
 import Select_Prediction from "./chooseAlgorithm";
-import provaReg from "../algoritmi/provaReg";
 
 /*
  * Questo componente si occupa di dirigere il flow delle sue sottocomponenti
@@ -15,6 +13,7 @@ class State_controller extends Component {
         hasFile: false,
         file: null
     }
+
     papaparseOptions = {
         header: true,
         dynamicTyping: true,
@@ -24,22 +23,12 @@ class State_controller extends Component {
                 .toLowerCase()
                 .replace(/\W/g, '_')
     }
-
     render() {
         return (
-            <React.Fragment >
-                <CSVReader
-                    onFileLoaded={(data, fileInfo) => console.dir(data, fileInfo)}
-
-
-                />
-
-
-
-
-
+            <React.Fragment>
                 <Select_Prediction file={this.dataFile()}/>
-            </React.Fragment>);
+            </React.Fragment>
+        );
     }
     dataFile = () => {
         return this.state.file;
