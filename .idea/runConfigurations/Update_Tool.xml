@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Start" type="js.build_tools.npm">
+  <configuration default="false" name="Update Tool" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/prediction_tool/package.json" />
-    <command value="start" />
+    <command value="install" />
     <node-interpreter value="project" />
     <envs />
     <method v="2" />
