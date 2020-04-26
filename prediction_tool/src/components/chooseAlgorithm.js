@@ -20,10 +20,11 @@ class Select_Prediction extends Component{
         else
             return;
     }
+
     controlFile=()=>{
-        let file = this.props.onFileLoaded;
+        let file = this.props.data;
         if(file!==null){
-                    console.log(file);
+            console.log(file);
         }
     }
 
