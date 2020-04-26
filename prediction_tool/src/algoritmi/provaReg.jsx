@@ -14,6 +14,10 @@ class Reg extends Component{
         this.state.reg.push({ x: [1,4], y: [7] });
         this.state.reg.push({ x: [1,5], y: [10] });
     }
+
+    controlFileRl=(file)=>{
+
+    }
      downloadFile =  () => {
         const myData = this.state.reg.calculateCoefficients(); // I am assuming that "this.state.myData"
          var data = JSON.stringify(myData,null, 1);
