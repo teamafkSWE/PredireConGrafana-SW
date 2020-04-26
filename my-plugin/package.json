@@ -1,0 +1,29 @@
+{
+  "name": "afk-predire-in-grafana",
+  "version": "1.0.0",
+  "description": "A new plugin",
+  "scripts": {
+    "build": "grafana-toolkit plugin:build",
+    "test": "grafana-toolkit plugin:test",
+    "dev": "grafana-toolkit plugin:dev",
+    "watch": "grafana-toolkit plugin:dev --watch"
+  },
+  "repository": "github:grafana/simple-react-panel",
+  "author": "Simone",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/grafana/simple-react-panel/issues",
+    "email": "plugins@grafana.com"
+  },
+  "devDependencies": {
+    "@grafana/data": "next",
+    "@grafana/toolkit": "next",
+    "@grafana/ui": "next"
+  },
+  "resolutions": {
+    "@babel/preset-env": "7.9.0"
+  },
+  "engines": {
+    "node": ">=12 <13"
+  }
+}
