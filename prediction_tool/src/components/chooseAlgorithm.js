@@ -20,11 +20,15 @@ class Select_Prediction extends Component{
 
                 if(file[0][file[0].length-1]==="label" && file[0][file[0].length-2]==="y" )
                     isSVM=true;
+                else {
+                    alert("Formato file errato.")
+                    this.setState({value: ""});
+                }
 
                 if(isSVM===true)
                     return <SVM dataSVM={file}/>
             } else {
-                alert("Inserisci il cazzo di file!!!!!!????");
+                alert("Inserisci il file.");
                 this.setState({value: ""});
             }
         } else if(this.state.value === "rl"){
@@ -32,13 +36,17 @@ class Select_Prediction extends Component{
                 let file = this.props.data;
                 let isRL=false;
 
-                if( file[0][file[0].length-1]==="y")
+                if(file[0][file[0].length-1]==="y")
                     isRL=true;
+                else {
+                    alert("Formato file errato.")
+                    this.setState({value: ""});
+                }
 
                 if(isRL===true)
                     return <Reg dataRl={file}/>
             } else {
-                alert("Inserisci il cazzo di file!!!!!!????");
+                alert("Inserisci il file.");
                 this.setState({value: ""});
             }
         }
