@@ -23,44 +23,30 @@ class Reg extends Component{
                 dataY=[];
                 data.push(1);
 
-                for (let j = 0; j < this.props.dataRl[i].length - 1; j++) {
-
+                for (let j = 0; j < this.props.dataRl[i].length - 1; j++)
                     data.push(this.props.dataRl[i+1][j]);
 
-                }
                 dataY.push(this.props.dataRl[i+1][this.props.dataRl[i+1].length-1])
-                console.log(data)
-                console.log(dataY)
+                //console.log(data)
+                //console.log(dataY)
                 this.state.reg.push({ x: data, y: dataY });
             }
-        }
-        else {
+        } else {
             for (let i = 0; i < this.props.dataRl.length-1; i++) {
                 data = [];
                 dataY=[];
                 data.push(1);
                 data.push(this.props.dataRl[i+1][0]);
                 dataY.push(this.props.dataRl[i+1][this.props.dataRl[i+1].length-1])
-                console.log(data)
-                console.log(dataY)
+                //console.log(data)
+                //console.log(dataY)
                 this.state.reg.push({ x: data, y: dataY });
             }
-
         }
-
-
-
-/*
-        this.state.reg.push({ x: [1,2], y: [5] });
-        this.state.reg.push({ x: [1,3], y: [6] });
-        this.state.reg.push({ x: [1,4], y: [7] });
-        this.state.reg.push({ x: [1,5], y: [10] });*/
-    }
-
+     }
 
      downloadFile =  () => {
-
-        const myData = this.state.reg.calculateCoefficients(); // I am assuming that "this.state.myData"
+         const myData = this.state.reg.calculateCoefficients(); // I am assuming that "this.state.myData"
          var data = JSON.stringify(myData,null, 1);
 
          var element = document.createElement('a');
@@ -82,8 +68,6 @@ class Reg extends Component{
             <button onClick={this.downloadFile} className="btn btn-dark">Download</button>
         </div>);
     }
-
-
 }
 
 export default Reg;
