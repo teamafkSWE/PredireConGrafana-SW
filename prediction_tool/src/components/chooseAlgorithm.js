@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
-import SVM from "../algoritmi/provaSVM";
-import Reg from "../algoritmi/provaReg";
+import SVM from "../algoritmi/trainSVM";
+import Reg from "../algoritmi/trainReg";
 
 class Select_Prediction extends Component{
     state = {
