@@ -11,41 +11,44 @@ class Reg extends Component{
 
     insert(){
 
-     let data =new Array( this.state.dataRl.length-1);
-
-        if(this.state.dataRl[0].length-1===1)
-        {
-            console.log(data)
-            for(let i=0;i<this.state.dataRl.length-1;i++){
-                data[i] = this.state.dataRl[i+1][0];
-            }
-        }
-        else {
-            for(let i=0; i<this.state.dataRl.length-1; i++) {
-                data[i] = new Array(this.state.dataRl[0].length-1);
-            }
-            for(let i=0;i<this.state.dataRl.length-1;i++) {
-                for (let j = 0; j < this.state.dataRl[i].length; j++) {
-                    data[i][j] = this.state.dataRl[i + 1][j];
-                }
-            }
-        }
-        let dataY = new Array( this.state.dataRl.length-1);
-
-        for (let j=0;j<dataY.length;j++) {
-            dataY[j] = this.state.dataRl[j+1][this.state.dataRl[0].length-1];
-        }
+     let data =[];
+     let dataY = [];
 
         console.log( this.props.dataRl[0].length)
 
-        console.log( dataY)
-        console.log( data)
-        console.log( data.length)
-        for (let i=0;i<data.length;i++)
+        if(this.state.dataRl[0].length>2)
         {
+            for (let i = 0; i < this.props.dataRl.length-1; i++) {
+                data = [];
+                dataY=[];
+                data.push(1);
 
-            this.state.reg.push({ x: [1,[data[i]]], y: [dataY[i]] });
+                for (let j = 0; j < this.props.dataRl[i].length - 1; j++) {
+
+                    data.push(this.props.dataRl[i+1][j]);
+
+                }
+                dataY.push(this.props.dataRl[i+1][this.props.dataRl[i+1].length-1])
+                console.log(data)
+                console.log(dataY)
+                this.state.reg.push({ x: data, y: dataY });
+            }
         }
+        else {
+            for (let i = 0; i < this.props.dataRl.length-1; i++) {
+                data = [];
+                dataY=[];
+                data.push(1);
+                data.push(this.props.dataRl[i+1][0]);
+                dataY.push(this.props.dataRl[i+1][this.props.dataRl[i+1].length-1])
+                console.log(data)
+                console.log(dataY)
+                this.state.reg.push({ x: data, y: dataY });
+            }
+
+        }
+
+
 
 /*
         this.state.reg.push({ x: [1,2], y: [5] });

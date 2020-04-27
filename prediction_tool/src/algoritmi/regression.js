@@ -6,6 +6,7 @@ class Regression {
     predict(xs){return this.hypothesize({x:[1].concat(xs)})}
     push(options){this.addObservation(options)}
 
+
     constructor(options){
         if(!options)
             throw new Error('missing options')
