@@ -1,7 +1,4 @@
-export interface SimpleOptions {
-  text: string;
+export interface ExampleAppSettings {
+  customText?: string;
+  customCheckbox?: boolean;
 }
-
-export const defaults: SimpleOptions = {
-  text: 'The default text!',
-};
