@@ -7,16 +7,21 @@ import TabB from './components/TabB'
 import TabA from './components/TabA'
 
 interface Props extends AppRootProps {}
+
+//definisco uno state
 interface State {
   active: string | undefined;
 }
 
+//l'ID del tab sarebbe da spostare dentro la classe Tab
 const TAB_ID_A:string = 'A';
 const TAB_ID_B:string = 'B';
 
+//                                                                            aggiungo lo state alla classe
 export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
+    //imposto uno state iniziale, non sono sicuro della sua utilità
     this.state = {
       active: TAB_ID_A
     }
@@ -54,10 +59,12 @@ export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props, St
     // Set the active tab
     let found = false;
     const selected = query.tab || TAB_ID_B;
+    //Questo loop cerca quale tab è diventato attivo(scritto da quelli di grafana)
     for (const tab of tabs) {
       tab.active = !found && selected === tab.id;
       if (tab.active) {
         found = true;
+        //ho aggiuntoquesto state in modo tale che una volta trovato il tab, mi viene salvato nello state
         this.setState({active: tab.id})
       }
     }
@@ -83,7 +90,7 @@ export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props, St
 
 
   render() {
-
+    //Renderizzo le tabs
     return (
       <div>
         <TabA active={this.state.active}/>
