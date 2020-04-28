@@ -18,7 +18,7 @@ class SupportVM extends Component{
             for (let j=0;j<data[i].length;j++) {
                 data[i][j] = dataSVM[i+1][j];
             }
-                labels[i]=dataSVM[i+1][dataSVM[i+1].length-1];
+            labels[i]=dataSVM[i+1][dataSVM[i+1].length-1];
         }
 
         svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
