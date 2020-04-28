@@ -48,13 +48,6 @@
       "type": "dashboard",
       "name": "Lots of Stats",
       "path": "dashboards/stats.json"
-    },
-    {
-      "type": "page",
-      "name": "Angular Page",
-      "component": "AngularExamplePageCtrl",
-      "role": "Viewer",
-      "addToNav": true
     }
   ],
 
