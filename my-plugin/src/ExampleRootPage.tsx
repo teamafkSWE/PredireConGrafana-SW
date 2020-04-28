@@ -3,8 +3,8 @@ import React, { PureComponent } from 'react';
 
 // Types
 import { NavModelItem, AppRootProps } from '@grafana/data';
-import TabB from './components/TabB'
-import TabA from './components/TabA'
+import VisDati from './components/visDati'
+import InsJson from './components/insJson'
 
 interface Props extends AppRootProps {}
 
@@ -14,16 +14,16 @@ interface State {
 }
 
 //l'ID del tab sarebbe da spostare dentro la classe Tab
-const TAB_ID_A:string = 'A';
-const TAB_ID_B:string = 'B';
+const TAB_ID_Ins:string = 'insJson';
+const TAB_ID_Vis:string = 'visDati';
 
-//                                                                            aggiungo lo state alla classe
+//aggiungo lo state alla classe
 export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     //imposto uno state iniziale, non sono sicuro della sua utilità
     this.state = {
-      active: TAB_ID_A
+      active: TAB_ID_Ins
     }
   }
 
@@ -44,21 +44,21 @@ export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props, St
 
     const tabs: NavModelItem[] = [];
     tabs.push({
-      text: 'Tab A',
+      text: 'Inserisci JSON',
       icon: 'fa fa-fw fa-file-text-o',
-      url: path + '?tab=' + TAB_ID_A,
-      id: TAB_ID_A,
+      url: path + '?tab=' + TAB_ID_Ins,
+      id: TAB_ID_Ins,
     });
     tabs.push({
-      text: 'Tab B',
+      text: 'Visualizza dati',
       icon: 'fa fa-fw fa-file-text-o',
-      url: path + '?tab=' + TAB_ID_B,
-      id: TAB_ID_B,
+      url: path + '?tab=' + TAB_ID_Vis,
+      id: TAB_ID_Vis,
     });
 
     // Set the active tab
     let found = false;
-    const selected = query.tab || TAB_ID_B;
+    const selected = query.tab || TAB_ID_Vis;
     //Questo loop cerca quale tab è diventato attivo(scritto da quelli di grafana)
     for (const tab of tabs) {
       tab.active = !found && selected === tab.id;
@@ -93,8 +93,8 @@ export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props, St
     //Renderizzo le tabs
     return (
       <div>
-        <TabA active={this.state.active}/>
-        <TabB active={this.state.active}/>
+        <InsJson active={this.state.active}/>
+        <VisDati active={this.state.active}/>
       </div>
     );
   }

@@ -11,9 +11,9 @@ const HIDDEN:CSSProperties = {
     display: "none"
 }
 
-class TabB extends PureComponent<Props>{
+class VisDati extends PureComponent<Props>{
     getActive(): CSSProperties{
-        if (this.props.active === 'B')
+        if (this.props.active === 'visDati')
             return ACTIVE;
         else
             return HIDDEN
@@ -26,4 +26,4 @@ class TabB extends PureComponent<Props>{
     }
 }
 
-export default TabB;
+export default VisDati;

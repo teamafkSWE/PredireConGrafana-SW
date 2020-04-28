@@ -13,11 +13,11 @@ const HIDDEN:CSSProperties = {
     display: "none"
 }
 
-class TabA extends PureComponent<Props> {
+class InsJson extends PureComponent<Props> {
 
     //controllo se devo essere visibile o nascosto
     getActive(): CSSProperties{
-        if (this.props.active === 'A')
+        if (this.props.active === 'insJson')
             return ACTIVE;
         else
             return HIDDEN
@@ -26,8 +26,9 @@ class TabA extends PureComponent<Props> {
     render() {
         return (
             <h1 style={this.getActive()}>Inserisci JSON:</h1>
+      
         );
     }
 }
 
-export default TabA;
+export default InsJson;
