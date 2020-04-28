@@ -12,6 +12,7 @@
       "small": "img/logoAFK.png",
       "large": "img/logoAFK.png"
     },
+    "keywords": ["afk", "predire", "svm", "rl"],
     "description": "?????????????",
     "version": "%VERSION%",
     "updated": "%TODAY%"
