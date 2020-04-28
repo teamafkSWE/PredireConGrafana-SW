@@ -1,17 +1,18 @@
 {
   "type": "app",
-  "name": "Simple App",
-  "id": "yourorg-simple-app",
+  "name": "Predire in Grafana",
+  "id": "teamafkswe-pg-app",
 
   "info": {
     "author": {
-      "name": "Grafana Project",
-      "url": "https://grafana.com"
+      "name": "TeamAFK",
+      "url": "https://github.com/teamafkSWE"
     },
     "logos": {
-      "small": "img/logo.png",
-      "large": "img/logo.png"
+      "small": "img/logoAFK.png",
+      "large": "img/logoAFK.png"
     },
+    "description": "?????????????",
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
@@ -19,24 +20,17 @@
   "includes": [
     {
       "type": "page",
-      "name": "Root Page (react)",
-      "path": "/a/yourorg-simple-app",
+      "name": "JSON",
+      "path": "/a/teamafkswe-pg-app/?tab=insJson",
       "role": "Viewer",
       "addToNav": true,
       "defaultNav": true
     },
     {
       "type": "page",
-      "name": "Root Page (tab B)",
-      "path": "/a/yourorg-simple-app/?tab=B",
+      "name": "Data",
+      "path": "/a/teamafkswe-pg-app/?tab=visDati",
       "role": "Viewer",
-      "addToNav": true
-    },
-    {
-      "type": "page",
-      "name": "React Config",
-      "path": "/plugins/yourorg-simple-app/?page=page2",
-      "role": "Admin",
       "addToNav": true
     },
     {
