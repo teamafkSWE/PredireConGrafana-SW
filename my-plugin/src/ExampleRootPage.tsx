@@ -3,16 +3,23 @@ import React, { PureComponent } from 'react';
 
 // Types
 import { NavModelItem, AppRootProps } from '@grafana/data';
+import TabB from './components/TabB'
+import TabA from './components/TabA'
 
 interface Props extends AppRootProps {}
+interface State {
+  active: string | undefined;
+}
 
-const TAB_ID_A = 'A';
-const TAB_ID_B = 'B';
-const TAB_ID_C = 'C';
+const TAB_ID_A:string = 'A';
+const TAB_ID_B:string = 'B';
 
-export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props> {
+export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {
+      active: TAB_ID_A
+    }
   }
 
   componentDidMount() {
@@ -43,12 +50,6 @@ export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props> {
       url: path + '?tab=' + TAB_ID_B,
       id: TAB_ID_B,
     });
-    tabs.push({
-      text: 'Tab C',
-      icon: 'fa fa-fw fa-file-text-o',
-      url: path + '?tab=' + TAB_ID_C,
-      id: TAB_ID_C,
-    });
 
     // Set the active tab
     let found = false;
@@ -57,6 +58,7 @@ export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props> {
       tab.active = !found && selected === tab.id;
       if (tab.active) {
         found = true;
+        this.setState({active: tab.id})
       }
     }
     if (!found) {
@@ -78,25 +80,14 @@ export class ExampleRootPage<ExampleAppSettings> extends PureComponent<Props> {
     });
   }
 
+
+
   render() {
-    const { path, query, meta } = this.props;
 
     return (
       <div>
-        QUERY: <pre>{JSON.stringify(query)}</pre>
-        <br />
-        <ul>
-          <li>
-            <a href={path + '?x=1'}>111</a>
-          </li>
-          <li>
-            <a href={path + '?x=AAA'}>AAA</a>
-          </li>
-          <li>
-            <a href={path + '?x=1&y=2&y=3'}>ZZZ</a>
-          </li>
-        </ul>
-        <pre>{JSON.stringify(meta.jsonData)}</pre>
+        <TabA active={this.state.active}/>
+        <TabB active={this.state.active}/>
       </div>
     );
   }
