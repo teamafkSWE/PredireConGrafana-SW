@@ -12,8 +12,9 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@grafana/data": "next",
-    "@grafana/toolkit": "next",
-    "@grafana/ui": "next"
+    "@grafana/toolkit": "^6.7.2",
+    "@grafana/ui": "next",
+    "webpack": "^4.43.0"
   },
   "dependencies": {
     "react-files": "^2.4.8"
