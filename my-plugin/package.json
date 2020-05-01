@@ -14,5 +14,8 @@
     "@grafana/data": "next",
     "@grafana/toolkit": "next",
     "@grafana/ui": "next"
+  },
+  "dependencies": {
+    "react-files": "^2.4.8"
   }
 }
