@@ -1,7 +1,7 @@
 {
-  "name": "simple-app",
+  "name": "predire-in-grafana",
   "version": "1.0.0",
-  "description": "Simple App Panel",
+  "description": "Predire in Grafana Panel",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
