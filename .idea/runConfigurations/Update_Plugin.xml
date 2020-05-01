@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Update" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/prediction_tool/package.json" />
+  <configuration default="false" name="Update Plugin" type="js.build_tools.npm" folderName="Plugin">
+    <package-json value="$PROJECT_DIR$/my-plugin/package.json" />
     <command value="install" />
     <node-interpreter value="project" />
     <envs />

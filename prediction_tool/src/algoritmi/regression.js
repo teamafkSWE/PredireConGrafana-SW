@@ -6,6 +6,7 @@ class Regression {
     predict(xs){return this.hypothesize({x:[1].concat(xs)})}
     push(options){this.addObservation(options)}
 
+
     constructor(options){
         if(!options)
             throw new Error('missing options')
@@ -34,7 +35,11 @@ class Regression {
         let xTy = this.transposeOfXTimesY
         let inv = this.inverse(xTx, this.identity)
         this.coefficients = this.multiply(inv, xTy)
-        return this.coefficients
+        let a=[];
+        for(let i=1; i<this.coefficients.length;i++){
+            a.push(this.coefficients[i])
+        }
+        return {b: this.coefficients [0], a: a};
     }
 
     hypothesize(options) {

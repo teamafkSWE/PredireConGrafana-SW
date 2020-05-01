@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test" type="js.build_tools.npm">
+  <configuration default="false" name="Test" type="js.build_tools.npm" folderName="Tool">
     <package-json value="$PROJECT_DIR$/prediction_tool/package.json" />
     <command value="test" />
     <node-interpreter value="project" />

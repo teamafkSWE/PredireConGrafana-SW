@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import InputCSV from "./input_component"
-import App from "../davide-fouad/App";
+import Select_Prediction from "./chooseAlgorithm";
+import CSVReader from "react-csv-reader";
 
 /*
  * Questo componente si occupa di dirigere il flow delle sue sottocomponenti
@@ -9,29 +9,30 @@ import App from "../davide-fouad/App";
  * Al momento input_component scrive su files l'array di file che l'utente ha dato in input, e ne legge il nome selezionato
  */
 class State_controller extends Component {
-
     state = {
-        hasFile: false,
-        file: null
+        data: [],
+        name: null,
+        hasFile: false
     }
+
+    handleForce = (data, fileInfo) => {
+        this.setState({data:data, name: fileInfo.name, hasFile:true});
+    };
 
     render() {
         return (
-            <div className="mt-4 mb-4 text-center">
-                <InputCSV fileName={this.getFileName()} onFileInput={this.handleFileInput}/>
-                <App />
-            </div>);
-    }
-
-    handleFileInput = files => {
-        this.setState({file: files[0], hasFile:true})
-    }
-
-    getFileName = () =>{
-        if (this.state.file == null)
-            return "";
-        else
-            return this.state.file.name;
+            <React.Fragment>
+                <label className="btn btn-dark" htmlFor="1">Selezionare il file:</label>
+                <CSVReader
+                    accept={".csv"}
+                    inputId="1"
+                    cssClass="d-none"
+                    onFileLoaded={this.handleForce}
+                />
+                <p>{this.state.name}</p>
+                <Select_Prediction data={this.state.data} hasFile={this.state.hasFile}/>
+            </React.Fragment>
+        );
     }
 }
 
