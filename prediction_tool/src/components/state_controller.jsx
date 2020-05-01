@@ -16,6 +16,7 @@ class State_controller extends Component {
     }
 
     handleForce = (data, fileInfo) => {
+
         this.setState({data:data, name: fileInfo.name, hasFile:true});
     };
 
