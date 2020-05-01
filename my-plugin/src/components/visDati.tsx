@@ -27,3 +27,6 @@ class VisDati extends PureComponent<Props>{
 }
 
 export default VisDati;
+
+
+

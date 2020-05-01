@@ -1,8 +1,9 @@
 {
-  "type": "app",
+  "type": "panel",
   "name": "Predire in Grafana",
   "id": "teamafkswe-pg-app",
 
+"dataFormats": ["time_series"],
   "info": {
     "author": {
       "name": "TeamAFK",
@@ -18,33 +19,6 @@
     "updated": "%TODAY%"
   },
 
-  "includes": [
-    {
-      "type": "page",
-      "name": "JSON",
-      "path": "/a/teamafkswe-pg-app/?tab=insJson",
-      "role": "Viewer",
-      "addToNav": true,
-      "defaultNav": true
-    },
-    {
-      "type": "page",
-      "name": "Data",
-      "path": "/a/teamafkswe-pg-app/?tab=visDati",
-      "role": "Viewer",
-      "addToNav": true
-    },
-    {
-      "type": "dashboard",
-      "name": "Streaming Example",
-      "path": "dashboards/streaming.json"
-    },
-    {
-      "type": "dashboard",
-      "name": "Lots of Stats",
-      "path": "dashboards/stats.json"
-    }
-  ],
 
   "dependencies": {
     "grafanaVersion": "6.6.x",
