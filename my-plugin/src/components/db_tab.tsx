@@ -1,26 +1,28 @@
 import React, { PureComponent} from 'react';
-import Axios from 'axios'
+import { DataFrame } from '@grafana/data';
 
-class Db_tab extends PureComponent{
+interface props {
+    queries: DataFrame[]
+}
 
-    constructor(props: Readonly<{}>) {
-        super(props);
-        this.getDataAxios()
-    }
+class Db_tab extends PureComponent<props>{
 
-    async getDataAxios(){
-        const protocol = window.location.protocol;
-        const hostname = window.location.hostname;
-        const port = window.location.port;
-        const hostUrl = `${protocol}//${hostname}:${port}`;
-
-        const response = await Axios.get(`${hostUrl}/api/datasources`);
-        console.log(response);
+    getOptions = () => {
+        const queries = this.props.queries;
+        if ( queries.length> 0){
+            return <>{queries.map((query) => <option value={query.name}>{query.name}</option>)}</>
+        }else
+            return <option value="noQ">No query found</option>
     }
 
     render() {
         return (
-            <h1>Dati:</h1>
+            <>
+                <label htmlFor="queries">Select query:</label>
+                <select id="queries">
+                    {this.getOptions()}
+                </select>
+            </>
         );
     }
 }
