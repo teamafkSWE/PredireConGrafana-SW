@@ -14,7 +14,6 @@ class Reg extends Component{
      let data =[];
      let dataY = [];
 
-        console.log( this.props.dataRl[0].length)
 
         if(this.state.dataRl[0].length>2)
         {
