@@ -6,39 +6,36 @@ import Files from 'react-files'
 class InsJson extends Component {
     private fileReader: any;
     state = {
-        jsonFile: {}
+        nameAlgorithm:"",
+        firstVar: [],
+        coefficienteAng:[]
     }
 
-    constructor(props: Readonly<{}>) {
-        super(props);
+
+    onChange=(file:any[])=>{
         this.fileReader = new FileReader();
+        this.fileReader.readAsText(file[file.length-1]);
         this.fileReader.onload = (event: { target: { result: string; }; }) => {
-            this.setState({ jsonFile: JSON.parse(event.target.result) }, () => {
-                console.log(this.state.jsonFile);
-            });
+            const data= JSON.parse(event.target.result);
+            if(data.w)
+            {
+                this.setState({nameAlgorithm:"svm",firstVar:data.w,coefficienteAng:data.b});
+
+            }
+            else {
+                this.setState({nameAlgorithm:"rl",firstVar:data.a,coefficienteAng:data.b});
+
+            }
         };
-    }
-    /*
-    onChange=(e:any)=>{
-        let file=e.target.files[0];
-        console.log(file);
-       /* file.map(function (item:any,index:any) {
-            console.log(item.b);
-        });*/
-
-     /*   file.map((data:any)=>{
-            return  console.log(data.b);
-
-        })*/
-       // console.log(JSON.parse(file));
-     //   }
+       }
     render() {
+        console.log(this.state.firstVar);
+        console.log(this.state.coefficienteAng);
+        console.log(this.state.nameAlgorithm);
         return (
             <Files
                 className="files-dropzone"
-                onChange={(file: any[]) => {
-                    this.fileReader.readAsText(file[0]);
-                }}
+                onChange={(file: any[]) =>this.onChange(file)}
                 onError={(err: any) => console.log(err)}
                 accepts={[".json"]}
                 multiple
@@ -47,7 +44,7 @@ class InsJson extends Component {
                 minFileSize={0}
                 clickable
             >
-                Drop files here or click to upload
+               <button  className='btn btn-secondary btn-sm'>Insert file</button>
             </Files>
         );
     }
