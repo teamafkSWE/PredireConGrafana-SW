@@ -4,6 +4,9 @@ import { TabsBar } from '@grafana/ui';
 import { Tab } from '@grafana/ui';
 import { TabContent } from '@grafana/ui';
 import InsJson from 'components/inputJson';
+import InserimentoDB from 'components/db_tab'
+
+
 export default {
     title: 'Layout/Tabs',
 };
@@ -33,7 +36,7 @@ export const Simple = () => {
                         </TabsBar>
                         <TabContent>
                             {state[0].active && <div><InsJson/></div>}
-                            {state[1].active && <div>Form di inserimento DB</div>}
+                            {state[1].active && <div><InserimentoDB /></div>}
                         </TabContent>
                     </div>
                 );
