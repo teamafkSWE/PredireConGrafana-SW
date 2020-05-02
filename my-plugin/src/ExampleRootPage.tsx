@@ -3,7 +3,7 @@ import { UseState } from 'UseState';
 import { TabsBar } from '@grafana/ui';
 import { Tab } from '@grafana/ui';
 import { TabContent } from '@grafana/ui';
-
+import InsJson from 'components/inputJson';
 export default {
     title: 'Layout/Tabs',
 };
@@ -32,7 +32,7 @@ export const Simple = () => {
                             })}
                         </TabsBar>
                         <TabContent>
-                            {state[0].active && <div>Form di inserimento JSON</div>}
+                            {state[0].active && <div><InsJson/></div>}
                             {state[1].active && <div>Form di inserimento DB</div>}
                         </TabContent>
                     </div>

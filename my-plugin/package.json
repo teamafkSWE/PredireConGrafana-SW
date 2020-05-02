@@ -1,7 +1,7 @@
 {
-  "name": "simple-app",
+  "name": "predire-in-grafana",
   "version": "1.0.0",
-  "description": "Simple App Panel",
+  "description": "Predire in Grafana Panel",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
@@ -12,7 +12,11 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@grafana/data": "next",
-    "@grafana/toolkit": "next",
-    "@grafana/ui": "next"
+    "@grafana/toolkit": "^6.7.2",
+    "@grafana/ui": "next",
+    "webpack": "^4.43.0"
+  },
+  "dependencies": {
+    "react-files": "^2.4.8"
   }
 }

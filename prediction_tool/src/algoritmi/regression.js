@@ -35,11 +35,11 @@ class Regression {
         let xTy = this.transposeOfXTimesY
         let inv = this.inverse(xTx, this.identity)
         this.coefficients = this.multiply(inv, xTy)
-        let a=[];
-        for(let i=1; i<this.coefficients.length;i++){
-            a.push(this.coefficients[i])
+        let a=new Array(this.coefficients.length-1)
+        for(let i=0; i<a.length;i++){
+            a[i]=this.coefficients[i+1][0];
         }
-        return {b: this.coefficients [0], a: a};
+        return {b: this.coefficients[0], a: a};
     }
 
     hypothesize(options) {
