@@ -6,8 +6,21 @@ class Reg extends Component{
 
     state={
         dataRl:this.props.dataRl,
-       reg: new Regression({ numX: this.props.dataRl[0].length, numY: 1 })
+        reg: new Regression({ numX: this.props.dataRl[0].length, numY: 1 }),
+        numOfX: this.props.dataRl[0].length-1
     };
+
+    getColumnsName() {
+        let y = this.props.dataRl[0][this.props.dataRl[0].length-1];
+        let x = new Array();
+
+        for(let i=0; i<this.props.dataRl[0].length-1; i++)
+            x[i] = this.props.dataRl[0][i];//[this.props.dataRl[0]][[this.props.dataRl[0][i]]];
+        //for(let i=0; i<x.length-1;i++)
+        //  x[i] = this.props.dataRl[0];
+        return {a: x, b: y};
+    }
+
 
     insert(){
 
@@ -44,8 +57,40 @@ class Reg extends Component{
         }
      }
 
+     predictor(){
+        return {a: this.state.numOfX, b: 1};
+     }
+
+     getDate(){
+        let today = new Date();
+        if(today.getMonth() < 10 && today.getDate() < 10)
+            today = today.getFullYear() + "/" + "0" + (today.getUTCMonth()+1) + "/" + "0" + today.getDate();
+        else if(today.getMonth() < 10)
+            today = today.getFullYear() + "/" + (today.getUTCMonth()+1) + "/" + today.getDate();
+        else
+            today = today.getFullYear() + "/" + (today.getUTCMonth()+1) + "/" + "0" + today.getDate();
+        return today;
+     }
+
+     print_retta(){
+        let y = "y = ";
+        let a = new Array();
+        let b = " + b";
+        for(let i=0; i<this.state.numOfX; i++)
+            a[i] = "a" + [i+1] + "x";
+        return y+a+b;
+     }
+
      downloadFile =  () => {
-         const myData = this.state.reg.calculateCoefficients(); // I am assuming that "this.state.myData"
+         const myData = {
+             author: 'TeamAFK',
+             version: '1.0.0',
+             algorithm: 'Linear Regression',
+             date: this.getDate(),
+             predictors: this.getColumnsName(),//this.predictor(),
+             result: this.state.reg.calculateCoefficients(),
+             retta: this.print_retta()
+         }; // I am assuming that "this.state.myData"
          var data = JSON.stringify(myData,null, 1);
 
          var element = document.createElement('a');

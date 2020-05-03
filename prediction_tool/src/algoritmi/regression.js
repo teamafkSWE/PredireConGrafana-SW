@@ -39,7 +39,7 @@ class Regression {
         for(let i=0; i<a.length;i++){
             a[i]=this.coefficients[i+1][0];
         }
-        return {b: this.coefficients[0][0], a: a};
+        return {a: a, b: this.coefficients[0][0]};
     }
 
     hypothesize(options) {

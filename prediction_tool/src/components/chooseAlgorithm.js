@@ -18,7 +18,7 @@ class Select_Prediction extends Component{
                 let file = this.props.data;
                 let isSVM=false;
 
-                if(file[0][file[0].length-1]==="label" && file[0][file[0].length-2]==="y" )
+                if(file[0][file[0].length-1]==="label" )
                     isSVM=true;
                 else {
                     alert("Formato file errato.")
