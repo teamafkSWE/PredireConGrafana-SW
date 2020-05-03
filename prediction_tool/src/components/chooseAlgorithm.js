@@ -4,16 +4,9 @@ import SVM from "../algoritmi/trainSVM";
 import Reg from "../algoritmi/trainReg";
 
 class Select_Prediction extends Component{
-    state = {
-        value: "",
-    }
-
-    change(event){
-        this.setState({value: event.target.value});
-    }
 
     getJSON(){
-        if(this.state.value === "svm"){
+        if(this.props.value === "svm"){
             if(this.props.hasFile===true ) {
                 let file = this.props.data;
                 let isSVM=false;
@@ -22,16 +15,16 @@ class Select_Prediction extends Component{
                     isSVM=true;
                 else {
                     alert("Formato file errato.")
-                    this.setState({value: ""});
+                    this.props.errorAlg("");
                 }
 
                 if(isSVM===true)
                     return <SVM dataSVM={file}/>
             } else {
                 alert("Inserisci il file.");
-                this.setState({value: ""});
+                this.props.errorAlg("");
             }
-        } else if(this.state.value === "rl"){
+        } else if(this.props.value === "rl"){
             if(this.props.hasFile===true ) {
                 let file = this.props.data;
                 let isRL=false;
@@ -40,14 +33,14 @@ class Select_Prediction extends Component{
                     isRL=true;
                 else {
                     alert("Formato file errato.")
-                    this.setState({value: ""});
+                    this.props.errorAlg("");
                 }
 
                 if(isRL===true)
                     return <Reg dataRl={file}/>
             } else {
                 alert("Inserisci il file.");
-                this.setState({value: ""});
+                this.props.errorAlg("");
             }
         }
     }
@@ -55,12 +48,7 @@ class Select_Prediction extends Component{
     render() {
         return(
             <div>
-                <select id="algo" className="btn btn-dark" onChange={this.change.bind(this)} value={this.state.value}>
-                    <option>Seleziona l'algoritmo:</option>
-                    <option value="svm">Support Vector Machine</option>
-                    <option value="rl">Regressione Lineare</option>
-                </select>
-                <div>{this.getJSON()}</div>
+                {this.getJSON()}
             </div>
         );
     }

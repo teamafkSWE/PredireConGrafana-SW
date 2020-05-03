@@ -3,6 +3,8 @@ import React, {PureComponent} from 'react';
 import {PanelProps, PanelPlugin, GraphSeriesXY, FieldColorMode, ArrayVector, FieldType, dateTime} from '@grafana/data';
 import {Graph} from "@grafana/ui";
 import MyPanelEditor from './EditorPanel'
+
+//to remove!
 interface MyPanelOptions {
     bitText:string;
 }
@@ -77,7 +79,7 @@ export class MyPanel extends PureComponent<PanelProps<MyPanelOptions>>{
         },
     ];
     render(){
-
+        this.props.data.series.forEach(serie => serie.fields.forEach(values => console.log(values.values.toArray())))
         return( <Graph  height={300}
                         width={600}
                         series={this.series}

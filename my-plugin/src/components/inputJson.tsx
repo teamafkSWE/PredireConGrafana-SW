@@ -2,14 +2,11 @@ import React, {Component} from 'react';
 import Files from 'react-files'
 
 
-
-class InsJson extends Component {
+interface insJson {
+    setData:(arg0:any,arg1:any,arg2:any)=>void
+}
+class InsJson extends Component<insJson> {
     private fileReader: any;
-    state = {
-        nameAlgorithm:"",
-        firstVar: [],
-        coefficienteAng:[]
-    }
 
 
     onChange=(file:any[])=>{
@@ -19,19 +16,17 @@ class InsJson extends Component {
             const data= JSON.parse(event.target.result);
             if(data.w)
             {
-                this.setState({nameAlgorithm:"svm",firstVar:data.w,coefficienteAng:data.b});
+                this.props.setData("svm",data.w,data.b);
 
             }
             else {
-                this.setState({nameAlgorithm:"rl",firstVar:data.a,coefficienteAng:data.b});
+                this.props.setData("rl",data.a,data.b);
 
             }
         };
        }
     render() {
-        console.log(this.state.firstVar);
-        console.log(this.state.coefficienteAng);
-        console.log(this.state.nameAlgorithm);
+
         return (
             <Files
                 className="files-dropzone"
