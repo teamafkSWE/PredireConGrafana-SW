@@ -77,7 +77,7 @@ export class MyPanel extends PureComponent<PanelProps<MyPanelOptions>>{
         },
     ];
     render(){
-
+        this.props.data.series.forEach(serie => serie.fields.forEach(values => console.log(values.values.toArray())))
         return( <Graph  height={300}
                         width={600}
                         series={this.series}
