@@ -68,14 +68,9 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
                             </TabsBar>
                             <TabContent>
                                 {state[0].active && <CaricamentoJsonView/>}
-                                {state[1].active && <CollegamentoView/>}
+                                {state[1].active && <CollegamentoView queries={this.props.data.series} json={this.state.json}/>}
                                 {state[2].active && <ListaCollegamentiView/>}
                                 {state[3].active && <PrevisioneView/>}
-
-
-
-
-
                             </TabContent>
                         </div>
                     );

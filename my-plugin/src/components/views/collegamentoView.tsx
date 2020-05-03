@@ -1,19 +1,50 @@
 import React, {PureComponent} from 'react';
 import {PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
-import InserimentoDB from "../db_tab";
+import {DataFrame} from "@grafana/data";
 
-class CollegamentoView extends PureComponent {
+//import InserimentoDB from "../db_tab";
+
+interface MyProps {
+    queries: DataFrame[]
+    json: {
+        "predictor": string[],
+        "result": {
+            "b": number,
+            "a": number[]
+        }
+    } | null
+}
 
 
+class CollegamentoView extends PureComponent<MyProps> {
+
+    getOptions = (queries: DataFrame[]) => {
+        if (queries.length > 0) {
+            return <>{queries.map((query) => <option value={query.name}>{query.name}</option>)}</>
+        } else
+            return <option value="noQ">No query found</option>
+    }
+
+    getPredictors = (json: { "predictor": string[], "result": { "b": number, "a": number[] } } | null) => {
+        if (json === null)
+            return <><option value="noJ">No json loaded</option></>
+        else
+            return <>{json.predictor.map((pred, index) => <option value={index}>{pred}</option>)}</>
+    }
 
     render() {
+        const {json, queries} = this.props;
         return (
             <div>
                 <PanelOptionsGrid>
-
                     <PanelOptionsGroup title="Lista predittori">
-
                         <h1>TO DO: </h1>
+                        <>
+                            <label htmlFor="predictors">Select predictors:</label>
+                            <select id="predictors">
+                                {this.getPredictors(json)}
+                            </select>
+                        </>
                         <ul>
                             <li>
                                 <p>aggiugere label "Selezionare uno o più predittori dalla lista";</p>
@@ -25,8 +56,11 @@ class CollegamentoView extends PureComponent {
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Selezione del flusso dati">
-
                         <h1>TO DO: </h1>
+                        <label htmlFor="queries">Select query:</label>
+                        <select id="queries">
+                            {this.getOptions(queries)}
+                        </select>
                         <ul>
                             <li>
                                 <p>migliorare componente della lista delle query disponibili;</p>
@@ -68,4 +102,4 @@ class CollegamentoView extends PureComponent {
 export default CollegamentoView;
 
 //Readd to matching group "Flusso dati"
-//<InserimentoDB queries={this.props.data.series}/>
+//<InserimentoDB />
