@@ -2,7 +2,10 @@ import React, {PureComponent} from 'react';
 import {PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
 import InsJson from "../inputJson";
 
-class CaricamentoJsonView extends PureComponent {
+interface insJson {
+    setData:(arg0:any,arg1:any,arg2:any)=>void
+}
+class CaricamentoJsonView extends PureComponent<insJson> {
 
 
 
@@ -11,7 +14,7 @@ class CaricamentoJsonView extends PureComponent {
             <div>
                 <PanelOptionsGrid>
                     <PanelOptionsGroup title="Inserimento file JSON">
-                    <InsJson/>
+                    <InsJson setData={this.props.setData}/>
                     <h1>TO DO: </h1>
                         <ul>
                             <li>

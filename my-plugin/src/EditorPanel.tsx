@@ -29,26 +29,21 @@ const tabs = [
 
 
 class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
-
-
-    //y=ax+b
     state = {
-        json: { //moc of json
-            "predictor": [
-                "temp",
-                "cpu"
-            ],
-            "result": {
-                "b": 0,
-                "a": [
-                    2,
-                    0
-                ]
-            }
-        }
+        nameAlgorithm:"",
+        firstVar: [],
+        coefficienteAng:[]
+    }
+
+    setData=(nameAlgorithm:any,firstVar:any,coefficienteAng:any)=>{
+        this.setState({nameAlgorithm:nameAlgorithm,firstVar:firstVar,coefficienteAng:coefficienteAng});
+
     }
 
     render() {
+        console.log(this.state.firstVar);
+        console.log(this.state.coefficienteAng);
+        console.log(this.state.nameAlgorithm);
         return(
             <UseState initialState={tabs}>
                 {(state, updateState) => {
@@ -67,10 +62,15 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
                                 })}
                             </TabsBar>
                             <TabContent>
-                                {state[0].active && <CaricamentoJsonView/>}
-                                {state[1].active && <CollegamentoView queries={this.props.data.series} json={this.state.json}/>}
+                                {state[0].active && <CaricamentoJsonView setData={this.setData}/>}
+                                {state[1].active && <CollegamentoView/>}
                                 {state[2].active && <ListaCollegamentiView/>}
                                 {state[3].active && <PrevisioneView/>}
+
+
+
+
+
                             </TabContent>
                         </div>
                     );
@@ -81,3 +81,7 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
 }
 
 export default MyPanelEditor;
+
+/*
+{state[0].active && <InsJson/>}
+{state[1].active && <InserimentoDB queries={this.props.data.series}/>}*/
