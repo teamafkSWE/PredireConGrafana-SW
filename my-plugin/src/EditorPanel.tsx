@@ -21,7 +21,25 @@ const tabs = [
 class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
 
 
+    //y=ax+b
+    state = {
+        json: { //moc of json
+            "predictor": [
+                "temp",
+                "cpu"
+            ],
+            "result": {
+                "b": 0,
+                "a": [
+                    2,
+                    0
+                ]
+            }
+        }
+    }
+
     render() {
+        console.log(this)
         return(
             <UseState initialState={tabs}>
                 {(state, updateState) => {
@@ -41,7 +59,7 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
                             </TabsBar>
                             <TabContent>
                                 {state[0].active && <InsJson/>}
-                                {state[1].active && <InserimentoDB queries={this.props.data.series}/>}
+                                {state[1].active && <InserimentoDB queries={this.props.data.series} json={this.state.json}/>}
                             </TabContent>
                         </div>
                     );
