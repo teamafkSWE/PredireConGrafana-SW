@@ -3,6 +3,8 @@ import React, {PureComponent} from 'react';
 import {PanelProps, PanelPlugin, GraphSeriesXY, FieldColorMode, ArrayVector, FieldType, dateTime} from '@grafana/data';
 import {Graph} from "@grafana/ui";
 import MyPanelEditor from './EditorPanel'
+
+//to remove!
 interface MyPanelOptions {
     bitText:string;
 }

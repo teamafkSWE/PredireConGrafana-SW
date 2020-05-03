@@ -12,12 +12,18 @@ class State_controller extends Component {
     state = {
         data: [],
         name: null,
-        hasFile: false
+        hasFile: false,
+        value: ""
     }
-
+    changeValue(event){
+        this.setState({value: event.target.value});
+    }
+    errorAlg=(value)=>{
+        this.setState({value:value});
+    }
     handleForce = (data, fileInfo) => {
 
-        this.setState({data:data, name: fileInfo.name, hasFile:true});
+        this.setState({data:data, name: fileInfo.name, hasFile:true,value:''});
     };
 
     render() {
@@ -31,7 +37,13 @@ class State_controller extends Component {
                     onFileLoaded={this.handleForce}
                 />
                 <p>{this.state.name}</p>
-                <Select_Prediction data={this.state.data} hasFile={this.state.hasFile}/>
+                <select id="algo" className="btn btn-dark" onChange={this.changeValue.bind(this)} value={this.state.value}>
+                    <option>Seleziona l'algoritmo:</option>
+                    <option value="svm">Support Vector Machine</option>
+                    <option value="rl">Regressione Lineare</option>
+                </select>
+
+                <Select_Prediction data={this.state.data} hasFile={this.state.hasFile} value={this.state.value} errorAlg={this.errorAlg}/>
             </React.Fragment>
         );
     }
