@@ -14,7 +14,7 @@ class Select_Prediction extends Component{
                 if(file[0][file[0].length-1]==="label" )
                     isSVM=true;
                 else {
-                    alert("Formato file errato.")
+                    alert("File CSV incompatibile.")
                     this.props.errorAlg("");
                 }
 
@@ -32,7 +32,7 @@ class Select_Prediction extends Component{
                 if(file[0][file[0].length-1]==="y")
                     isRL=true;
                 else {
-                    alert("Formato file errato.")
+                    alert("File CSV incompatibile.")
                     this.props.errorAlg("");
                 }
 

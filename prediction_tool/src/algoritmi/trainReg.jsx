@@ -23,11 +23,8 @@ class Reg extends Component{
 
 
     insert(){
-
      let data =[];
      let dataY = [];
-
-
         if(this.state.dataRl[0].length>2)
         {
             for (let i = 0; i < this.props.dataRl.length-1; i++) {
@@ -89,9 +86,9 @@ class Reg extends Component{
              date: this.getDate(),
              predictors: this.getColumnsName(),//this.predictor(),
              result: this.state.reg.calculateCoefficients(),
-             retta: this.print_retta()
+             line: this.print_retta()
          }; // I am assuming that "this.state.myData"
-         var data = JSON.stringify(myData,null, 1);
+         let data = JSON.stringify(myData,null, 1);
 
          var element = document.createElement('a');
          element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
