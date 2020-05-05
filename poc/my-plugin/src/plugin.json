@@ -1,0 +1,27 @@
+{
+  "type": "panel",
+  "name": "Predire in Grafana",
+  "id": "teamafkswe-pg-app",
+
+"dataFormats": ["time_series"],
+  "info": {
+    "author": {
+      "name": "TeamAFK",
+      "url": "https://github.com/teamafkSWE"
+    },
+    "logos": {
+      "small": "img/prediction_eye.png",
+      "large": "img/prediction_eye.png"
+    },
+    "keywords": ["afk", "predire", "svm", "rl"],
+    "description": "?????????????",
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+
+
+  "dependencies": {
+    "grafanaVersion": "6.6.x",
+    "plugins": []
+  }
+}
