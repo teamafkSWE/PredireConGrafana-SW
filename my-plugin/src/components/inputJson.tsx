@@ -14,13 +14,13 @@ class InsJson extends Component<insJson> {
         this.fileReader.readAsText(file[file.length-1]);
         this.fileReader.onload = (event: { target: { result: string; }; }) => {
             const data= JSON.parse(event.target.result);
-            if(data.w)
+            if(data.result.w)
             {
-                this.props.setData("svm",data.w,data.b);
+                this.props.setData("svm",data.result.w,data.result.b);
 
             }
             else {
-                this.props.setData("rl",data.a,data.b);
+                this.props.setData("rl",data.result.a,data.result.b);
 
             }
         };

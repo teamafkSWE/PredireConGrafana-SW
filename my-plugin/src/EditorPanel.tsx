@@ -56,6 +56,7 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
     }
 
     render() {
+        console.log(this.state.firstVar, this.state.coefficienteAng, this.state.nameAlgorithm);
         return(
             <UseState initialState={tabs}>
                 {(state, updateState) => {
