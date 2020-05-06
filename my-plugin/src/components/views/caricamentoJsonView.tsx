@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
+import {HorizontalGroup, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
 import InsJson from "../inputJson";
 
 interface insJson {
@@ -10,11 +10,19 @@ class CaricamentoJsonView extends PureComponent<insJson> {
 
 
     render() {
+
         return (
             <div>
                 <PanelOptionsGrid>
                     <PanelOptionsGroup title="Inserimento file JSON">
-                    <InsJson setData={this.props.setData}/>
+                        <VerticalGroup>
+                            <InsJson setData={this.props.setData}/>
+                            <HorizontalGroup>
+                                <p>or drag here</p>
+                            </HorizontalGroup>
+
+                        </VerticalGroup>
+
                     <h1>TO DO: </h1>
                         <ul>
                             <li>

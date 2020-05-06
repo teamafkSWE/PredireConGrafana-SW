@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
+import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup, Button} from "@grafana/ui";
 
 class ListaCollegamentiView extends PureComponent {
 
@@ -23,18 +23,14 @@ class ListaCollegamentiView extends PureComponent {
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Opzioni collegamenti">
-                        <h1>TO DO: </h1>
-                        <ul>
-                            <li>
-                                <p>aggiungere pulsante di modifica;</p>
-                            </li>
-                            <li>
-                                <p>aggiungere pulsante di scollegamento;</p>
-                            </li>
-                            <li>
-                                <p>aggiungere pulsante di nuovo collegamento;</p>
-                            </li>
-                        </ul>
+                        <p>Clicca per intraprendere un operazione:</p>
+
+                        <VerticalGroup spacing="md">
+                            <Button>Modifica collegamento</Button>
+                            <Button>Scollega predittore</Button>
+                            <Button>Nuovo Collegamento</Button>
+                        </VerticalGroup>
+
                     </PanelOptionsGroup>
                 </PanelOptionsGrid>
 
