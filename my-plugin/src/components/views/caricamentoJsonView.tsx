@@ -3,14 +3,56 @@ import {HorizontalGroup, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} fro
 import InsJson from "../inputJson";
 
 interface insJson {
-    setData:(arg0:any,arg1:any,arg2:any)=>void
+    setData:(arg0:any,arg1:any,arg2:any,arg3:any)=>void
+    jsonData:()=> any
 }
 class CaricamentoJsonView extends PureComponent<insJson> {
 
+    printJsonData=()=>{
+        let data=this.props.jsonData();
+        if(data.nameAlgorithm!==null){
+            if(data.nameAlgorithm==="SVM") {
+                return (<ul>
+                        <li>
+                            <p>Nome algoritmo : {data.nameAlgorithm}</p>
+                        </li>
+                        <li>
+                            <p>Nome predittori : {data.predictors}</p>
+                        </li>
+                        <li>
+                            <p>Coefficiente angolare(b) : {data.coefficienteAng}</p>
+                        </li>
+                        <li>
+                            <p> Pesi(w): {data.firstVar}</p>
+                        </li>
+                    </ul>
 
+                );
+            }
+            else {
+                return (<ul>
+                        <li>
+                            <p>Nome algoritmo : {data.nameAlgorithm}</p>
+                        </li>
+                        <li>
+                            <p>Nome predittori : {data.predictors}</p>
+                        </li>
+                        <li>
+                            <p>Coefficiente angolare(b) : {data.coefficienteAng}</p>
+                        </li>
+                        <li>
+                            <p> Intercetta(a): {data.firstVar}</p>
+                        </li>
+                    </ul>
+
+                );
+            }
+        }
+        return "Nessun JSON inserito";
+    }
 
     render() {
-
+        this.printJsonData();
         return (
             <div>
                 <PanelOptionsGrid>
@@ -32,15 +74,7 @@ class CaricamentoJsonView extends PureComponent<insJson> {
 
                     </PanelOptionsGroup>
                     <PanelOptionsGroup title="Contenuto file JSON">
-                        <h1>TO DO: </h1>
-                        <ul>
-                            <li>
-                                <p>aggiungere componente per la visualizzazione del file JSON;</p>
-                            </li>
-                            <li>
-                                <p>aggiungere link al tool esterno per addestramento.</p>
-                            </li>
-                        </ul>
+                        <p>{this.printJsonData()}</p>
                     </PanelOptionsGroup>
 
 

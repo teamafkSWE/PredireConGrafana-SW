@@ -32,9 +32,13 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
 
     //y=ax+b
     state = {
-        nameAlgorithm:"",
-        firstVar: [],
-        coefficienteAng:[],
+
+            predictors: [],
+            nameAlgorithm:null,
+            coefficienteAng: [],
+            firstVar: [],
+
+
         json: { //moc of json
             "predictor": [
                 "temp",
@@ -50,13 +54,17 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
         }
     }
 
-    setData=(nameAlgorithm:any,firstVar:any,coefficienteAng:any)=>{
-        this.setState({nameAlgorithm:nameAlgorithm,firstVar:firstVar,coefficienteAng:coefficienteAng});
 
+    setData=(nameAlgorithm:any,firstVar:any,coefficienteAng:any,predictors:any)=>{
+        this.setState({nameAlgorithm:nameAlgorithm,firstVar:firstVar,coefficienteAng:coefficienteAng,predictors:predictors});
+
+    }
+    jsonData=()=>{
+            return this.state;
     }
 
     render() {
-        console.log(this.state.firstVar, this.state.coefficienteAng, this.state.nameAlgorithm);
+
         return(
             <UseState initialState={tabs}>
                 {(state, updateState) => {
@@ -75,7 +83,7 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
                                 })}
                             </TabsBar>
                             <TabContent>
-                                {state[0].active && <CaricamentoJsonView setData={this.setData}/>}
+                                {state[0].active && <CaricamentoJsonView setData={this.setData} jsonData={this.jsonData}/>}
                                 {state[1].active && <CollegamentoView queries={this.props.data.series} json={this.state.json}/>}
                                 {state[2].active && <ListaCollegamentiView/>}
                                 {state[3].active && <PrevisioneView/>}

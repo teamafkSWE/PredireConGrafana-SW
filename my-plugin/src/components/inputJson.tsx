@@ -3,7 +3,7 @@ import Files from 'react-files'
 
 
 interface insJson {
-    setData:(arg0:any,arg1:any,arg2:any)=>void
+    setData:(arg0:any,arg1:any,arg2:any,arg3:any)=>void
 }
 class InsJson extends Component<insJson> {
     private fileReader: any;
@@ -16,11 +16,11 @@ class InsJson extends Component<insJson> {
             const data= JSON.parse(event.target.result);
             if(data.result.w)
             {
-                this.props.setData("svm",data.result.w,data.result.b);
+                this.props.setData(data.algorithm ,data.result.w,data.result.b,data.predictors.w);
 
             }
             else {
-                this.props.setData("rl",data.result.a,data.result.b);
+                this.props.setData(data.algorithm,data.result.a,data.result.b,data.predictors.a);
 
             }
         };
