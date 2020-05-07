@@ -4,12 +4,13 @@ import InsJson from "../inputJson";
 
 interface insJson {
     setData:(arg0:any,arg1:any,arg2:any,arg3:any)=>void
-    jsonData:()=> any
+    jsonData: any | null
 }
 class CaricamentoJsonView extends PureComponent<insJson> {
 
+
     printJsonData=()=>{
-        let data=this.props.jsonData();
+        let data= this.props.jsonData;
         if(data.nameAlgorithm!==null){
             if(data.nameAlgorithm==="SVM") {
                 return (<ul>
