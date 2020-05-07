@@ -5,7 +5,6 @@ import "./index.css"
 import Header from "./components/header";
 import States from "./components/state_controller";
 
-
 ReactDom.render(
     <React.StrictMode>
         <div className="mt-4 mb-4 text-center" >
