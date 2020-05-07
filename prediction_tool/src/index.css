@@ -12,3 +12,7 @@ body{
     border-image-source: linear-gradient(90deg,#f05a28 30%,#fbca0a 99%);
     border-image-slice: 1;
 }
+
+.alert{
+
+}

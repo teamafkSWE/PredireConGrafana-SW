@@ -49,33 +49,49 @@ class SupportVM extends Component{
         return svm.getWeights();
     }
 
+    confermaPredizioneSVM = () => {
+        let result = this.trainSvm();
+        if(result) {
+            alert("Addestramento avvenuto correttamente.")
+            this.confermaPredizioneSVM = true;
+            //console.log(result);
+        } else
+            alert("Addestramento non riuscito.")
+    }
+
     downloadFile =  () => {
-        const myData = {
-            author: 'TeamAFK',
-            version: '1.0.0',
-            algorithm: 'SVM',
-            date: this.getDate(),
-            predictors: this.getColumnsName(),//this.predictor(),
-            result: this.trainSvm()
-        };
-        let data = JSON.stringify(myData,null, 1);
+        if(this.confermaPredizioneSVM === true) {
+            const myData = {
+                author: 'TeamAFK',
+                version: '1.0.0',
+                algorithm: 'SVM',
+                date: this.getDate(),
+                predictors: this.getColumnsName(),//this.predictor(),
+                result: this.trainSvm()
+            };
+            let data = JSON.stringify(myData, null, 1);
 
-        let element = document.createElement('a');
-        element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
-        element.setAttribute('download', 'dati.json');
+            let element = document.createElement('a');
+            element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
+            element.setAttribute('download', 'predictorsSVM.json');
 
-        element.style.display = 'none';
-        document.body.appendChild(element);
+            element.style.display = 'none';
+            document.body.appendChild(element);
 
-        element.click();
+            element.click();
 
-        document.body.removeChild(element);
+            document.body.removeChild(element);
+        }else {
+            alert("Dati non addestrati. Confermare per eseguire l'addestramento.")
+        }
     }
 
     render() {
 
         return(
             <div className="mt-4 mb-2">
+                <button onClick={this.confermaPredizioneSVM} className="btn btn-dark">Conferma</button>
+                <p></p>
                 <p>Scarica il file JSON della SVM</p>
                 <button onClick={this.downloadFile} className="btn btn-dark">Download</button>
             </div>);

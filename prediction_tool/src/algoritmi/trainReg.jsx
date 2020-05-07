@@ -78,33 +78,49 @@ class Reg extends Component{
         return y+a+b;
      }
 
+     confermaPredizioneRL = () => {
+         let result = this.state.reg.calculateCoefficients();
+         if(result) {
+             alert("Addestramento avvenuto correttamente.")
+             this.confermaPredizioneRL = true;
+             //console.log(result);
+         } else
+             alert("Addestramento non riuscito.")
+     }
+
      downloadFile =  () => {
-         const myData = {
-             author: 'TeamAFK',
-             version: '1.0.0',
-             algorithm: 'Linear Regression',
-             date: this.getDate(),
-             predictors: this.getColumnsName(),//this.predictor(),
-             result: this.state.reg.calculateCoefficients(),
-             line: this.print_retta()
-         }; // I am assuming that "this.state.myData"
-         let data = JSON.stringify(myData,null, 1);
+         if(this.confermaPredizioneRL === true) {
+             const myData = {
+                 author: 'TeamAFK',
+                 version: '1.0.0',
+                 algorithm: 'Linear Regression',
+                 date: this.getDate(),
+                 predictors: this.getColumnsName(),//this.predictor(),
+                 result: this.state.reg.calculateCoefficients(),
+                 line: this.print_retta()
+             }; // I am assuming that "this.state.myData"
+             let data = JSON.stringify(myData,null, 1);
 
-         var element = document.createElement('a');
-         element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
-         element.setAttribute('download', 'dati.json');
+             var element = document.createElement('a');
+             element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
+             element.setAttribute('download', 'predictorsRL.json');
 
-         element.style.display = 'none';
-         document.body.appendChild(element);
+             element.style.display = 'none';
+             document.body.appendChild(element);
 
-         element.click();
+             element.click();
 
-         document.body.removeChild(element);
-    }
+             document.body.removeChild(element);
+         } else {
+             alert("Dati non addestrati. Confermare per eseguire l'addestramento.")
+         }
+     }
     render() {
         this.insert();
         return(
         <div className="mt-4 mb-2">
+            <button onClick={this.confermaPredizioneRL} className="btn btn-dark">Conferma</button>
+            <p></p>
             <p>Scarica il file JSON della RL</p>
             <button onClick={this.downloadFile} className="btn btn-dark">Download</button>
         </div>);
