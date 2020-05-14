@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Select_Prediction from "./chooseAlgorithm";
 import CSVReader from "react-csv-reader";
+import Chart from "./chart";
 
 /*
  * Questo componente si occupa di dirigere il flow delle sue sottocomponenti
@@ -27,6 +28,7 @@ class State_controller extends Component {
     };
 
     render() {
+        
         return (
             <React.Fragment>
                 <label className="btn btn-dark" htmlFor="1">Selezionare il file:</label>
@@ -44,6 +46,7 @@ class State_controller extends Component {
                 </select>
 
                 <Select_Prediction data={this.state.data} hasFile={this.state.hasFile} value={this.state.value} errorAlg={this.errorAlg}/>
+            <Chart data={this.state.data} hasFile={this.state.hasFile}/>
             </React.Fragment>
         );
     }
