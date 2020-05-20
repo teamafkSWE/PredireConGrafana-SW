@@ -10,6 +10,7 @@ class Influx {
 
     //private _database: string
 
+    //todo: si può fare meglio?
     public static async getInstance(connectTo: { host: string, port: string, username?: string, password?: string, database: string,}) {
         //ottengo i parametri
         const {host, port, database} = connectTo;
@@ -25,6 +26,7 @@ class Influx {
             return false
     }
 
+    //TODO: impostare cambio di database
     private constructor(url: string, database: string) {
         this._IDB = new InfluxDB(url);
         //this._database = database;
