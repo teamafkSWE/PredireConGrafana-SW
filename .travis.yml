@@ -6,3 +6,6 @@ before_script:
   - cd prediction_tool
   - npm install
   - react-scripts test
+
+
+#TODO: sistemare scripts
