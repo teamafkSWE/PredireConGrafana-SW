@@ -56,10 +56,13 @@ class Influx {
             fields: {value: value}
         }
 
-        this._IDB.writeMeasurement(this._measurement, [point])
+        return this._IDB.writeMeasurement(this._measurement, [point])
     }
 
     //TODO: add query method
+    public query(){
+        return this._IDB.query(`select * from ${this._measurement}`)
+    }
 }
 
 
