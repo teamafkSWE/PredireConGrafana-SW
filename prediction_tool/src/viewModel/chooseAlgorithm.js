@@ -49,7 +49,7 @@ class Select_Prediction{
                     }
                     else {
                         alert("File CSV incompatibile.")
-                       // this.props.errorAlg("");
+                        return false;
                     }
                 } else if (this.value === "rl") { //RL
                     if (this.isRL() === true) {
@@ -57,12 +57,12 @@ class Select_Prediction{
                     }
                     else {
                         alert("File CSV incompatibile.")
-                      //  this.props.errorAlg("");
+                        return false;
                     }
                 }
             } else {
                 alert("File non inserito.")
-                //this.props.errorAlg("");
+                return false;
             }
         }
     }
