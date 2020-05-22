@@ -3,9 +3,8 @@ node_js:
   - "12.16.2"
 
 cache:
+  - npm
   directories:
-    - my-plugin/node_modules
-    - prediction_tool/node_modules
     - docker_images
 
 services:
