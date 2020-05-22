@@ -8,14 +8,13 @@ describe('Influx init', () => {
             port: 8086,
             host: 'localhost'
         })
-        expect(init).toBe(true);
-        expect(init).not.toBe(false);
+        expect(init).toStrictEqual(true);
+        expect(init).not.toStrictEqual(false);
+
     });
     test('Init throws error', () => {
-        expect(Influx.init({
-            port: 8086,
-            host: 'localhost'
-        })).toThrowError()
+        expect.assertions(1)
+        Influx.init({host: '', port: ''}).catch(e => expect(e).toStrictEqual(Error('Trying to initialize when already initialized')))
     })
 });
 //TODO: add more tests
