@@ -9,14 +9,18 @@ class Influx {
     private static _clientOptions:ClientOptions|null = null
     private static _init = false;
 
-
-    //private _measurement: string | null;
     private readonly _IDB: InfluxDB;
     private _bucket: string;
     private _database: string = '';
     private _retentionPolicy: string = '';
 
-    public static async init(connectTo: { host: string, port: string|number, username?: string, password?: string }) {
+    /**
+     *  @returns true if the connection has been accepted, false otherwise
+     *  @param connectTo object
+     *  @return Promise<boolean>
+     *  @throws {Error} when has already been initialized
+     */
+    public static async init(connectTo: { host: string, port: string|number, username?: string, password?: string }):Promise<boolean> {
         if (!this._init) {
             const {host, port} = connectTo;
             const username = connectTo.username ? connectTo.username : '';
@@ -36,6 +40,11 @@ class Influx {
         } else
             throw new Error('Trying to initialize when already initialized')
     }
+
+    /**
+     * @returns a new instance of the database
+     * @throws {Error} when has not been initialized
+     */
     public static getInstance(){
         if (this._instance !== null)
             return this._instance;
@@ -53,6 +62,10 @@ class Influx {
         this._bucket = `${this._database}/${(this._retentionPolicy)}`
     }
 
+    /**
+     * set the database to be used
+     * @param database
+     */
     public useDatabase(database:string){
         this._database = database
         this._bucket = `${this._database}/${(this._retentionPolicy)}`
@@ -64,6 +77,10 @@ class Influx {
         return this;
     }
 */
+    /**
+     * write a point on the database with the value passed
+     * @param value
+     */
     public write(value: number) {
         //todo: setup org on getWriteApi
         const writeAPI = this._IDB.getWriteApi('', this._bucket)
@@ -77,16 +94,7 @@ class Influx {
             .catch(error => {
                 console.error(error)
             })
-        /*
-        if (this._measurement === null) {
-            throw Error("Measurement not selected")
-        }
 
-        const point:IPoint = {
-            fields: {value: value}
-        }
-
-        return this._IDB.writeMeasurement(this._measurement, [point])*/
     }
 /*
     //TODO: add query method
