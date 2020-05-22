@@ -3,8 +3,8 @@ node_js:
   - "12.16.2"
 
 cache:
-  - npm
   directories:
+    - node_modules
     - docker_images
 
 services:
