@@ -35,21 +35,29 @@ class App extends Component{
         let bol=this.control.trainAlgorithm();
         if(bol===false){
             this.errorAlg("");
+
+
         }
         else {
-            console.log(this.state.data);
-            this.setState({jsonData:"djskf"});
+            this.setState({jsonData:this.control.getJSON()});
 
         }
     }
-    downloadJsonData=()=>{
-        console.log(this.state.jsonData);
-        if(this.state.jsonData!==null)
-        { return <JSONButton/>}
+    JSONData =  () => {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.state.jsonData));
+        element.setAttribute('download', 'predictorsRL.json');
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
 
+    downloadJsonData=()=>{
+        if(this.state.jsonData!==null)
+        { return <JSONButton json={this.JSONData}/>}
     }
     render(){
-        console.log(this.state.data);
     return(
         <div className="mt-4 mb-4 text-center" >
             <Header/>
@@ -58,6 +66,7 @@ class App extends Component{
             <ComboBoxAlgorithm changeValue={this.changeValue} value={this.state.value}/>
             <p/>
             <TrainButton train={this.selectAlgorithm}/>
+            <p/>
             {this.downloadJsonData()}
         </div>
     );

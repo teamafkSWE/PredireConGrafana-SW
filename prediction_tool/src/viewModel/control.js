@@ -10,14 +10,13 @@ class Control{
         this.file = null;
         this.hasFile = null;
         this.json=null;
-        this.RlT= new RLTrain();
+
     }
     setData=(value,data,hasFile)=>{
         this.value = value;
         this.file = data;
         this.hasFile = hasFile;
-        console.log(this.value);
-        console.log(this.file);
+        this.RlT= new RLTrain(this.file);
     }
 
     isSVM=()=>{
@@ -34,7 +33,7 @@ class Control{
     }
 
     trainAlgorithm=()=> {
-        console.log(this.file);
+
         if (this.hasFile === true) {
 
             if (this.value === "svm") {   //SVM
@@ -47,7 +46,9 @@ class Control{
                 }
             } else if (this.value === "rl") { //RL
                 if (this.isRL() === true) {
-                    //return <Reg dataRl={file}/>
+
+                    this.RlT.trainRl();
+                    return true;
                 }
                 else {
                     alert("File CSV incompatibile.")
@@ -63,6 +64,14 @@ class Control{
             return false;
         }
 
+    }
+    getJSON=()=>{
+        if(this.value==="rl"){
+            return this.RlT.getJSONRl();
+        }
+        if(this.value==="svm"){
+
+        }
     }
 }
 

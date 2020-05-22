@@ -1,21 +1,26 @@
-import React,{Component} from "react";
+
 import Regression from "./regression";
 
+class Reg{
+    dataRl;
+    reg;
+    numOfX;
+    coefficients;
+    constructor(dataRl) {
+        this.dataRl=dataRl;
+        this.reg= new Regression({ numX: dataRl[0].length, numY: 1 });
+        this.numOfX=dataRl[0].length-1;
+        this.coefficients=null;
 
-class Reg extends Component{
+    }
 
-    state={
-        dataRl:this.props.dataRl,
-        reg: new Regression({ numX: this.props.dataRl[0].length, numY: 1 }),
-        numOfX: this.props.dataRl[0].length-1
-    };
 
     getColumnsName() {
-        let y = this.props.dataRl[0][this.props.dataRl[0].length-1];
+        let y = this.dataRl[0][this.dataRl[0].length-1];
         let x = new Array();
 
-        for(let i=0; i<this.props.dataRl[0].length-1; i++)
-            x[i] = this.props.dataRl[0][i];//[this.props.dataRl[0]][[this.props.dataRl[0][i]]];
+        for(let i=0; i<this.dataRl[0].length-1; i++)
+            x[i] = this.dataRl[0][i];//[this.props.dataRl[0]][[this.props.dataRl[0][i]]];
         //for(let i=0; i<x.length-1;i++)
         //  x[i] = this.props.dataRl[0];
         return {a: x, b: y};
@@ -25,37 +30,37 @@ class Reg extends Component{
     insert(){
      let data =[];
      let dataY = [];
-        if(this.state.dataRl[0].length>2)
+        if(this.dataRl[0].length>2)
         {
-            for (let i = 0; i < this.props.dataRl.length-1; i++) {
+            for (let i = 0; i < this.dataRl.length-1; i++) {
                 data = [];
                 dataY=[];
                 data.push(1);
 
-                for (let j = 0; j < this.props.dataRl[i].length - 1; j++)
-                    data.push(this.props.dataRl[i+1][j]);
+                for (let j = 0; j < this.dataRl[i].length - 1; j++)
+                    data.push(this.dataRl[i+1][j]);
 
-                dataY.push(this.props.dataRl[i+1][this.props.dataRl[i+1].length-1])
+                dataY.push(this.dataRl[i+1][this.dataRl[i+1].length-1])
                 //console.log(data)
                 //console.log(dataY)
-                this.state.reg.push({ x: data, y: dataY });
+                this.reg.push({ x: data, y: dataY });
             }
         } else {
-            for (let i = 0; i < this.props.dataRl.length-1; i++) {
+            for (let i = 0; i < this.dataRl.length-1; i++) {
                 data = [];
                 dataY=[];
                 data.push(1);
-                data.push(this.props.dataRl[i+1][0]);
-                dataY.push(this.props.dataRl[i+1][this.props.dataRl[i+1].length-1])
+                data.push(this.dataRl[i+1][0]);
+                dataY.push(this.dataRl[i+1][this.dataRl[i+1].length-1])
                 //console.log(data)
                 //console.log(dataY)
-                this.state.reg.push({ x: data, y: dataY });
+                this.reg.push({ x: data, y: dataY });
             }
         }
      }
 
      predictor(){
-        return {a: this.state.numOfX, b: 1};
+        return {a: this.numOfX, b: 1};
      }
 
      getDate(){
@@ -73,35 +78,34 @@ class Reg extends Component{
         let y = "y = ";
         let a = new Array();
         let b = " + b";
-        for(let i=0; i<this.state.numOfX; i++)
+        for(let i=0; i<this.numOfX; i++)
             a[i] = "a" + [i+1] + "x";
         return y+a+b;
      }
 
-     confermaPredizioneRL = () => {
-         let result = this.state.reg.calculateCoefficients();
-         if(result) {
-             alert("Addestramento avvenuto correttamente.")
-             this.confermaPredizioneRL = true;
-             //console.log(result);
-         } else
-             alert("Addestramento non riuscito.")
+     train = () => {
+         this.coefficients = this.reg.calculateCoefficients();
+         if(this.coefficients)
+             return  true;
+         else
+             return false;
      }
 
      JSONData =  () => {
-         if(this.confermaPredizioneRL === true) {
+         if(this.coefficients !== null) {
              const myData = {
                  author: 'TeamAFK',
                  version: '1.0.0',
                  algorithm: 'Linear Regression',
                  date: this.getDate(),
                  predictors: this.getColumnsName(),//this.predictor(),
-                 result: this.state.reg.calculateCoefficients(),
+                 result: this.coefficients,
                  line: this.print_retta()
              }; // I am assuming that "this.state.myData"
              let data = JSON.stringify(myData,null, 1);
+             return data;
 
-             var element = document.createElement('a');
+          /*   let element = document.createElement('a');
              element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
              element.setAttribute('download', 'predictorsRL.json');
 
@@ -110,21 +114,12 @@ class Reg extends Component{
 
              element.click();
 
-             document.body.removeChild(element);
+             document.body.removeChild(element);*/
          } else {
-             alert("Dati non addestrati. Confermare per eseguire l'addestramento.")
+             return false
+            // alert("Dati non addestrati. Confermare per eseguire l'addestramento.")
          }
      }
-    render() {
-        this.insert();
-        return(
-        <div className="mt-4 mb-2">
-            <button onClick={this.confermaPredizioneRL} className="btn btn-dark">Conferma</button>
-            <p/>
-            <p>Scarica il file JSON della RL</p>
-            <button onClick={this.downloadFile} className="btn btn-dark">Download</button>
-        </div>);
-    }
 }
 
 export default Reg;
