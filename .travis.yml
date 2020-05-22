@@ -32,6 +32,7 @@ before_script:
 
 script:
   - cd my-plugin
+  - sleep 30
   - npm run test
   - cd ../prediction_tool
   - npm run test
