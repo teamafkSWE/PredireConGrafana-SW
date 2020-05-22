@@ -28,15 +28,14 @@ class App extends Component{
     }
     handleForce = (data, fileInfo) => {
 
-        this.setState({data:data, name: fileInfo.name, hasFile:true,value:''});
+        this.setState({data:data, name: fileInfo.name, hasFile:true,value:'',jsonData:null});
     };
     selectAlgorithm=()=>{
         this.control.setData(this.state.value,this.state.data,this.state.hasFile)
         let bol=this.control.trainAlgorithm();
         if(bol===false){
             this.errorAlg("");
-
-
+            this.setState({jsonData:null});
         }
         else {
             this.setState({jsonData:this.control.getJSON()});
