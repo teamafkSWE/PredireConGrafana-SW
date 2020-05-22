@@ -22,7 +22,6 @@ class Control{
     isSVM=()=>{
         if (this.file[0][this.file[0].length - 1] === "label")
             return true;
-
         return false;
     }
 

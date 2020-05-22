@@ -15,7 +15,6 @@ class RLTrain{
         }
     }
     getJSONRl=()=>{
-
         return this.reg.JSONData();
     }
 }

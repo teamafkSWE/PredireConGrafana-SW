@@ -7,6 +7,7 @@ import ComboBoxAlgorithm from "./uiComponents/ComboBoxAlgorithm"
 import Control from "../viewModel/control";
 import TrainButton from "./uiComponents/TrainButton";
 import JSONButton from "./uiComponents/JSONButton";
+import Chart from "./uiComponents/chart";
 class App extends Component{
   control=null;
     constructor(props) {
@@ -67,6 +68,7 @@ class App extends Component{
             <TrainButton train={this.selectAlgorithm}/>
             <p/>
             {this.downloadJsonData()}
+            <Chart data={this.state.data} hasFile={this.state.hasFile}/>
         </div>
     );
   }
