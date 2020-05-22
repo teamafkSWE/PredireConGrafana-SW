@@ -20,7 +20,7 @@ before_cache:
   - docker save -o docker_images/images.tar $(docker images -a -q)
 
 install:
-  - curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
+  - wget -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
 
 before_script:
   - cd my-plugin
