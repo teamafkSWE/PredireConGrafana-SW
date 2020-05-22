@@ -2,6 +2,11 @@ language: node_js
 node_js:
   - "12.16.2"
 
+cache:
+  directories:
+    - my-plugin/node_modules
+    - prediction_tool/node_modules
+
 services:
   - docker
 
