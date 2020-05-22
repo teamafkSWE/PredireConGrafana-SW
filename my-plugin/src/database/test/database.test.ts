@@ -1,4 +1,6 @@
 import Influx from '../influx'
+import Axios from "axios";
+
 
 test('Influx no init', () => {
     expect(Influx.getInstance).toThrowError()
@@ -38,8 +40,17 @@ describe('Influx operations', () => {
         expect(() => instance.write(0)).toThrowError(Error('No measurement setted.'))
     })
     test('set measurement',() =>{
-        const measurement = 'cpu'
+        const measurement = 'test'
         instance.setMeasurement(measurement)
         expect(instance.getMeasurement).toStrictEqual(measurement)
     })
+    test('write - no error', async () =>{
+        const value = Math.random()
+        await instance.write(value)
+        const response = await Axios.get('http://localhost:8086/query?db=mydb&q=select%20value%20from%20test%20order%20by%20time%20desc')
+        const queryedValue = response.data.results[0].series[0].values[0][1]
+        expect(queryedValue).toStrictEqual(value)
+    })
+    //todo:
+    test.todo('testing query')
 })

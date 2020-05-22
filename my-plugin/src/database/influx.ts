@@ -135,13 +135,7 @@ class Influx {
             //.tag('host', 'host1')
             .floatField('value', value)
         writeAPI.writePoint(point)
-        writeAPI
-            .close()
-            .then(() => console.log('FINISHED'))
-            .catch(error => {
-                console.error(error)
-            })
-
+        writeAPI.close()
     }
 /*
     //TODO: add query method
