@@ -2,14 +2,20 @@ import Influx from '../influx'
 import {enableFetchMocks} from 'jest-fetch-mock'
 
 enableFetchMocks()
-
-test('Influx init', async () => {
-    const init = await Influx.init({
-        port: 8086,
-        host: 'localhost'
+describe('Influx init', () => {
+    test('Init no problem', async () => {
+        const init = await Influx.init({
+            port: 8086,
+            host: 'localhost'
+        })
+        expect(init).toBe(true);
+        expect(init).not.toBe(false);
+    });
+    test('Init throws error', () => {
+        expect(Influx.init({
+            port: 8086,
+            host: 'localhost'
+        })).toThrowError()
     })
-    expect(init).toBe(true);
-    expect(init).not.toBe(false);
 });
-
 //TODO: add more tests
