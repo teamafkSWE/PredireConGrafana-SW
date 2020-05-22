@@ -14,11 +14,11 @@
     "@grafana/data": "next",
     "@grafana/toolkit": "^6.7.2",
     "@grafana/ui": "next",
-    "jest-fetch-mock": "^3.0.3",
     "webpack": "^4.43.0"
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.3.0",
+    "axios": "^0.19.2",
     "react-files": "^2.4.8"
   }
 }

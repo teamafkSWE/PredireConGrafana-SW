@@ -1,7 +1,9 @@
 import Influx from '../influx'
-import {enableFetchMocks} from 'jest-fetch-mock'
 
-enableFetchMocks()
+test('Influx no init', () => {
+    expect(Influx.getInstance).toThrowError()
+})
+
 describe('Influx init', () => {
     test('Init no problem', async () => {
         const init = await Influx.init({
@@ -17,4 +19,27 @@ describe('Influx init', () => {
         Influx.init({host: '', port: ''}).catch(e => expect(e).toStrictEqual(Error('Trying to initialize when already initialized')))
     })
 });
-//TODO: add more tests
+
+describe('Influx operations', () => {
+    let instance: Influx;
+    test('get instance', () => {
+        expect(Influx.getInstance).not.toThrowError()
+    })
+    test('write - database Error', () => {
+        instance = Influx.getInstance()
+        expect(() => instance.write(0)).toThrowError(Error('No database setted.'))
+    })
+    test('set database',()=>{
+        const database = 'mydb';
+        instance.useDatabase(database)
+        expect(instance.getDatabase).toStrictEqual(database)
+    })
+    test('write - measurement Error', () => {
+        expect(() => instance.write(0)).toThrowError(Error('No measurement setted.'))
+    })
+    test('set measurement',() =>{
+        const measurement = 'cpu'
+        instance.setMeasurement(measurement)
+        expect(instance.getMeasurement).toStrictEqual(measurement)
+    })
+})
