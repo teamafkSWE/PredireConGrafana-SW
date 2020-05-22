@@ -1,11 +1,27 @@
 language: node_js
 node_js:
   - "12.16.2"
-  
-before_script: 
-  - cd prediction_tool
+
+cache:
+  directories:
+    - my-plugin/node_modules
+    - prediction_tool/node_modules
+
+services:
+  - docker
+
+before_install:
+  - docker run -d --name influxdb -p 8086:8086 -v influxdb:/var/lib/influxdb influxdb
+
+before_script:
+  - cd my-plugin
   - npm install
-  - react-scripts test
+  - cd ../prediction_tool
+  - npm install
+  - cd ..
 
-
-#TODO: sistemare scripts
+script:
+  - cd my-plugin
+  - npm run test
+  - cd ../prediction_tool
+  - npm run test

@@ -5,6 +5,6 @@ import '@testing-library/jest-dom/extend-expect';
 
 it('Prediction Tool', () => {
     const { getByText } = render(<Header/>);
-    const linkElement = getByText(/Prediction Tool/i);
+    const linkElement = getByText(/Training Tool/i);
     expect(linkElement).toBeInTheDocument();
 });
