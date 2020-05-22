@@ -46,10 +46,15 @@ describe('Influx operations', () => {
     })
     test('write - no error', async () =>{
         const value = Math.random()
-        await instance.write(value)
+        instance.write(value)
         const response = await Axios.get('http://localhost:8086/query?db=mydb&q=select%20value%20from%20test%20order%20by%20time%20desc%20limit%201')
-        const queryedValue = response.data.results[0].series[0].values[0][1]
-        expect(queryedValue).toStrictEqual(value)
+        const result = response.data.results[0]
+        let resValue;
+        if (result.series instanceof Array)
+            resValue = result.series[0].values[0][1]
+        else
+            resValue = result.series.values[0][1]
+        expect(resValue).toStrictEqual(value)
     })
     //todo:
     test.todo('testing query')
