@@ -14,7 +14,7 @@ services:
 
 before_install:
   - docker load -i docker_images/images.tar || true
-  - docker run -d --name influxdb -p 8086:8086 -v influxdb:/var/lib/influxdb influxdb
+  - docker run -d --name influxdb -p 8086:8086 -v influxdb:/var/lib/influxdb influxdb:1.8
 
 before_cache:
   - docker save -o docker_images/images.tar $(docker images -a -q)
