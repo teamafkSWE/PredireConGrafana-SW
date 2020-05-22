@@ -1,13 +1,15 @@
 import Influx from '../influx'
+import {enableFetchMocks} from 'jest-fetch-mock'
 
+enableFetchMocks()
 
-test('Influx connection', async () => {
-    const db = await Influx.getInstance({
-        database: "mydb",
-        host: "localhost",
-        port: "8086"
+test('Influx init', async () => {
+    const init = await Influx.init({
+        port: 8086,
+        host: 'localhost'
     })
-    expect(db).not.toBe(false);
+    expect(init).toBe(true);
+    expect(init).not.toBe(false);
 });
 
 //TODO: add more tests
