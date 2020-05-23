@@ -68,7 +68,7 @@ class App extends Component{
             <TrainButton train={this.selectAlgorithm}/>
             <p/>
             {this.downloadJsonData()}
-            <Chart data={this.state.data} hasFile={this.state.hasFile}/>
+            <Chart data={this.state.data} hasFile={this.state.hasFile} json={this.state.jsonData}/>
         </div>
     );
   }

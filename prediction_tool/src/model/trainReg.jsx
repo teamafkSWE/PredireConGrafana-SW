@@ -41,8 +41,6 @@ class Reg{
                     data.push(this.dataRl[i+1][j]);
 
                 dataY.push(this.dataRl[i+1][this.dataRl[i+1].length-1])
-                //console.log(data)
-                //console.log(dataY)
                 this.reg.push({ x: data, y: dataY });
             }
         } else {
@@ -52,15 +50,9 @@ class Reg{
                 data.push(1);
                 data.push(this.dataRl[i+1][0]);
                 dataY.push(this.dataRl[i+1][this.dataRl[i+1].length-1])
-                //console.log(data)
-                //console.log(dataY)
                 this.reg.push({ x: data, y: dataY });
             }
         }
-     }
-
-     predictor(){
-        return {a: this.numOfX, b: 1};
      }
 
      getDate(){
@@ -105,20 +97,9 @@ class Reg{
              let data = JSON.stringify(myData,null, 1);
              return data;
 
-          /*   let element = document.createElement('a');
-             element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
-             element.setAttribute('download', 'predictorsRL.json');
-
-             element.style.display = 'none';
-             document.body.appendChild(element);
-
-             element.click();
-
-             document.body.removeChild(element);*/
-         } else {
+         } else
              return false
-            // alert("Dati non addestrati. Confermare per eseguire l'addestramento.")
-         }
+
      }
 }
 
