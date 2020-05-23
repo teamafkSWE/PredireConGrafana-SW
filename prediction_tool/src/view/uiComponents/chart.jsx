@@ -71,7 +71,8 @@ class Chart extends Component{
                         data: [{x:highest,y:FmaxPoint+coefficients.result.b},
                             {x:lowest,y:FminPoint+coefficients.result.b}], // Specify the data values array
                         backgroundColor: this.dynamicColors(), // Add custom color background (Points and Fill)
-                        borderColor:"blue"
+                        borderColor:"yellow",
+                        pointRadius:0
                     });
                     lowest = Number.POSITIVE_INFINITY;
                     highest = Number.NEGATIVE_INFINITY;
@@ -89,9 +90,11 @@ class Chart extends Component{
                 if(propData[0].length===2)
                 {
                     let setData = {
+
                         label: propData[0][0], // Name the series
                         data: [], // Specify the data values array
-                        backgroundColor: []
+                        backgroundColor: [],
+
                     }
 
                     for (let j = 1; j < propData.length; j++) {
@@ -113,11 +116,12 @@ class Chart extends Component{
                         let setData = {
                             label: propData[0][i], // Name the series
                             data: [], // Specify the data values array
-                            backgroundColor: []
+                            backgroundColor: [],
+
                         }
 
                         for (let j = 1; j < propData.length; j++) {
-                       
+
                             if (propData[j][propData[0].length - 1] === "1")
                                 setData.backgroundColor.push("green");
 
