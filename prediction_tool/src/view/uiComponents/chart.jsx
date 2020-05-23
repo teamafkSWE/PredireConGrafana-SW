@@ -43,22 +43,48 @@ class Chart extends Component{
                 this.state.options.legend.display=true;
             }
             if(propData[0][propData[0].length - 1] === "label") {
-                for (let i = 0; i < propData[0].length - 2; i++) {
+
+                if(propData[0].length===2)
+                {
                     let setData = {
+                        label: propData[0][0], // Name the series
                         data: [], // Specify the data values array
                         backgroundColor: []
-                        }
+                    }
+
                     for (let j = 1; j < propData.length; j++) {
                         if(propData[j][propData[0].length - 1]==="1")
                             setData.backgroundColor.push("green");
 
                         else
                             setData.backgroundColor.push("red");
-                        setData.data.push({x: propData[j][i], y: propData[j][propData[0].length - 2]});
+
+                        setData.data.push({x: propData[j][0], y: 0});
                     }
                     this.state.data.datasets.push(setData);
                 }
-                this.state.options.legend.display=false;
+                else {
+                    for (let i = 0; i < propData[0].length - 2; i++) {
+
+                        let setData = {
+                            label: propData[0][i], // Name the series
+                            data: [], // Specify the data values array
+                            backgroundColor: []
+                        }
+
+                        for (let j = 1; j < propData.length; j++) {
+                            if (propData[j][propData[0].length - 1] === "1")
+                                setData.backgroundColor.push("green");
+
+                            else
+                                setData.backgroundColor.push("red");
+
+                            setData.data.push({x: propData[j][i], y: propData[j][propData[0].length - 2]});
+                        }
+                        this.state.data.datasets.push(setData);
+                    }
+                    this.state.options.legend.display = false;
+                }
             }
         }
     }

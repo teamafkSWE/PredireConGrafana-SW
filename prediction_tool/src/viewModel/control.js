@@ -16,7 +16,8 @@ class Control{
         this.value = value;
         this.file = data;
         this.hasFile = hasFile;
-        this.RlT= new RLTrain(this.file);
+        if(this.hasFile)
+            this.RlT= new RLTrain(this.file);
     }
 
     isSVM=()=>{
