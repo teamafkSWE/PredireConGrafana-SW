@@ -1,9 +1,7 @@
 import Influx from '../influx'
 import Axios from "axios";
 
-function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 
 test('Influx no init', () => {
     expect(Influx.getInstance).toThrowError()
@@ -34,6 +32,9 @@ describe('Influx operations', () => {
         instance = Influx.getInstance()
         expect(() => instance.write(0)).toThrowError(Error('No database setted.'))
     })
+    test('query - database Error', () => {
+        expect(() => instance.query()).toThrowError(Error('No database setted.'))
+    })
     test('set database', () => {
         const database = 'mydb';
         instance.useDatabase(database)
@@ -41,6 +42,9 @@ describe('Influx operations', () => {
     })
     test('write - measurement Error', () => {
         expect(() => instance.write(0)).toThrowError(Error('No measurement setted.'))
+    })
+    test('query - measurement Error', () => {
+        expect(() => instance.query()).toThrowError(Error('No measurement setted.'))
     })
     test('set measurement', () => {
         const measurement = 'test'
@@ -50,17 +54,29 @@ describe('Influx operations', () => {
     test('write - no error', (done) => {
         expect.assertions(1)
         const value = Math.random()
-        instance.write(value)
-        sleep(3000).then(() => {
+        instance.write(value).then(() => {
             Axios.get('http://localhost:8086/query?db=mydb&q=select%20*%20from%20test%20order%20by%20time%20desc')
                 .then((response) => {
-                    console.log('time', response.data)
                     const result = response.data.results[0].series[0].values[0][1]
                     expect(result).toStrictEqual(value)
                     done()
                 })
         })
     })
-    //todo:
-    test.todo('testing query')
+    /* todo:
+    test('query - no error', () => {
+
+        const value = Math.random();
+
+        expect( ()=> {
+            instance.query({
+                complete: (rows) => {
+                    console.log(rows)
+                },
+                error: (error) => {
+                    throw error
+                }
+            }, '')
+        }).not.toThrowError()
+    })*/
 })
