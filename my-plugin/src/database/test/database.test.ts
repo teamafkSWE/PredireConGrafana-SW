@@ -1,6 +1,9 @@
 import Influx from '../influx'
 import Axios from "axios";
 
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 test('Influx no init', () => {
     expect(Influx.getInstance).toThrowError()
@@ -31,7 +34,7 @@ describe('Influx operations', () => {
         instance = Influx.getInstance()
         expect(() => instance.write(0)).toThrowError(Error('No database setted.'))
     })
-    test('set database',()=>{
+    test('set database', () => {
         const database = 'mydb';
         instance.useDatabase(database)
         expect(instance.getDatabase).toStrictEqual(database)
@@ -39,19 +42,24 @@ describe('Influx operations', () => {
     test('write - measurement Error', () => {
         expect(() => instance.write(0)).toThrowError(Error('No measurement setted.'))
     })
-    test('set measurement',() =>{
+    test('set measurement', () => {
         const measurement = 'test'
         instance.setMeasurement(measurement)
         expect(instance.getMeasurement).toStrictEqual(measurement)
     })
-    test('write - no error', async () =>{
+    test('write - no error', (done) => {
         expect.assertions(1)
         const value = Math.random()
         instance.write(value)
-        const response = await Axios.get('http://localhost:8086/query?db=mydb&q=select%20*%20from%20test') //%20order%20by%20time%20desc
-        console.log(response.data)
-        const result = response.data.results[0].series[0].values[0][1]
-        expect(result).toStrictEqual(value)
+        sleep(3000).then(() => {
+            Axios.get('http://localhost:8086/query?db=mydb&q=select%20*%20from%20test%20order%20by%20time%20desc')
+                .then((response) => {
+                    console.log('time', response.data)
+                    const result = response.data.results[0].series[0].values[0][1]
+                    expect(result).toStrictEqual(value)
+                    done()
+                })
+        })
     })
     //todo:
     test.todo('testing query')
