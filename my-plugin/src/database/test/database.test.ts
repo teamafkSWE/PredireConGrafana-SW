@@ -48,7 +48,7 @@ describe('Influx operations', () => {
         expect.assertions(1)
         const value = Math.random()
         instance.write(value)
-        const response = await Axios.get('http://localhost:8086/query?db=mydb&q=select%20*%20from%20test%20order%20by%20time%20desc')
+        const response = await Axios.get('http://localhost:8086/query?db=mydb&q=select%20*%20from%20test') //%20order%20by%20time%20desc
         console.log(response.data)
         const result = response.data.results[0].series[0].values[0][1]
         expect(result).toStrictEqual(value)
