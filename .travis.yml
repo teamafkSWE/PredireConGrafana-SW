@@ -22,6 +22,8 @@ before_cache:
 
 install:
   - curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
+  - curl -i -XPOST http://localhost:8086/write?db=mydb --data-urlencode "insert test value=1000"
+  - curl -i -XPOST http://localhost:8086/query --data-urlencode "q=select * from test"
 
 before_script:
   - cd my-plugin
