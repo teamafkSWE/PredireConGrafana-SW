@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {HorizontalGroup, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
-import InsJson from "../inputJson";
+import InsJson from "../input_json";
 
 interface insJson {
     setData:(arg0:any,arg1:any,arg2:any,arg3:any)=>void

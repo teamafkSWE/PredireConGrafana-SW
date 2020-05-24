@@ -1,5 +1,5 @@
 import {PanelPlugin} from '@grafana/data';
-import Editor from './view/EditorPanel'
+import Editor from './view/editor'
 import Controller from "./controller/controller";
 import Panel from "./view/panel";
 

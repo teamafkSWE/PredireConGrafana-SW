@@ -4,11 +4,11 @@ import {PanelEditorProps} from "@grafana/data";
 import {Tab, TabContent, TabsBar} from "@grafana/ui";
 //import InsJson from "./components/inputJson";
 //import InserimentoDB from "./components/db_tab";
-import {UseState} from "./UseState";
-import CaricamentoJsonView from "./components/views/caricamentoJsonView";
-import CollegamentoView from "./components/views/collegamentoView";
-import ListaCollegamentiView from "./components/views/listaCollegamentiView";
-import PrevisioneView from "./components/views/previsioneView";
+import {UseState} from "./use_state";
+import CaricamentoJsonView from "./components/views/caricamento_json_view";
+import CollegamentoView from "./components/views/collegamento_view";
+import ListaCollegamentiView from "./components/views/lista_collegamenti_view";
+import PrevisioneView from "./components/views/previsione_view";
 import Controller from "../controller/controller";
 import {Options} from "../types";
 
