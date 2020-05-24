@@ -2,20 +2,18 @@
 import React, {PureComponent} from 'react';
 import {PanelEditorProps} from "@grafana/data";
 import {Tab, TabContent, TabsBar} from "@grafana/ui";
-
 //import InsJson from "./components/inputJson";
 //import InserimentoDB from "./components/db_tab";
 import {UseState} from "./UseState";
-
 import CaricamentoJsonView from "./components/views/caricamentoJsonView";
 import CollegamentoView from "./components/views/collegamentoView";
 import ListaCollegamentiView from "./components/views/listaCollegamentiView";
 import PrevisioneView from "./components/views/previsioneView";
+import Controller from "../controller/controller";
+import {Options} from "../types";
 
 
-interface MyPanelOptions {
-    bitText:string;
-}
+
 
 const tabs = [
     { label: 'Caricamento JSON', key: 'first', active: true },
@@ -28,7 +26,8 @@ const tabs = [
 
 
 
-class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
+class Editor extends PureComponent<PanelEditorProps<Options>>{
+    private _controller: Controller = this.props.options.controller;
     state = {
         predictors: [],
         nameAlgorithm:null,
@@ -89,4 +88,4 @@ class MyPanelEditor extends PureComponent<PanelEditorProps<MyPanelOptions>>{
     }
 }
 
-export default MyPanelEditor;
+export default Editor;

@@ -1,4 +1,5 @@
-export interface ExampleAppSettings {
-  customText?: string;
-  customCheckbox?: boolean;
+import Controller from "./controller/controller";
+
+export interface Options {
+  controller: Controller
 }
