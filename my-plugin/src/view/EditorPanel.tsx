@@ -56,7 +56,7 @@ class Editor extends PureComponent<PanelEditorProps<Options>>{
 
 
     render() {
-
+        this._controller.sayHello()
         return(
             <UseState initialState={tabs}>
                 {(state, updateState) => {

@@ -14,7 +14,7 @@ export class UseState<T> extends React.Component<StateHolderProps<T>, { value: T
             initialState: props.initialState, // To enable control from knobs
         };
     }
-    // @ts-ignore
+
     static getDerivedStateFromProps(props: StateHolderProps<{}>, state: { value: any; initialState: any }) {
         if (props.initialState !== state.initialState) {
             return {
