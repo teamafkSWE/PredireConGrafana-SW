@@ -54,7 +54,6 @@ class Reg{
             }
         }
      }
-
      getDate(){
         let today = new Date();
         if(today.getMonth() < 10 && today.getDate() < 10)
@@ -82,7 +81,10 @@ class Reg{
          else
              return false;
      }
-
+     getCoefficients=()=>{
+         console.log(this.coefficients)
+        return this.coefficients;
+     }
      JSONData =  () => {
          if(this.coefficients !== null) {
              const myData = {

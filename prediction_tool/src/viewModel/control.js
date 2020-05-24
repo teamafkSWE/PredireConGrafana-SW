@@ -31,7 +31,14 @@ class Control{
             return true;
         return false;
     }
-
+    getCoefficients=()=>{
+        if(this.value==="rl"){
+            return this.RlT.getCoefficientsRL();
+        }
+        if(this.value==="svm"){
+            return 0;
+        }
+    }
     trainAlgorithm=()=> {
 
         if (this.hasFile === true) {

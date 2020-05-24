@@ -14,6 +14,10 @@ class RLTrain{
             alert("Addestramento non riuscito.")
         }
     }
+    getCoefficientsRL=()=>{
+
+       return  this.reg.getCoefficients();
+    }
     getJSONRl=()=>{
         return this.reg.JSONData();
     }
