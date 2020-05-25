@@ -46,7 +46,10 @@ class App extends Component{
     JSONData =  () => {
         let element = document.createElement('a');
         element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.state.jsonData));
-        element.setAttribute('download', 'predictorsRL.json');
+        if(this.state.value==="rl")
+            element.setAttribute('download', 'predictorsRL.json');
+        if(this.state.value==="svm")
+            element.setAttribute('download', 'predictorsSVM.json');
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
@@ -68,7 +71,7 @@ class App extends Component{
             <TrainButton train={this.selectAlgorithm}/>
             <p/>
             {this.downloadJsonData()}
-            <Chart data={this.state.data} hasFile={this.state.hasFile} json={this.state.jsonData} coefficients={this.control.getCoefficients()}/>
+            <Chart data={this.state.data} hasFile={this.state.hasFile} value={this.state.value} json={this.state.jsonData} coefficients={this.control.getCoefficients()}/>
         </div>
     );
   }

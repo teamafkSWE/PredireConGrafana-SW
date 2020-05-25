@@ -1,15 +1,18 @@
 import RLTrain from "./RLTrain"
+import SVMTrain from "./SVMTrain"
 class Control{
     value;
     file;
     hasFile;
     json;
     RlT;
+    SVMT;
     constructor() {
         this.value = null;
         this.file = null;
         this.hasFile = null;
         this.json=null;
+
 
     }
     setData=(value,data,hasFile)=>{
@@ -17,7 +20,12 @@ class Control{
         this.file = data;
         this.hasFile = hasFile;
         if(this.hasFile)
-            this.RlT= new RLTrain(this.file);
+        {
+            if(this.isSVM)
+                this.SVMT=new SVMTrain(this.file);
+            if(this.isRL)
+                this.RlT= new RLTrain(this.file);
+        }
     }
 
     isSVM=()=>{
@@ -45,7 +53,8 @@ class Control{
 
             if (this.value === "svm") {   //SVM
                 if (this.isSVM() === true){
-                    //return <SVM dataSVM={file}/>
+                    this.SVMT.trainSVM();
+                    return true;
                 }
                 else {
                     alert("File CSV incompatibile.")
@@ -77,7 +86,7 @@ class Control{
             return this.RlT.getJSONRl();
         }
         if(this.value==="svm"){
-
+            return this.SVMT.getJSONSVM();
         }
     }
 }

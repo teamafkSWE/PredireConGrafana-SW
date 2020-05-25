@@ -10,7 +10,31 @@ class Chart extends Component{
 
         },
         options:{
+            /*tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data,position) {
 
+                        let x = tooltipItem.datasetIndex.xLabel;
+                        let y =data.datasets[tooltipItem.datasetIndex].data.y;
+
+                        let label ="";
+                        console.log({x:x,y:y})
+                        for(var i = 0; i < data.datasets[tooltipItem.datasetIndex].data.length; i += 1) {
+
+                            console.log(data.datasets[tooltipItem.datasetIndex].data[i])
+                            if(data.datasets[tooltipItem.datasetIndex].data[i].x=== x &&
+                               data.datasets[tooltipItem.datasetIndex].data[i].x=== y ) {
+                                console.log(i)
+                                console.log(data.datasets[tooltipItem.datasetIndex].backgroundColor);
+                                label=x+ ','+y+' (Class: '+data.datasets[tooltipItem.datasetIndex].backgroundColor[i]+')';
+                            }
+                        }
+
+
+                        return label;
+                    }
+                }
+            },*/
             legend: {
                 display: false,
             }
@@ -93,15 +117,20 @@ class Chart extends Component{
         else {
             for (let i = 0; i < propData[0].length - 2; i++) {
                 let setData = {
-                    label: propData[0][i], // Name the series
+                    label: propData[0][0], // Name the series
                     data: [], // Specify the data values array
                     backgroundColor: [],
+
                 }
                 for (let j = 1; j < propData.length; j++) {
                     if (propData[j][propData[0].length - 1] === "1")
-                        setData.backgroundColor.push("green");
-                    else
-                        setData.backgroundColor.push("red");
+                    {
+
+                        //setData.label.push(propData[j][propData[0].length - 1]);
+                        setData.backgroundColor.push("green");}
+                    else{
+                        //setData.label.push(propData[j][propData[0].length - 1]);
+                        setData.backgroundColor.push("red");}
                     setData.data.push({x: propData[j][i], y: propData[j][propData[0].length - 2]});
                 }
                 this.state.data.datasets.push(setData);
@@ -110,7 +139,7 @@ class Chart extends Component{
         }
     }
     formatData=()=> {
-        if (this.props.hasFile !== false && this.props.json !== null) {
+        if (this.props.json !== null) {
             this.state.data.datasets = [];
             let propData = this.props.data;
             if (propData[0][propData[0].length - 1] === "y")
@@ -118,6 +147,8 @@ class Chart extends Component{
             else if (propData[0][propData[0].length - 1] === "label")
                 this.SVMChart(propData);
         }
+        else
+            this.state.data.datasets = [];
     }
     render() {
         this.formatData();
