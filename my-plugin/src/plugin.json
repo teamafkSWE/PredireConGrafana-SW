@@ -1,7 +1,7 @@
 {
   "type": "panel",
   "name": "Predire in Grafana",
-  "id": "teamafkswe-pg-app",
+  "id": "teamafk-pg",
   "dataFormats": [
     "time_series"
   ],
