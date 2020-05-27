@@ -1,25 +1,23 @@
 import Reg from "../model/trainReg";
-class RLTrain{
-    reg;
+import Train from "./interfaceTrain";
+class RLTrain extends Train {
+    algorithm=null;
     constructor(dataRl) {
-        this.reg=new Reg(dataRl);
+        super();
+        this.algorithm=new Reg(dataRl);
     }
-    trainRl=()=>{
-        this.reg.insert();
-
-        if(this.reg.train()){
-            alert("Addestramento avvenuto correttamente.")
-        }
-        else {
-            alert("Addestramento non riuscito.")
-        }
+    train =()=> {
+        this.algorithm.insert();
+        if(this.algorithm.trainRl())
+            alert("Addestramento avvenuto correttamente.");
+        else
+            alert("Addestramento non riuscito.");
     }
-    getCoefficientsRL=()=>{
-
-       return  this.reg.getCoefficients();
+    getCoefficients =()=> {
+       return  this.algorithm.getCoefficientsRl();
     }
-    getJSONRl=()=>{
-        return this.reg.JSONData();
+    getJSON =()=> {
+        return this.algorithm.JSONData();
     }
 }
 

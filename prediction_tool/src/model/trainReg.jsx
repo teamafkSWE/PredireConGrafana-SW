@@ -1,7 +1,7 @@
 
 import Regression from "./regression";
 
-class Reg{
+class Reg {
     dataRl;
     reg;
     numOfX;
@@ -11,23 +11,18 @@ class Reg{
         this.reg= new Regression({ numX: dataRl[0].length, numY: 1 });
         this.numOfX=dataRl[0].length-1;
         this.coefficients=null;
-
     }
 
-
-    getColumnsName() {
+    getColumnsName =()=> {
         let y = this.dataRl[0][this.dataRl[0].length-1];
-        let x = new Array();
-
+        let x = [];
         for(let i=0; i<this.dataRl[0].length-1; i++)
             x[i] = this.dataRl[0][i];//[this.props.dataRl[0]][[this.props.dataRl[0][i]]];
         //for(let i=0; i<x.length-1;i++)
         //  x[i] = this.props.dataRl[0];
         return {a: x, b: y};
     }
-
-
-    insert(){
+    insert =()=> {
      let data =[];
      let dataY = [];
         if(this.dataRl[0].length>2)
@@ -36,10 +31,8 @@ class Reg{
                 data = [];
                 dataY=[];
                 data.push(1);
-
                 for (let j = 0; j < this.dataRl[i].length - 1; j++)
                     data.push(this.dataRl[i+1][j]);
-
                 dataY.push(this.dataRl[i+1][this.dataRl[i+1].length-1])
                 this.reg.push({ x: data, y: dataY });
             }
@@ -54,7 +47,7 @@ class Reg{
             }
         }
      }
-     getDate(){
+     getDate =()=> {
         let today = new Date();
         if(today.getMonth() < 10 && today.getDate() < 10)
             today = today.getFullYear() + "/" + "0" + (today.getUTCMonth()+1) + "/" + "0" + today.getDate();
@@ -65,27 +58,26 @@ class Reg{
         return today;
      }
 
-     print_retta(){
+     print_retta =()=> {
         let y = "y = ";
-        let a = new Array();
+        let a = [];
         let b = " + b";
         for(let i=0; i<this.numOfX; i++)
             a[i] = "a" + [i+1] + "x";
         return y+a+b;
      }
 
-     train = () => {
+     trainRl =()=> {
          this.coefficients = this.reg.calculateCoefficients();
          if(this.coefficients)
              return  true;
          else
              return false;
      }
-     getCoefficients=()=>{
-         console.log(this.coefficients)
+     getCoefficientsRl =()=> {
         return this.coefficients;
      }
-     JSONData =  () => {
+     JSONData =()=> {
          if(this.coefficients !== null) {
              const myData = {
                  author: 'TeamAFK',
@@ -98,11 +90,8 @@ class Reg{
              }; // I am assuming that "this.state.myData"
              let data = JSON.stringify(myData,null, 1);
              return data;
-
          } else
              return false
-
      }
 }
-
 export default Reg;

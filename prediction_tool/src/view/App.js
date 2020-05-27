@@ -21,29 +21,27 @@ class App extends Component{
         }
          this.control= new Control();
     }
-    changeValue=(event)=>{
+    changeValue =(event)=> {
         this.setState({value: event.target.value});
     }
-    errorAlg=(value)=>{
+    errorAlg =(value)=> {
         this.setState({value:value});
     }
-    handleForce = (data, fileInfo) => {
-
+    handleForce =(data, fileInfo)=> {
         this.setState({data:data, name: fileInfo.name, hasFile:true,value:'',jsonData:null});
     };
-    selectAlgorithm=()=>{
+    selectAlgorithm =()=> {
         this.control.setData(this.state.value,this.state.data,this.state.hasFile)
-        let bol=this.control.trainAlgorithm();
+        let bol=this.control.controlTrainAlgorithm();
         if(bol===false){
             this.errorAlg("");
             this.setState({jsonData:null});
         }
         else {
-            this.setState({jsonData:this.control.getJSON()});
-
+            this.setState({jsonData:this.control.controlJSON()});
         }
     }
-    JSONData =  () => {
+    JSONData =()=> {
         let element = document.createElement('a');
         element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.state.jsonData));
         if(this.state.value==="rl")
@@ -56,9 +54,9 @@ class App extends Component{
         document.body.removeChild(element);
     }
 
-    downloadJsonData=()=>{
+    downloadJsonData =()=> {
         if(this.state.jsonData!==null)
-        { return <JSONButton json={this.JSONData}/>}
+        return <JSONButton json={this.JSONData}/>
     }
     render(){
     return(
@@ -71,10 +69,9 @@ class App extends Component{
             <TrainButton train={this.selectAlgorithm}/>
             <p/>
             {this.downloadJsonData()}
-            <Chart data={this.state.data} hasFile={this.state.hasFile} value={this.state.value} json={this.state.jsonData} coefficients={this.control.getCoefficients()}/>
+            <Chart data={this.state.data} hasFile={this.state.hasFile} value={this.state.value} json={this.state.jsonData}/>
         </div>
     );
   }
 }
-
 export default App;

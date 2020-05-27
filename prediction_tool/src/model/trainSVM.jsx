@@ -12,12 +12,10 @@ class SupportVM {
         this.dataSVM=dataSVM;
         this.svm = new svmjs.SVM();
         this.weights=null;
-
     }
-    getColumnsName() {
+    getColumnsName =()=> {
         let label = this.dataSVM[0][this.dataSVM[0].length-1];
-        let x = new Array();
-
+        let x = [];
         for(let i=0; i<this.dataSVM[0].length-1; i++)
             x[i] = this.dataSVM[0][i];//[this.props.dataRl[0]][[this.props.dataRl[0][i]]];
         //for(let i=0; i<x.length-1;i++)
@@ -25,7 +23,7 @@ class SupportVM {
         return {w: x, b: label};
     }
 
-    getDate(){
+    getDate =()=> {
         let today = new Date();
         if(today.getMonth() < 10 && today.getDate() < 10)
             today = today.getFullYear() + "/" + "0" + (today.getUTCMonth()+1) + "/" + "0" + today.getDate();
@@ -36,14 +34,12 @@ class SupportVM {
         return today;
     }
 
-    trainSvm = () => {
+    trainSvm =()=> {
         let dataSVM=this.dataSVM;
-
         let data = [this.dataSVM.length-1];
         for(let i=0; i<this.dataSVM.length-1; i++) {
             data[i] = new Array(dataSVM[0].length-1);
         }
-
         let labels = [this.dataSVM.length-1];
         for(let i=0;i<data.length;i++){
             for (let j=0;j<data[i].length;j++) {
@@ -53,20 +49,19 @@ class SupportVM {
         }
 
         this.svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
-
-        return this.svm.getWeights();
+        this.weights =this.svm.getWeights();
     }
-
-    confermaPredizioneSVM = () => {
-        this.weights = this.trainSvm();
-
+    Weights =()=> {
+        return this.weights;
+    }
+    confermaPredizioneSVM =()=> {
         if(this.weights!==null)
             return  true;
         else
             return false;
     }
 
-    JSONData =  () => {
+    JSONData =()=> {
         if(this.confermaPredizioneSVM() === true) {
             const myData = {
                 author: 'TeamAFK',
@@ -76,15 +71,11 @@ class SupportVM {
                 predictors: this.getColumnsName(),//this.predictor(),
                 result: this.weights
             };
-            console.log(this.weights)
             let data = JSON.stringify(myData, null, 1);
-
             return data;
         }else {
             return false;
         }
     }
-
 }
-
 export default SupportVM;
