@@ -32,9 +32,6 @@ describe('Influx operations', () => {
         instance = Influx.getInstance()
         expect(() => instance.write(0)).toThrowError(Error('No database setted.'))
     })
-    test('query - database Error', () => {
-        expect(() => instance.query()).toThrowError(Error('No database setted.'))
-    })
     test('set database', () => {
         const database = 'mydb';
         instance.useDatabase(database)
@@ -42,9 +39,6 @@ describe('Influx operations', () => {
     })
     test('write - measurement Error', () => {
         expect(() => instance.write(0)).toThrowError(Error('No measurement setted.'))
-    })
-    test('query - measurement Error', () => {
-        expect(() => instance.query()).toThrowError(Error('No measurement setted.'))
     })
     test('set measurement', () => {
         const measurement = 'test'
@@ -63,20 +57,4 @@ describe('Influx operations', () => {
                 })
         })
     })
-    /* todo:
-    test('query - no error', () => {
-
-        const value = Math.random();
-
-        expect( ()=> {
-            instance.query({
-                complete: (rows) => {
-                    console.log(rows)
-                },
-                error: (error) => {
-                    throw error
-                }
-            }, '')
-        }).not.toThrowError()
-    })*/
 })

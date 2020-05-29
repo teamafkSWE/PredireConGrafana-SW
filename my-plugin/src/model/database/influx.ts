@@ -6,6 +6,7 @@ import Axios from 'axios'
 
 //TODO: set/get _retentionPolicy
 //todo: add support for tags
+//todo: add method isInit()
 class Influx {
     private static _instance: Influx | null = null;
     private static _clientOptions: ClientOptions | null = null
@@ -143,14 +144,15 @@ class Influx {
         writeAPI.close().catch((e)=>console.error(e))
         return this.sleep(1500)
     }
-
+/*
     private _defaultSolver:Solver = {
         complete: (lines)=>{
             console.log(lines)},
         error: (err)=>{
             console.error(err)}
     }
-
+*/
+    /*
     //todo: implementare test una volta visto se ne è necessario
     public query(solver: Solver = this._defaultSolver,endRange = '') {
         if (this._database === '')
@@ -185,13 +187,13 @@ class Influx {
                 },
             }
         )
-    }
+    }*/
 }
-
+/*
 type Solver = {
     complete: ((arg0: { time: any; value: any; }[]) => void),
     error: ((arg0: Error) => void)
 }
-
+*/
 
 export default Influx;
