@@ -1,5 +1,5 @@
 
-let svmjs = require ("./svm");
+let svmjs = require ("./library/svm");
 
 
 //Simple implementation of Support Vector Machine algorithm for binary classification in javascript.
@@ -14,13 +14,12 @@ class SupportVM {
         this.weights=null;
     }
     getColumnsName =()=> {
-        let label = this.dataSVM[0][this.dataSVM[0].length-1];
         let x = [];
         for(let i=0; i<this.dataSVM[0].length-1; i++)
             x[i] = this.dataSVM[0][i];//[this.props.dataRl[0]][[this.props.dataRl[0][i]]];
         //for(let i=0; i<x.length-1;i++)
         //  x[i] = this.props.dataRl[0];
-        return {w: x, b: label};
+        return {w: x, b:"bias"};
     }
 
     getDate =()=> {

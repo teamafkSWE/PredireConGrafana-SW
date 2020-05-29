@@ -65,8 +65,7 @@ class Chart extends Component{
          })
     }*/
     RLChart=(propData)=>{
-        let lowest = Number.POSITIVE_INFINITY;
-        let highest = Number.NEGATIVE_INFINITY;
+
         for (let i = 0; i < propData[0].length - 1; i++) {
             let setData = {
                 label: propData[0][i], // Name the series
@@ -75,24 +74,12 @@ class Chart extends Component{
             };
             for (let j = 1; j < propData.length; j++) {
 
-                console.log(propData[j][i])
-                console.log(lowest)
-
-                lowest = Math.min(propData[j][i], lowest)
-                highest = Math.max(propData[j][i], highest);
                 setData.data.push({x: propData[j][i], y: propData[j][propData[0].length - 1]});
 
             }
-
-            console.log(highest)
-            console.log(lowest)
-           // if(this.props.coefficients!==null)
-           //     this.state.data.datasets.push(this.straightLine(propData[0][i],highest,lowest,i));
-            lowest = Number.POSITIVE_INFINITY;
-            highest = Number.NEGATIVE_INFINITY;
-
             this.state.data.datasets.push(setData);
         }
+        console.log(  this.state.data.datasets)
         this.state.options.legend.display = true;
     }
     SVMChart=(propData)=>{
@@ -142,7 +129,7 @@ class Chart extends Component{
         if (this.props.json !== null) {
             this.state.data.datasets = [];
             let propData = this.props.data;
-            if (propData[0][propData[0].length - 1] === "y")
+            if (propData[0][propData[0].length - 1] !== "label")
                 this.RLChart(propData);
             else if (propData[0][propData[0].length - 1] === "label")
                 this.SVMChart(propData);

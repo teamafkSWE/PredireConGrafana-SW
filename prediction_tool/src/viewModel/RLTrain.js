@@ -8,10 +8,14 @@ class RLTrain extends Train {
     }
     train =()=> {
         this.algorithm.insert();
-        if(this.algorithm.trainRl())
+        if(this.algorithm.trainRl()){
             alert("Addestramento avvenuto correttamente.");
-        else
+            return true;
+        }
+        else{
             alert("Addestramento non riuscito.");
+            return false;
+        }
     }
     getCoefficients =()=> {
        return  this.algorithm.getCoefficientsRl();

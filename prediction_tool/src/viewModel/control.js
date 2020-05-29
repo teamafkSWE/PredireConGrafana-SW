@@ -1,74 +1,87 @@
 import RLTrain from "./RLTrain"
 import SVMTrain from "./SVMTrain"
 class Control {
-    value;
+    algorithm;
     file;
     hasFile;
     json;
     strategy;
 
     constructor() {
-        this.value = null;
+        this.algorithm = null;
         this.file = null;
         this.hasFile = null;
         this.json=null;
         this.strategy=null;
     }
-    setData =(value,data,hasFile)=> {
-        this.value = value;
+    setData =(algorithm,data,hasFile)=> {
+        this.algorithm = algorithm;
         this.file = data;
         this.hasFile = hasFile;
     }
-
-    isSVM =()=>{
-        if (this.file[0][this.file[0].length - 1] === "label")
+    setStrategy =()=>{
+        if(this.algorithm==="svm" && this.isSVM()){
+            this.strategy=new SVMTrain(this.file);
             return true;
+        }
+        else if(this.algorithm==="rl" && this.isRL()){
+            this.strategy= new RLTrain(this.file);
+            return true;
+        }
+        else
+            return false;
+    }
+    checkAlgorithm =()=> {
+        if(this.hasFile===true){
+            if(this.algorithm!=="")
+                if(this.setStrategy())
+                    return true
+                else {
+                    alert("File CSV incompatibile.");
+                    return false;
+                }
+            else{
+                alert("Algoritmo non selezionato");
+                return false;
+            }
+        }
+        else {
+            alert("File non inserito.");
+            return false;
+        }
+    }
+    isSVM =()=>{
+        if (this.file[0][this.file[0].length - 1] === "label"){
+            console.log(this.file)
+            let checkLabel=false;
+            for(let i=1;i<this.file.length;i++){
+                if(this.file[i][this.file[0].length - 1]==="1" || this.file[i][this.file[0].length - 1]==="-1")
+                    checkLabel=true;
+                else
+                    return false;
+            }
+            return checkLabel;
+
+        }
         return false;
     }
 
     isRL =()=> {
-        if (this.file[0][this.file[0].length - 1] === "y")
+        if (!this.isSVM())
             return true;
         return false;
     }
 
-    controlTrainAlgorithm =()=> {
-
-        if (this.hasFile === true) {
-            if (this.value === "svm") {   //SVM
-                    if (this.isSVM() === true){
-                        this.strategy=new SVMTrain(this.file);
-                        this.strategy.train();
-                        return true;
-                    }
-                    else {
-                        alert("File CSV incompatibile.")
-                        return false;
-                    }
-            } else if (this.value === "rl") { //RL
-                    if (this.isRL() === true) {
-                        this.strategy= new RLTrain(this.file);
-                        this.strategy.train();
-                        return true;
-                    }
-                    else {
-                        alert("File CSV incompatibile.")
-                        return false;
-                    }
-            }
-            else if(this.value===""){
-                    alert("Algoritmo non selezionato.")
-                    return false;
-            }
-        } else {
-            alert("File non inserito.")
+    performTraining =()=> {
+        if(this.checkAlgorithm())
+            return this.strategy.train();
+        else
             return false;
-        }
     }
-    controlJSON =()=> {
-        if(this.value!=="")
-            return this.strategy.getJSON();
+    getJsonContent =()=> {
+        return this.strategy.getJSON();
     }
+
 }
 
 export default Control;

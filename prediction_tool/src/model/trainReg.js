@@ -1,5 +1,5 @@
 
-import Regression from "./regression";
+import Regression from "./library/regression";
 
 class Reg {
     dataRl;
@@ -20,10 +20,12 @@ class Reg {
             x[i] = this.dataRl[0][i];//[this.props.dataRl[0]][[this.props.dataRl[0][i]]];
         //for(let i=0; i<x.length-1;i++)
         //  x[i] = this.props.dataRl[0];
-        return {a: x, b: y};
+        return {y:y,a: x, b: "angularCoefficient"};
     }
     insert =()=> {
-     let data =[];
+        console.log(this.dataRl)
+
+        let data =[];
      let dataY = [];
         if(this.dataRl[0].length>2)
         {
