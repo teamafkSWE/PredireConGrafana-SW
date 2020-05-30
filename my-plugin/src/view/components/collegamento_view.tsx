@@ -12,8 +12,6 @@ import {DataFrame} from "@grafana/data";
 import {Predictor} from "../../types";
 
 
-//import InserimentoDB from "../db_tab";
-
 interface MyProps {
     queries: DataFrame[]
     predictors: Predictor[]
@@ -31,21 +29,14 @@ class CollegamentoView extends PureComponent<MyProps> {
 
     getPredictors = (predictors: any) => {
         if (predictors.length === 0) {
-            return <select id="predictors">
-                <option value="noJ">No json loaded</option>
-            </select>
+            return <option value="noJ">No json loaded</option>
         } else {
-            return(
-                    <select id="predictors">
-                    {predictors.map((pred:any ,index:number) => {
-                        console.log(index)
-                        return <option  value={index}>{pred.name}</option>;
-                    })}
-                    </select>
-            );
+            return predictors.map((pred: any, index: number) => {
+                console.log(index)
+                return <option value={index}>{pred.name}</option>;
+            })
         }
     }
-
 
 
     render() {
@@ -58,11 +49,13 @@ class CollegamentoView extends PureComponent<MyProps> {
                             <p>Selezionare uno o più predittori dalla lista</p>
                             <HorizontalGroup spacing="md">
                                 <label htmlFor="predictors">Select predictors:</label>
+                                <select>
                                     {this.getPredictors(predictors)}
+                                </select>
                             </HorizontalGroup>
                         </VerticalGroup>
 
-                        </PanelOptionsGroup>
+                    </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Selezione del flusso dati">
                         <h1>TO DO: </h1>
