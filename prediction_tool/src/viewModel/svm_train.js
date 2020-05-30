@@ -1,5 +1,5 @@
-import SupportVM from "../model/trainSVM";
-import Train from "./interfaceTrain";
+import SupportVM from "../model/train_svm";
+import Train from "./interface_train";
 class SVMTrain extends Train{
     algorithm=null;
     constructor(dataSVM) {

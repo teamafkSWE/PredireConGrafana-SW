@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import "bootstrap/dist/css/bootstrap.css"
-import './App.css';
-import Header from "./uiComponents/Header";
-import InsertCSVButton from "./uiComponents/insertCSVButton"
-import ComboBoxAlgorithm from "./uiComponents/ComboBoxAlgorithm"
+import './app.css';
+import Header from "./uiComponents/header";
+import InsertCsvButton from "./uiComponents/insert_csv_button"
+import ComboBoxAlgorithm from "./uiComponents/combo_box_algorithm"
 import Control from "../viewModel/control";
-import TrainButton from "./uiComponents/TrainButton";
-import DownloadJson from "./uiComponents/DownloadJson";
+import TrainButton from "./uiComponents/train_button";
+import DownloadJson from "./uiComponents/download_Json";
 import Chart from "./uiComponents/chart";
 class App extends Component{
   control=null;
@@ -50,7 +50,7 @@ class App extends Component{
     return(
         <div className="mt-4 mb-4 text-center" >
             <Header/>
-            <InsertCSVButton handleForce={this.setDataFromFile}/>
+            <InsertCsvButton handleForce={this.setDataFromFile}/>
             <p>{this.state.fileName}</p>
             <ComboBoxAlgorithm changeAlgorithm={this.changeAlgorithm} algorithm={this.state.algorithm}/>
             <p/>

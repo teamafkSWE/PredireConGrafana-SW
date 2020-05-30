@@ -1,7 +1,7 @@
 
 import Regression from "./library/regression";
 
-class Reg {
+class SupportRl {
     dataRl;
     reg;
     numOfX;
@@ -96,4 +96,4 @@ class Reg {
              return false
      }
 }
-export default Reg;
+export default SupportRl;

@@ -1,5 +1,5 @@
-import Reg from "../model/trainReg";
-import Train from "./interfaceTrain";
+import Reg from "../model/train_reg";
+import Train from "./interface_train";
 class RLTrain extends Train {
     algorithm=null;
     constructor(dataRl) {

@@ -1,5 +1,5 @@
-import RLTrain from "./RLTrain"
-import SVMTrain from "./SVMTrain"
+import RLTrain from "./rl_train"
+import SVMTrain from "./svm_train"
 class Control {
     algorithm;
     file;

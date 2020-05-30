@@ -4,7 +4,7 @@ let svmjs = require ("./library/svm");
 
 //Simple implementation of Support Vector Machine algorithm for binary classification in javascript.
 
-class SupportVM {
+class SupportSvm {
     dataSVM;
     svm
     weights;
@@ -77,4 +77,4 @@ class SupportVM {
         }
     }
 }
-export default SupportVM;
+export default SupportSvm;

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import CSVReader from "react-csv-reader";
 
 
-class InsertCSVButton extends Component {
+class InsertCsvButton extends Component {
 
     render() {
         
@@ -21,4 +21,4 @@ class InsertCSVButton extends Component {
     }
 }
 
-export default InsertCSVButton;
+export default InsertCsvButton;
