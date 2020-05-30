@@ -5,10 +5,11 @@ import Observable from "./observable";
 export default class Controller extends Observable{
     private _json: any
     private _file: File | undefined
-    private readonly _predictors:Predictor[] = []
+    private _predictors:Predictor[] = []
     private _b: number | undefined;
 
     private _definePredictors = () => {
+        this._predictors=[];
         const rawPredictors = this._json.predictors
         const rawValues = this._json.result
         const predictorsNames:string[] = []
@@ -57,6 +58,5 @@ export default class Controller extends Observable{
     public getB = () => {
         return this._b
     }
-
 }
 

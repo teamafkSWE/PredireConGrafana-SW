@@ -28,26 +28,6 @@ const tabs = [
 class Editor extends PureComponent<PanelEditorProps<Options>>{
     private _controller: Controller = this.props.options.controller;
 
-    state = {
-        predictors: [],
-        nameAlgorithm:null,
-        coefficienteAng: [],
-        firstVar: [],
-
-        json: { //moc of json
-            "predictor": [
-                "temp",
-                "cpu"
-            ],
-            "result": {
-                "b": 0,
-                "a": [
-                    2,
-                    0
-                ]
-            }
-        }
-    };
 
     setData=(nameAlgorithm:any,firstVar:any,coefficienteAng:any,predictors:any)=>{
         this.setState({nameAlgorithm:nameAlgorithm,firstVar:firstVar,coefficienteAng:coefficienteAng,predictors:predictors});
@@ -75,7 +55,7 @@ class Editor extends PureComponent<PanelEditorProps<Options>>{
                             </TabsBar>
                             <TabContent>
                                 {state[0].active && <CaricamentoJsonView controller={this._controller}/>}
-                                {state[1].active && <CollegamentoView queries={this.props.data.series} json={this.state.json}/>}
+                                {state[1].active && <CollegamentoView queries={this.props.data.series} predictors={this._controller.getPredictors()}/>}
                                 {state[2].active && <ListaCollegamentiView/>}
                                 {state[3].active && <PrevisioneView/>}
                             </TabContent>
