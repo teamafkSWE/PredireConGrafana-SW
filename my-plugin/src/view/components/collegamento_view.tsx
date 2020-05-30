@@ -9,20 +9,14 @@ import {
 
 } from "@grafana/ui";
 import {DataFrame} from "@grafana/data";
+import {Predictor} from "../../types";
 
 
 //import InserimentoDB from "../db_tab";
 
 interface MyProps {
     queries: DataFrame[]
-    json: {
-        "predictor": string[],
-        "result": {
-            "b": number,
-            "a": number[]
-        }
-    } | null
-
+    predictors: Predictor[]
 }
 
 
@@ -35,16 +29,27 @@ class CollegamentoView extends PureComponent<MyProps> {
             return <option value="noQ">No query found</option>
     }
 
-    getPredictors = (json: { "predictor": string[], "result": { "b": number, "a": number[] } } | null) => {
-        if (json === null)
-            return <><option value="noJ">No json loaded</option></>
-        else
-            return <>{json.predictor.map((pred, index) => <option value={index}>{pred}</option>)}</>
+    getPredictors = (predictors: any) => {
+        if (predictors.length === 0) {
+            return <select id="predictors">
+                <option value="noJ">No json loaded</option>
+            </select>
+        } else {
+            return(
+                    <select id="predictors">
+                    {predictors.map((pred:any ,index:number) => {
+                        console.log(index)
+                        return <option  value={index}>{pred.name}</option>;
+                    })}
+                    </select>
+            );
+        }
     }
 
 
+
     render() {
-        const {json, queries} = this.props;
+        const {predictors, queries} = this.props;
         return (
             <div>
                 <PanelOptionsGrid>
@@ -53,9 +58,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                             <p>Selezionare uno o più predittori dalla lista</p>
                             <HorizontalGroup spacing="md">
                                 <label htmlFor="predictors">Select predictors:</label>
-                                <select id="predictors">
-                                    {this.getPredictors(json)}
-                                </select>
+                                    {this.getPredictors(predictors)}
                             </HorizontalGroup>
                         </VerticalGroup>
 

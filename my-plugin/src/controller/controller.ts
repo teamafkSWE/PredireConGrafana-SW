@@ -3,10 +3,11 @@ import {Predictor} from "../types";
 
 export default class Controller {
     private _json: any
-    private readonly _predictors:Predictor[] = []
+    private _predictors:Predictor[] = []
     private _b: number | undefined;
 
     private _definePredictors = () => {
+        this._predictors=[];
         const rawPredictors = this._json.predictors
         const rawValues = this._json.result
         const predictorsNames:string[] = []
