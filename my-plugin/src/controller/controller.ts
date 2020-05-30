@@ -1,8 +1,10 @@
 import {Predictor} from "../types";
+import Observable from "./observable";
 
 
-export default class Controller {
+export default class Controller extends Observable{
     private _json: any
+    private _file: File | undefined
     private readonly _predictors:Predictor[] = []
     private _b: number | undefined;
 
@@ -26,16 +28,22 @@ export default class Controller {
     }
 
     public setJson = (file: any) => {
+        this._file = file
         const fr = new FileReader()
         fr.onload = (event) => {
             if (event.target !== null && typeof event.target.result === "string") {
                 this._json = JSON.parse(event.target.result);
                 this._definePredictors()
                 this._b = this._json.result.b
+                this.notifyAll()
             }
         }
         fr.readAsText(file);
         return this
+    }
+
+    public getFile = () => {
+        return this._file
     }
 
     public getJson = () => {
@@ -49,5 +57,6 @@ export default class Controller {
     public getB = () => {
         return this._b
     }
+
 }
 

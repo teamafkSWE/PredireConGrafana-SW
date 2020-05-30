@@ -1,94 +1,75 @@
 import React, {PureComponent} from 'react';
 import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
-//import InsJson from "../input_json";
 import Files from "react-files";
+import Observer from "./observer/observer";
+import Controller from "../../controller/controller";
 
-interface insJson {
-    setJson:(json:any)=>any
+interface Props {
+    controller: Controller
 }
-class CaricamentoJsonView extends PureComponent<insJson> {
 
-/*
-    printJsonData=()=>{
-        let data= this.props.jsonData;
-        if(data.nameAlgorithm!==null){
-            if(data.nameAlgorithm==="SVM") {
-                return (<ul>
-                        <li>
-                            <p>Nome algoritmo : {data.nameAlgorithm}</p>
-                        </li>
-                        <li>
-                            <p>Nome predittori : {data.predictors}</p>
-                        </li>
-                        <li>
-                            <p>Coefficiente angolare(b) : {data.coefficienteAng}</p>
-                        </li>
-                        <li>
-                            <p> Pesi(w): {data.firstVar}</p>
-                        </li>
-                    </ul>
+class CaricamentoJsonView extends PureComponent<Props> implements Observer{
 
-                );
-            }
-            else {
-                return (<ul>
-                        <li>
-                            <p>Nome algoritmo : {data.nameAlgorithm}</p>
-                        </li>
-                        <li>
-                            <p>Nome predittori : {data.predictors}</p>
-                        </li>
-                        <li>
-                            <p>Coefficiente angolare(b) : {data.coefficienteAng}</p>
-                        </li>
-                        <li>
-                            <p> Intercetta(a): {data.firstVar}</p>
-                        </li>
-                    </ul>
-
-                );
-            }
+    constructor(props: Readonly<Props>) {
+        super(props);
+        props.controller.attach(this)
+        const json = this.props.controller.getJson()
+        const file = this.props.controller.getFile()
+        const filename = file === undefined ? '':file.name
+        this.state = {
+            filename: filename,
+            jsonContent: JSON.stringify(json, null, 2)
         }
-        return "Nessun JSON inserito";
     }
 
+    componentWillUnmount() {
+        this.props.controller.detach(this)
+    }
 
-*/
+    state = {
+        filename: '',
+        jsonContent: ''
+    }
+
+    update(): void {
+        const json = this.props.controller.getJson()
+        const file = this.props.controller.getFile()
+        const filename = file === undefined ? '':file.name
+        this.setState({jsonContent: JSON.stringify(json, null, 2), filename: filename})
+    }
+
     render() {
+        //const file = this.props.controller.getFile()
+        //const filename = file === undefined ? '':file.name
+        console.log(this.state)
         return (
-            <div>
-                <PanelOptionsGrid>
-                    <PanelOptionsGroup title="Inserimento file JSON">
-                        <VerticalGroup>
-                            {/*<InsJson setData={this.props.setData}/>*/}
-                            <Files
-                                className="files-dropzone"
-                                onChange={(file: any[]) =>
-                                    this.props.setJson(file[file.length-1])}
-                                onError={(err: any) => console.log(err)}
-                                accepts={[".json"]}
-                                maxFileSize={10000000}
-                                minFileSize={0}
-                                clickable
-                            >
-                                {/*<button  className='btn btn-secondary btn-sm'>Insert file</button>*/}
-                                Drop files here or click to upload
-                            </Files>
-                        </VerticalGroup>
+            <PanelOptionsGrid>
+                <PanelOptionsGroup title="Inserimento file JSON">
+                    <VerticalGroup>
+                        <Files
+                            className="files-dropzone"
+                            onChange={(files: File[]) => {
+                                this.props.controller.setJson(files[files.length - 1])
+                            }}
+                            onError={(err: any) => console.log(err)}
+                            accepts={[".json"]}
+                            maxFileSize={10000000}
+                            minFileSize={0}
+                            clickable
+                        >
+                            <p>Drop files here or click to upload</p>
+                            <p>File: {this.state.filename}</p>
+                        </Files>
+                    </VerticalGroup>
 
-                    </PanelOptionsGroup>
-                    <PanelOptionsGroup title="Contenuto file JSON">
-                        <p>{/*this.printJsonData()*/}</p>
-                    </PanelOptionsGroup>
-
-
-                </PanelOptionsGrid>
-
-            </div>
-
-
+                </PanelOptionsGroup>
+                <PanelOptionsGroup title="Contenuto file JSON">
+                    <pre id='textarea'>{this.state.jsonContent}</pre>
+                </PanelOptionsGroup>
+            </PanelOptionsGrid>
         );
     }
+
 }
 
 export default CaricamentoJsonView;
