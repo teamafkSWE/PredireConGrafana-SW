@@ -1,14 +1,14 @@
 import React, {PureComponent} from 'react';
-import {HorizontalGroup, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
-import InsJson from "../input_json";
+import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
+//import InsJson from "../input_json";
+import Files from "react-files";
 
 interface insJson {
-    setData:(arg0:any,arg1:any,arg2:any,arg3:any)=>void
-    jsonData: any | null
+    setJson:(json:any)=>any
 }
 class CaricamentoJsonView extends PureComponent<insJson> {
 
-
+/*
     printJsonData=()=>{
         let data= this.props.jsonData;
         if(data.nameAlgorithm!==null){
@@ -52,30 +52,33 @@ class CaricamentoJsonView extends PureComponent<insJson> {
         return "Nessun JSON inserito";
     }
 
+
+*/
     render() {
-        this.printJsonData();
         return (
             <div>
                 <PanelOptionsGrid>
                     <PanelOptionsGroup title="Inserimento file JSON">
                         <VerticalGroup>
-                            <InsJson setData={this.props.setData}/>
-                            <HorizontalGroup>
-                                <p>or drag here</p>
-                            </HorizontalGroup>
-
+                            {/*<InsJson setData={this.props.setData}/>*/}
+                            <Files
+                                className="files-dropzone"
+                                onChange={(file: any[]) =>
+                                    this.props.setJson(file[file.length-1])}
+                                onError={(err: any) => console.log(err)}
+                                accepts={[".json"]}
+                                maxFileSize={10000000}
+                                minFileSize={0}
+                                clickable
+                            >
+                                {/*<button  className='btn btn-secondary btn-sm'>Insert file</button>*/}
+                                Drop files here or click to upload
+                            </Files>
                         </VerticalGroup>
-
-                    <h1>TO DO: </h1>
-                        <ul>
-                            <li>
-                                <p>aggiungere componente per "drag and drop option".</p>
-                            </li>
-                        </ul>
 
                     </PanelOptionsGroup>
                     <PanelOptionsGroup title="Contenuto file JSON">
-                        <p>{this.printJsonData()}</p>
+                        <p>{/*this.printJsonData()*/}</p>
                     </PanelOptionsGroup>
 
 

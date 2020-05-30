@@ -42,7 +42,7 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
 
     ];
     render(){
-        this._controller.sayHello()
+        console.log(this._controller.predictors)
         this.props.data.series.forEach(serie => serie.fields.forEach(values => console.log(values.values.toArray())))
         return( <Graph  height={300}
                         width={600}

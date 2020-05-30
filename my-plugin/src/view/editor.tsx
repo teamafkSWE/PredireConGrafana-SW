@@ -2,15 +2,14 @@
 import React, {PureComponent} from 'react';
 import {PanelEditorProps} from "@grafana/data";
 import {Tab, TabContent, TabsBar} from "@grafana/ui";
-//import InsJson from "./components/inputJson";
-//import InserimentoDB from "./components/db_tab";
 import {UseState} from "./use_state";
-import CaricamentoJsonView from "./components/views/caricamento_json_view";
-import CollegamentoView from "./components/views/collegamento_view";
-import ListaCollegamentiView from "./components/views/lista_collegamenti_view";
-import PrevisioneView from "./components/views/previsione_view";
+import CaricamentoJsonView from "./components/caricamento_json_view";
+import CollegamentoView from "./components/collegamento_view";
+import ListaCollegamentiView from "./components/lista_collegamenti_view";
+import PrevisioneView from "./components/previsione_view";
 import Controller from "../controller/controller";
 import {Options} from "../types";
+import "./components/css/index.css"
 
 
 
@@ -28,6 +27,7 @@ const tabs = [
 
 class Editor extends PureComponent<PanelEditorProps<Options>>{
     private _controller: Controller = this.props.options.controller;
+
     state = {
         predictors: [],
         nameAlgorithm:null,
@@ -56,7 +56,6 @@ class Editor extends PureComponent<PanelEditorProps<Options>>{
 
 
     render() {
-        this._controller.sayHello()
         return(
             <UseState initialState={tabs}>
                 {(state, updateState) => {
@@ -75,7 +74,7 @@ class Editor extends PureComponent<PanelEditorProps<Options>>{
                                 })}
                             </TabsBar>
                             <TabContent>
-                                {state[0].active && <CaricamentoJsonView setData={this.setData} jsonData={this.state}/>}
+                                {state[0].active && <CaricamentoJsonView setJson={this._controller.setJson}/>}
                                 {state[1].active && <CollegamentoView queries={this.props.data.series} json={this.state.json}/>}
                                 {state[2].active && <ListaCollegamentiView/>}
                                 {state[3].active && <PrevisioneView/>}
