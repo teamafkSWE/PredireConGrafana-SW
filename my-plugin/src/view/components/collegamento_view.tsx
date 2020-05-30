@@ -3,7 +3,6 @@ import {
     PanelOptionsGrid,
     PanelOptionsGroup,
     VerticalGroup,
-    HorizontalGroup,
     Button,
     ConfirmButton
 
@@ -19,7 +18,9 @@ interface MyProps {
 
 
 class CollegamentoView extends PureComponent<MyProps> {
-
+    state= {
+        item: [] as any
+    }
     getOptions = (queries: DataFrame[]) => {
         if (queries.length > 0) {
             return <>{queries.map((query) => <option value={query.name}>{query.name}</option>)}</>
@@ -27,32 +28,45 @@ class CollegamentoView extends PureComponent<MyProps> {
             return <option value="noQ">No query found</option>
     }
 
-    getPredictors = (predictors: any) => {
-        if (predictors.length === 0) {
-            return <option value="noJ">No json loaded</option>
-        } else {
-            return predictors.map((pred: any, index: number) => {
-                console.log(index)
-                return <option value={index}>{pred.name}</option>;
-            })
+    getPredictors = (predictors: any) =>{
+
+            if (predictors.length === 0) {
+                this.state.item.push( <select id="predictors">
+                    <option value="noJ">No json loaded</option>
+                </select>);
+
+                this.setState({ state: this.state });
+            } else {
+
+                     this.state.item.push(<select id="predictors">
+                        {predictors.map((pred: any, index: number) => {
+                            return <option value={index}>{pred.name}</option>;
+                        })}
+                    </select>);
+
+                this.setState({ state: this.state });
+               ;
+            }
         }
+
+
+    addSelectPredictors=()=>{
+        return  this.state.item.map((pred: any) => pred);
     }
 
 
     render() {
-        const {predictors, queries} = this.props;
+        const {predictors,queries} = this.props;
         return (
             <div>
                 <PanelOptionsGrid>
                     <PanelOptionsGroup title="Lista predittori">
                         <VerticalGroup>
                             <p>Selezionare uno o più predittori dalla lista</p>
-                            <HorizontalGroup spacing="md">
                                 <label htmlFor="predictors">Select predictors:</label>
-                                <select>
-                                    {this.getPredictors(predictors)}
-                                </select>
-                            </HorizontalGroup>
+                               {this.addSelectPredictors()}
+
+                                <button className='btn btn-secondary btn-sm' onClick={()=>this.getPredictors(predictors)}>add predictor</button>
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
