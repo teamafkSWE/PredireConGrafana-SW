@@ -37,8 +37,34 @@ class Chart extends Component{
             },*/
             legend: {
                 display: false,
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    ticks: {
+                        padding: 10,
+                        fontColor:"white"
+                    },
+                    gridLines: {
+                        zeroLineColor:"white"
+                    }
+
+                }],
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        padding: 10,
+                        fontColor:"white"
+                    },
+                    gridLines: {
+
+                        zeroLineColor:"white"
+                    }
+
+                }]
             }
-        }
+        },
+
     }
     dynamicColors = ()=> {
         let r = Math.floor(Math.random() * 255);
@@ -90,12 +116,14 @@ class Chart extends Component{
                 data: [], // Specify the data values array
                 backgroundColor: [],
 
+
             }
             for (let j = 1; j < propData.length; j++) {
                 if(propData[j][propData[0].length - 1]==="1")
                     setData.backgroundColor.push("green");
                 else
                     setData.backgroundColor.push("red");
+
                 setData.data.push({x: propData[j][0], y: 0});
             }
             this.state.data.datasets.push(setData);
@@ -107,9 +135,10 @@ class Chart extends Component{
                     label: propData[0][0], // Name the series
                     data: [], // Specify the data values array
                     backgroundColor: [],
-
                 }
+
                 for (let j = 1; j < propData.length; j++) {
+                    console.log("x:"+propData[j][i]+ "y: "+propData[j][propData[0].length - 2]);
                     if (propData[j][propData[0].length - 1] === "1")
                     {
 

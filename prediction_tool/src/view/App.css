@@ -5,7 +5,13 @@
 body{
   background-color: #161719;
 }
+#chart{
+  padding: 1%;
+  /* rgb(64,64,64);*/
+  background-color: rgb(36,41,46);
+  border-radius: 10px;
 
+}
 .header{
   border-bottom-width: thick;
   border-bottom-style: solid;

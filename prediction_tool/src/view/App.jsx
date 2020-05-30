@@ -50,14 +50,24 @@ class App extends Component{
     return(
         <div className="mt-4 mb-4 text-center" >
             <Header/>
-            <InsertCsvButton handleForce={this.setDataFromFile}/>
-            <p>{this.state.fileName}</p>
-            <ComboBoxAlgorithm changeAlgorithm={this.changeAlgorithm} algorithm={this.state.algorithm}/>
-            <p/>
-            <TrainButton train={this.handleTraining}/>
-            <p/>
-            {this.downloadJsonData()}
-            <Chart data={this.state.data} hasFile={this.state.hasFile}  json={this.state.jsonData}/>
+            <div className={"w-100 p-3 row text-center"}>
+                <div className={"col 4"}>
+                    <InsertCsvButton handleForce={this.setDataFromFile}/>
+                    <p>{this.state.fileName}</p>
+                </div>
+                <div className={"col 4"}>
+                    <ComboBoxAlgorithm changeAlgorithm={this.changeAlgorithm} algorithm={this.state.algorithm}/>
+                </div>
+                <div className={"col 4"}>
+                    <TrainButton train={this.handleTraining}/>
+                </div>
+                <div className={"col 4"}>
+                    {this.downloadJsonData()}
+                </div>
+            </div>
+            <div id={"chart"}>
+                <Chart data={this.state.data} hasFile={this.state.hasFile}  json={this.state.jsonData}/>
+            </div>
         </div>
     );
   }
