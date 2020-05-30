@@ -42,7 +42,7 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
 
     ];
     render(){
-        console.log(this._controller.predictors)
+        console.log(this._controller) //serve a togliere l'errore di non usare la variabile
         this.props.data.series.forEach(serie => serie.fields.forEach(values => console.log(values.values.toArray())))
         return( <Graph  height={300}
                         width={600}
