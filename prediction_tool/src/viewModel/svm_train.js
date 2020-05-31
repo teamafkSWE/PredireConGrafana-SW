@@ -1,10 +1,10 @@
-import SupportVM from "../model/train_svm";
+import SupportSvm from "../model/train_svm";
 import Train from "./interface_train";
 class SVMTrain extends Train{
     algorithm=null;
     constructor(dataSVM) {
         super();
-        this.algorithm=new SupportVM(dataSVM);
+        this.algorithm=new SupportSvm(dataSVM);
     }
     train =()=> {
         this.algorithm.trainSvm();

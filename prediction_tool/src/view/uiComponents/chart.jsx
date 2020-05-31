@@ -10,31 +10,6 @@ class Chart extends Component{
 
         },
         options:{
-            /*tooltips: {
-                callbacks: {
-                    label: function(tooltipItem, data,position) {
-
-                        let x = tooltipItem.datasetIndex.xLabel;
-                        let y =data.datasets[tooltipItem.datasetIndex].data.y;
-
-                        let label ="";
-                        console.log({x:x,y:y})
-                        for(var i = 0; i < data.datasets[tooltipItem.datasetIndex].data.length; i += 1) {
-
-                            console.log(data.datasets[tooltipItem.datasetIndex].data[i])
-                            if(data.datasets[tooltipItem.datasetIndex].data[i].x=== x &&
-                               data.datasets[tooltipItem.datasetIndex].data[i].x=== y ) {
-                                console.log(i)
-                                console.log(data.datasets[tooltipItem.datasetIndex].backgroundColor);
-                                label=x+ ','+y+' (Class: '+data.datasets[tooltipItem.datasetIndex].backgroundColor[i]+')';
-                            }
-                        }
-
-
-                        return label;
-                    }
-                }
-            },*/
             legend: {
                 display: false,
             },
@@ -60,7 +35,6 @@ class Chart extends Component{
 
                         zeroLineColor:"white"
                     }
-
                 }]
             }
         },
@@ -72,24 +46,6 @@ class Chart extends Component{
         let b = Math.floor(Math.random() * 255);
         return "rgb(" + r + "," + g + "," + b + ")";
     }
- /*   straightLine=(label,highest,lowest,index)=>{
-        let FmaxPoint=0;
-        let FminPoint=0;
-        let coefficients=this.props.coefficients;
-        console.log(coefficients.a)
-        FmaxPoint=FmaxPoint+coefficients.a[index]*highest;
-        FminPoint=FminPoint+coefficients.a[index]*lowest;
-         return( {
-             type: 'line',
-             fill:false,
-             label: 'Regression('+label+')', // Name the series
-             borderDash:[5],
-             data: [{x:highest,y:FmaxPoint+coefficients.b},
-                 {x:lowest,y:FminPoint+coefficients.b}], // Specify the data values array
-             borderColor:"yellow",
-             pointRadius:0
-         })
-    }*/
     RLChart=(propData)=>{
 
         for (let i = 0; i < propData[0].length - 1; i++) {
@@ -105,7 +61,6 @@ class Chart extends Component{
             }
             this.state.data.datasets.push(setData);
         }
-        console.log(  this.state.data.datasets)
         this.state.options.legend.display = true;
     }
     SVMChart=(propData)=>{
@@ -138,15 +93,11 @@ class Chart extends Component{
                 }
 
                 for (let j = 1; j < propData.length; j++) {
-                    console.log("x:"+propData[j][i]+ "y: "+propData[j][propData[0].length - 2]);
-                    if (propData[j][propData[0].length - 1] === "1")
-                    {
 
-                        //setData.label.push(propData[j][propData[0].length - 1]);
-                        setData.backgroundColor.push("green");}
-                    else{
-                        //setData.label.push(propData[j][propData[0].length - 1]);
-                        setData.backgroundColor.push("red");}
+                    if (propData[j][propData[0].length - 1] === "1")
+                        setData.backgroundColor.push("green");
+                    else
+                        setData.backgroundColor.push("red");
                     setData.data.push({x: propData[j][i], y: propData[j][propData[0].length - 2]});
                 }
                 this.state.data.datasets.push(setData);

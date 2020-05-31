@@ -23,8 +23,6 @@ class SupportRl {
         return {y:y,a: x, b: "angularCoefficient"};
     }
     insert =()=> {
-        console.log(this.dataRl)
-
         let data =[];
      let dataY = [];
         if(this.dataRl[0].length>2)

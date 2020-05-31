@@ -52,7 +52,6 @@ class Control {
     }
     isSVM =()=>{
         if (this.file[0][this.file[0].length - 1] === "label"){
-            console.log(this.file)
             let checkLabel=false;
             for(let i=1;i<this.file.length;i++){
                 if(this.file[i][this.file[0].length - 1]==="1" || this.file[i][this.file[0].length - 1]==="-1")
