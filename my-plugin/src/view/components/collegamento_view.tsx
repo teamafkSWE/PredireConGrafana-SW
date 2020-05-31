@@ -8,55 +8,67 @@ import {
 
 } from "@grafana/ui";
 import {DataFrame} from "@grafana/data";
-import {Predictor} from "../../types";
+//import {Predictor} from "../../types";
 
 
 interface MyProps {
     queries: DataFrame[]
-    predictors: Predictor[]
+    //getPredictors:()=>void
+    listSelectPredictors: any[]
 }
 
-
 class CollegamentoView extends PureComponent<MyProps> {
-    state= {
-        item: [] as any
+    state={
+        data:[] as any
     }
     getOptions = (queries: DataFrame[]) => {
         if (queries.length > 0) {
-            return <>{queries.map((query) => <option value={query.name}>{query.name}</option>)}</>
+            return <>{queries.map((query:DataFrame ) => <option value={query.name}>{query.name}</option>)}</>
         } else
             return <option value="noQ">No query found</option>
     }
 
-    getPredictors = (predictors: any) =>{
 
-            if (predictors.length === 0) {
-                this.state.item.push( <select id="predictors">
-                    <option value="noJ">No json loaded</option>
-                </select>);
+    getPredictors = () =>{
+        let predictors=this.props.listSelectPredictors;
+        const {queries} = this.props;
 
-                this.setState({ state: this.state });
-            } else {
+        let temp=[];
+        if (predictors.length !== 0) {
+            console.log(queries)
+            if (queries.length > 0) {
+                for (let i=0;i<predictors.length;i++) {
+                    let name=predictors[i].name+":";
+                    temp.push(
+                    <label>{name}
+                    <select id="collegamento">
+                            {queries.map((query:DataFrame ) => <option value={query.name}>{query.name}</option>)}
 
-                     this.state.item.push(<select id="predictors">
-                        {predictors.map((pred: any, index: number) => {
-                            return <option value={index}>{pred.name}</option>;
-                        })}
-                    </select>);
+                    </select></label>
+                    );
 
-                this.setState({ state: this.state });
-               ;
-            }
+                }
+                console.log(temp)
+            } else
+                return(<select id="collegamento">
+                    <option value="noQ">No query found</option>
+                </select>)
+
+           // this.setState({data:this.state});
         }
+        else
+            return (<select id="collegamento">
+                <option value="noP">No file found</option></select>)
+        return temp;
 
 
-    addSelectPredictors=()=>{
-        return  this.state.item.map((pred: any) => pred);
     }
 
 
+
+
     render() {
-        const {predictors,queries} = this.props;
+        const {queries} = this.props;
         return (
             <div>
                 <PanelOptionsGrid>
@@ -64,9 +76,8 @@ class CollegamentoView extends PureComponent<MyProps> {
                         <VerticalGroup>
                             <p>Selezionare uno o più predittori dalla lista</p>
                                 <label htmlFor="predictors">Select predictors:</label>
-                               {this.addSelectPredictors()}
+                               {this.getPredictors()}
 
-                                <button className='btn btn-secondary btn-sm' onClick={()=>this.getPredictors(predictors)}>add predictor</button>
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
