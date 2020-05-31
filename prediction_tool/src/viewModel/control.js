@@ -13,11 +13,14 @@ class Control {
         this.hasFile = null;
         this.json=null;
         this.strategy=null;
+
     }
     setData =(algorithm,data,hasFile)=> {
         this.algorithm = algorithm;
         this.file = data;
         this.hasFile = hasFile;
+        this.strategy=null;
+        this.checkAlgorithm();
     }
     setStrategy =()=>{
         if(this.algorithm==="svm" && this.isSVM()){
@@ -33,25 +36,21 @@ class Control {
     }
     checkAlgorithm =()=> {
         if(this.hasFile===true){
-            if(this.algorithm!=="")
-                if(this.setStrategy())
-                    return true
-                else {
+            if(this.algorithm!=="") {
+                if (this.setStrategy() === false)
                     alert("File CSV incompatibile.");
-                    return false;
-                }
-            else{
-                alert("Algoritmo non selezionato");
-                return false;
             }
+            else
+                alert("Algoritmo non selezionato");
+
         }
-        else {
+        else
             alert("File non inserito.");
-            return false;
-        }
+
     }
     isSVM =()=>{
         if (this.file[0][this.file[0].length - 1] === "label"){
+
             let checkLabel=false;
             for(let i=1;i<this.file.length;i++){
                 if(this.file[i][this.file[0].length - 1]==="1" || this.file[i][this.file[0].length - 1]==="-1")
@@ -72,7 +71,7 @@ class Control {
     }
 
     performTraining =()=> {
-        if(this.checkAlgorithm())
+        if(this.strategy!==null)
             return this.strategy.train();
         else
             return false;
