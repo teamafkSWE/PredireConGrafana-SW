@@ -8,10 +8,14 @@ class SVMTrain extends Train{
     }
     train =()=> {
         this.algorithm.trainSvm();
-        if(this.algorithm.confermaPredizioneSVM())
-            alert("Addestramento avvenuto correttamente.")
-        else
+        if(this.algorithm.confermaPredizioneSVM()) {
+            alert("Addestramento avvenuto correttamente.");
+            return true;
+        }
+        else{
             alert("Addestramento non riuscito.")
+            return false;
+        }
     }
     getCoefficients =()=> {
        return  this.algorithm.Weights();
