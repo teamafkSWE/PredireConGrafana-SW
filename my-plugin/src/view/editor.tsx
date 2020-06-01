@@ -72,7 +72,10 @@ class Editor extends PureComponent<PanelEditorProps<Options>>{
                             </TabsBar>
                             <TabContent>
                                 {state[0].active && <CaricamentoJsonView controller={this._controller} /> }
-                                {state[1].active && <CollegamentoView queries={this.props.data.series} listSelectPredictors={this._controller.getPredictors()} />}
+                                {state[1].active && <CollegamentoView queries={this.props.data.series}
+                                                                      listSelectPredictors={this._controller.getPredictors()}
+                                                                      controller={this._controller}
+                                />}
                                 {state[2].active && <ListaCollegamentiView/>}
                                 {state[3].active && <PrevisioneView/>}
                             </TabContent>

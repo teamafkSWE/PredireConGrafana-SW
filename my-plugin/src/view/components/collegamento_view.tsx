@@ -1,13 +1,8 @@
 import React, {PureComponent} from 'react';
-import {
-    PanelOptionsGrid,
-    PanelOptionsGroup,
-    VerticalGroup,
-    Button,
-    ConfirmButton
-
-} from "@grafana/ui";
+import {Button, ConfirmButton, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
 import {DataFrame} from "@grafana/data";
+import Controller from "../../controller/controller";
+
 //import {Predictor} from "../../types";
 
 
@@ -15,12 +10,26 @@ interface MyProps {
     queries: DataFrame[]
     //getPredictors:()=>void
     listSelectPredictors: any[]
+    controller: Controller
 }
 
 class CollegamentoView extends PureComponent<MyProps> {
     state={
-        data:[] as any
+        data:[] as any,
+        valueMin: 0,
+        valueMax: 0
     }
+
+    constructor(props: Readonly<MyProps>) {
+        super(props);
+
+        const min = this.props.controller.getSogliaMin()
+        this.state.valueMin = min === undefined ? 0 : min
+
+        const max = this.props.controller.getSogliaMax()
+        this.state.valueMax = max === undefined ? 0 : max
+    }
+
     getOptions = (queries: DataFrame[]) => {
         if (queries.length > 0) {
             return <>{queries.map((query:DataFrame ) => <option value={query.name}>{query.name}</option>)}</>
@@ -64,8 +73,15 @@ class CollegamentoView extends PureComponent<MyProps> {
 
     }
 
+    handleChangeMin = (event: any) => {
+        this.setState({valueMin: event.target.value});
+        this.props.controller.setSogliaMin(event.target.value);
+    }
 
-
+    handleChangeMax = (event: any) => {
+        this.setState({valueMax: event.target.value});
+        this.props.controller.setSogliaMax(event.target.value);
+    }
 
     render() {
         const {queries} = this.props;
@@ -96,12 +112,15 @@ class CollegamentoView extends PureComponent<MyProps> {
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Impostazione soglie">
-                        <h1>TO DO: </h1>
-                        <ul>
-                            <li>
-                                <p>aggiungere componente per impostazione soglie.</p>
-                            </li>
-                        </ul>
+                        <form>
+                            <label htmlFor="sogliaMin">Min:</label>
+                            <input type="number" id="sogliaMin" value={this.state.valueMin} onChange={this.handleChangeMin}/>
+                            <p></p>
+                            <label htmlFor="sogliaMax">Max:</label>
+                            <input type="number" id="sogliaMax" value={this.state.valueMax} onChange={this.handleChangeMax}/>
+                            <p></p>
+                            {console.log(this.state.valueMin, this.state.valueMax)}
+                        </form>
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Conferma Collegamento">
@@ -123,7 +142,6 @@ class CollegamentoView extends PureComponent<MyProps> {
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
-
 
                 </PanelOptionsGrid>
 

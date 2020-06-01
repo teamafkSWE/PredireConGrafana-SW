@@ -10,6 +10,8 @@ export default class Controller extends Observable {
     private _predictors: Predictor[] = []
     private _b: number | undefined;
     private _algorithm: Algorithm | undefined;
+    private _sogliaMin: number | undefined;
+    private _sogliaMax: number | undefined;
 
     private _definePredictors = () => {
         this._predictors = [];
@@ -75,6 +77,14 @@ export default class Controller extends Observable {
         return this._predictors
     }
 
+    public getSogliaMin = () =>{
+        return this._sogliaMin;
+    }
+
+    public getSogliaMax = () =>{
+        return this._sogliaMax;
+    }
+
     public getB = () => {
         return this._b
     }
@@ -84,5 +94,14 @@ export default class Controller extends Observable {
             return this._algorithm.predict(inputs);
         return
     }
+
+    public setSogliaMin = (valueSogliaMin: number) => {
+        this._sogliaMin = valueSogliaMin;
+    }
+
+    public setSogliaMax = (valueSogliaMax: number) => {
+        this._sogliaMax = valueSogliaMax;
+    }
+
 }
 
