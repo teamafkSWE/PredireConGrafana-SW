@@ -53,7 +53,7 @@ class SupportSvm {
     Weights =()=> {
         return this.weights;
     }
-    confermaPredizioneSVM =()=> {
+    confermaPredizioneSvm =()=> {
         if(this.weights!==null)
             return  true;
         else
@@ -61,7 +61,7 @@ class SupportSvm {
     }
 
     JSONData =()=> {
-        if(this.confermaPredizioneSVM() === true) {
+        if(this.confermaPredizioneSvm() === true) {
             const myData = {
                 author: 'TeamAFK',
                 version: '1.0.0',

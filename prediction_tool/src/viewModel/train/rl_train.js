@@ -1,27 +1,28 @@
-import SupportSvm from "../model/train_svm";
+import Reg from "../../model/train_reg";
 import Train from "./interface_train";
-class SVMTrain extends Train{
+class RLTrain extends Train {
     algorithm=null;
-    constructor(dataSVM) {
+    constructor(dataRl) {
         super();
-        this.algorithm=new SupportSvm(dataSVM);
+        this.algorithm=new Reg(dataRl);
     }
     train =()=> {
-        this.algorithm.trainSvm();
-        if(this.algorithm.confermaPredizioneSVM()) {
+        this.algorithm.insert();
+        if(this.algorithm.trainRl()){
             alert("Addestramento avvenuto correttamente.");
             return true;
         }
         else{
-            alert("Addestramento non riuscito.")
+            alert("Addestramento non riuscito.");
             return false;
         }
     }
     getCoefficients =()=> {
-       return  this.algorithm.Weights();
+       return  this.algorithm.getCoefficientsRl();
     }
     getJSON =()=> {
         return this.algorithm.JSONData();
     }
 }
-export default SVMTrain;
+
+export default RLTrain;

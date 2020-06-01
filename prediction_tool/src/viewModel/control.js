@@ -1,5 +1,5 @@
-import RLTrain from "./rl_train"
-import SVMTrain from "./svm_train"
+import RLTrain from "./train/rl_train"
+import SVMTrain from "./train/svm_train"
 class Control {
     algorithm;
     file;
@@ -77,6 +77,7 @@ class Control {
             return false;
     }
     getJsonContent =()=> {
+      if(this.strategy!==null)
         return this.strategy.getJSON();
     }
 
