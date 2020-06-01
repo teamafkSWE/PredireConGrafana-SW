@@ -8,14 +8,14 @@ interface Props {
     controller: Controller
 }
 
-class CaricamentoJsonView extends PureComponent<Props> implements Observer{
+class CaricamentoJsonView extends PureComponent<Props> implements Observer {
 
     constructor(props: Readonly<Props>) {
         super(props);
         props.controller.attach(this)
         const json = this.props.controller.getJson()
         const file = this.props.controller.getFile()
-        const filename = file === undefined ? '':file.name
+        const filename = file === undefined ? '' : file.name
         this.state = {
             filename: filename,
             jsonContent: JSON.stringify(json, null, 2)
@@ -31,17 +31,14 @@ class CaricamentoJsonView extends PureComponent<Props> implements Observer{
         jsonContent: ''
     }
 
-    update(): void {
+    update(): void { //invocata dal controller nel momento in cui viene letto il file json
         const json = this.props.controller.getJson()
         const file = this.props.controller.getFile()
-        const filename = file === undefined ? '':file.name
+        const filename = file === undefined ? '' : file.name
         this.setState({jsonContent: JSON.stringify(json, null, 2), filename: filename})
     }
 
     render() {
-        //const file = this.props.controller.getFile()
-        //const filename = file === undefined ? '':file.name
-        console.log(this.state)
         return (
             <PanelOptionsGrid>
                 <PanelOptionsGroup title="Inserimento file JSON">
