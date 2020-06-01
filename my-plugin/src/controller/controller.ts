@@ -4,7 +4,7 @@ import Algorithm from "../model/algorithm";
 import {Svm, SvmData} from "../model/algorithms/svm";
 import {Regression, RLData} from "../model/algorithms/regression";
 
-// Prova per alessandro
+// Prova per alessandrooooo
 
 export default class Controller extends Observable {
     private _json: any
