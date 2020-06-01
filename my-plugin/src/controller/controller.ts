@@ -3,6 +3,7 @@ import Observable from "./observable";
 import Algorithm from "../model/algorithm";
 import {Svm, SvmData} from "../model/algorithms/svm";
 import {Regression, RLData} from "../model/algorithms/regression";
+import {DataFrame} from "@grafana/data";
 
 export default class Controller extends Observable {
     private _json: any
@@ -12,6 +13,7 @@ export default class Controller extends Observable {
     private _algorithm: Algorithm | undefined;
     private _sogliaMin: number | undefined;
     private _sogliaMax: number | undefined;
+    private _query: DataFrame[] = [];
 
     private _definePredictors = () => {
         this._predictors = [];
@@ -85,6 +87,10 @@ export default class Controller extends Observable {
         return this._sogliaMax;
     }
 
+    public getQuery = () => {
+        return this._query;
+    }
+
     public getB = () => {
         return this._b
     }
@@ -101,6 +107,16 @@ export default class Controller extends Observable {
 
     public setSogliaMax = (valueSogliaMax: number) => {
         this._sogliaMax = valueSogliaMax;
+    }
+
+    public setQuery = (query: DataFrame[]) => {
+        this._query = query;
+    }
+
+    public setController = (query: DataFrame[], valueSogliaMin: number, valueSogliaMax: number) =>{
+        this.setQuery(query);
+        this.setSogliaMax(valueSogliaMin);
+        this.setSogliaMin(valueSogliaMax);
     }
 
 }
