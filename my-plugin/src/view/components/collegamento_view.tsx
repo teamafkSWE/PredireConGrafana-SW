@@ -47,30 +47,30 @@ class CollegamentoView extends PureComponent<MyProps> {
             console.log(queries)
             if (queries.length > 0) {
                 for (let i=0;i<predictors.length;i++) {
-                    let name=predictors[i].name+":";
+                    let name=predictors[i].name;
                     temp.push(
-                    <label>{name}
-                    <select id="collegamento">
-                            {queries.map((query:DataFrame ) => <option value={query.name}>{query.name}</option>)}
-
-                    </select></label>
+                        <label>{name}:
+                            <select id={name} onChange={this.prova}>
+                                <option value="">select node</option>
+                                {queries.map((query:DataFrame ) => <option value={query.name}>{query.name}</option>)}
+                            </select></label>
                     );
-
                 }
                 console.log(temp)
             } else
                 return(<select id="collegamento">
                     <option value="noQ">No query found</option>
                 </select>)
-
-           // this.setState({data:this.state});
         }
         else
             return (<select id="collegamento">
                 <option value="noP">No file found</option></select>)
         return temp;
+    }
 
-
+    prova=(e:any)=>{
+        console.log(e.target.id);
+        console.log(e.target.value);
     }
 
     handleChangeMin = (event: any) => {
@@ -92,7 +92,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                         <VerticalGroup>
                             <p>Selezionare uno o più predittori dalla lista</p>
                                 <label htmlFor="predictors">Select predictors:</label>
-                               {this.getPredictors()}
+                            {this.getPredictors()}
 
                         </VerticalGroup>
 
