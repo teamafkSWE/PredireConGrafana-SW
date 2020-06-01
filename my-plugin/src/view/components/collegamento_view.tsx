@@ -9,7 +9,6 @@ import Controller from "../../controller/controller";
 interface MyProps {
     queries: DataFrame[]
     //getPredictors:()=>void
-    listSelectPredictors: any[]
     controller: Controller
 }
 
@@ -17,7 +16,8 @@ class CollegamentoView extends PureComponent<MyProps> {
     state={
         data:[] as any,
         valueMin: 0,
-        valueMax: 0
+        valueMax: 0,
+        connectionsList: [] as any
     }
 
     constructor(props: Readonly<MyProps>) {
@@ -28,6 +28,10 @@ class CollegamentoView extends PureComponent<MyProps> {
 
         const max = this.props.controller.getSogliaMax()
         this.state.valueMax = max === undefined ? 0 : max
+        let listSelectPredictors=this.props.controller.getPredictors();
+        for (let i=0;i<listSelectPredictors.length;i++) {
+            this.state.connectionsList.push({predictor:listSelectPredictors[i].name,query:undefined})
+        }
     }
 
     getOptions = (queries: DataFrame[]) => {
@@ -39,24 +43,22 @@ class CollegamentoView extends PureComponent<MyProps> {
 
 
     getPredictors = () =>{
-        let predictors=this.props.listSelectPredictors;
+        let predictors=this.props.controller.getPredictors();
         const {queries} = this.props;
 
         let temp=[];
         if (predictors.length !== 0) {
-            console.log(queries)
             if (queries.length > 0) {
                 for (let i=0;i<predictors.length;i++) {
                     let name=predictors[i].name;
                     temp.push(
                         <label>{name}:
-                            <select id={name} onChange={this.prova}>
+                            <select id={name} onChange={this.pushConnectionsList}>
                                 <option value="">select node</option>
                                 {queries.map((query:DataFrame ) => <option value={query.name}>{query.name}</option>)}
                             </select></label>
                     );
                 }
-                console.log(temp)
             } else
                 return(<select id="collegamento">
                     <option value="noQ">No query found</option>
@@ -68,10 +70,32 @@ class CollegamentoView extends PureComponent<MyProps> {
         return temp;
     }
 
-    prova=(e:any)=>{
-        console.log(e.target.id);
-        console.log(e.target.value);
+    pushConnectionsList=(e:any)=>{
+
+        for (let i=0;i<this.state.connectionsList.length;i++) {
+            if(e.target.id===this.state.connectionsList[i].predictor){
+                this.state.connectionsList[i].query=e.target.value;
+            }
+        }
+
     }
+    sendConnectionToController=()=>{
+        let notUndefined=true;
+        for (let i=0;i<this.state.connectionsList.length;i++) {
+           if(this.state.connectionsList[i].query===undefined)
+               notUndefined=false;
+        }
+
+        if(notUndefined===true){
+            this.props.controller.setListPredictorQuery(this.state.connectionsList)
+            alert("collegamento inserito");
+        }
+        else
+            alert("collega tutti i predittori");
+    }
+
+
+
 
     handleChangeMin = (event: any) => {
         this.setState({valueMin: event.target.value});
@@ -84,6 +108,7 @@ class CollegamentoView extends PureComponent<MyProps> {
     }
 
     render() {
+
         const {queries} = this.props;
         return (
             <div>
@@ -93,7 +118,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                             <p>Selezionare uno o più predittori dalla lista</p>
                                 <label htmlFor="predictors">Select predictors:</label>
                             {this.getPredictors()}
-
+                            <button onClick={()=>this.sendConnectionToController()}>prova</button>
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
@@ -129,16 +154,6 @@ class CollegamentoView extends PureComponent<MyProps> {
                             <ConfirmButton onConfirm={confirm}>Conferma collegamento</ConfirmButton>
                             <Button>Visualizza Collegamenti</Button>
                             <Button>Visualizza Collegamenti</Button>
-                            <h1>TO DO: </h1>
-                            <ul>
-                                <li>
-                                    <p>aggiungere button per conferma collegamento("Aggiunge il collegamento alla lista").</p>
-                                </li>
-                                <li>
-                                    <p>aggiungere reference a visualizzazione lista collegamenti.</p>
-                                </li>
-                            </ul>
-
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
