@@ -1,25 +1,40 @@
 import React, {PureComponent} from 'react';
 import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup, Button} from "@grafana/ui";
+import Controller from "../../controller/controller";
 
-class ListaCollegamentiView extends PureComponent {
+interface MyProps {
+
+    controller: Controller
+}
+
+class ListaCollegamentiView extends PureComponent<MyProps> {
 
 
+    showConnection=()=>{
 
+        let list=this.props.controller.getListPredictorQuery();
+        console.log(list);
+        if(list=== undefined)
+            return <label>nessun collegamento inserito</label>
+        else {
+            return (list.map((list:any) => <label>{list.predictor}----->{list.query}</label>))
+        }
+    }
     render() {
+
         return (
             <div>
                 <PanelOptionsGrid>
 
                     <PanelOptionsGroup title="Lista collegamenti">
                         <h1>TO DO: </h1>
-                        <ul>
-                            <li>
-                                <p>aggiugere label "Selezionare collegamento";</p>
-                            </li>
-                            <li>
-                                <p>aggiungere componente lista per la selezione dei collegamenti.</p>
-                            </li>
-                        </ul>
+
+                        <VerticalGroup>
+                            <p>Predittore------->Query</p>
+                            {this.showConnection()}
+                            <p>---------------------------</p>
+                        </VerticalGroup>
+
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Opzioni collegamenti">
