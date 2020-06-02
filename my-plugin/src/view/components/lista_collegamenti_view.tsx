@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
-import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup, Button} from "@grafana/ui";
+import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup, Button, HorizontalGroup} from "@grafana/ui";
 import Controller from "../../controller/controller";
+//import {DataFrame} from "@grafana/data";
 
 interface MyProps {
 
@@ -12,12 +13,33 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
 
     showConnection=()=>{
 
-        let list=this.props.controller.getListPredictorQuery();
-        console.log(list);
-        if(list=== undefined)
+        let objNameList=this.props.controller.getListPredictorQuery();
+        let viewNameList=[];
+        console.log(objNameList);
+        if(objNameList.length=== 0)
             return <label>nessun collegamento inserito</label>
         else {
-            return (list.map((list:any) => <label>{list.predictor}----->{list.query}</label>))
+            for (let i=0;i<objNameList.length;i++) {
+                let name=objNameList[i].name;
+                let list=objNameList[i].list;
+                viewNameList.push(
+                    <div>
+                        <HorizontalGroup>
+                            <label>{name}:</label>
+                            <Button>Modifica collegamento</Button>
+                            <Button>Avvia monitoraggio</Button>
+                            <Button>Elimina Collegamento</Button>
+                        </HorizontalGroup>
+                        <p>
+                            {list.map((list:any) => <p>{list.predictor}----->{list.query}</p>)}
+                            <p>---------------------------------</p>
+                        </p>
+                    </div>
+
+                );
+            }
+
+            return viewNameList;
         }
     }
     render() {
@@ -32,7 +54,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
                         <VerticalGroup>
                             <p>Predittore------->Query</p>
                             {this.showConnection()}
-                            <p>---------------------------</p>
+
                         </VerticalGroup>
 
                     </PanelOptionsGroup>

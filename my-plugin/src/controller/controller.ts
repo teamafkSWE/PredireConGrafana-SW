@@ -14,7 +14,7 @@ export default class Controller extends Observable {
     private _sogliaMin: number | undefined;
     private _sogliaMax: number | undefined;
     private _query: DataFrame[] = [];
-    private _listPredictorQuery: [] =[];
+    private _listPredictorQuery: {name:string,list:[]}[] =[];
 
     private _definePredictors = () => {
         this._predictors = [];
@@ -118,9 +118,9 @@ export default class Controller extends Observable {
         this._query = query;
     }
 
-    public setListPredictorQuery = (list:[]) => {
+    public setListPredictorQuery = (obj:{name:string,list:[]}) => {
       //  this._listPredictorQuery.push(list);
-        list.forEach(element=>this._listPredictorQuery.push(element));
+  this._listPredictorQuery.push({name:obj.name,list:obj.list});
     }
 
     public setController = (query: DataFrame[], valueSogliaMin: number, valueSogliaMax: number,) =>{
