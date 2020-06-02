@@ -9,26 +9,29 @@ interface MyProps {
 }
 
 class ListaCollegamentiView extends PureComponent<MyProps> {
+    showId=(e:any)=>{
 
-
+       // console.log(e.target.id);
+        this.props.controller.removeListPredictorQuery(e.target.id);
+    }
     showConnection=()=>{
-
         let objNameList=this.props.controller.getListPredictorQuery();
         let viewNameList=[];
+
         console.log(objNameList);
         if(objNameList.length=== 0)
             return <label>nessun collegamento inserito</label>
         else {
             for (let i=0;i<objNameList.length;i++) {
+                let id=objNameList[i].id;
                 let name=objNameList[i].name;
                 let list=objNameList[i].list;
                 viewNameList.push(
                     <div>
                         <HorizontalGroup>
                             <label>{name}:</label>
-                            <Button>Modifica collegamento</Button>
-                            <Button>Avvia monitoraggio</Button>
-                            <Button>Elimina Collegamento</Button>
+                            <button  className='btn btn-secondary btn-sm'>Modifica collegamento</button>
+                            <button id={id} onClick={this.showId} className='btn btn-secondary btn-sm'>Elimina Collegamento</button>
                         </HorizontalGroup>
                         <p>
                             {list.map((list:any) => <p>{list.predictor}----->{list.query}</p>)}
