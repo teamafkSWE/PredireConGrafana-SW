@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
 import {Button, ConfirmButton, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
 import {DataFrame} from "@grafana/data";
+//import {DataFrame, timeZoneAbbrevation} from "@grafana/data";
+
 import Controller from "../../controller/controller";
 
 //import {Predictor} from "../../types";
@@ -14,9 +16,9 @@ interface MyProps {
 
 class CollegamentoView extends PureComponent<MyProps> {
     state={
-        data:[] as any,
         valueMin: 0,
         valueMax: 0,
+        nameConnection: "",
         connectionsList: [] as any
     }
 
@@ -49,9 +51,11 @@ class CollegamentoView extends PureComponent<MyProps> {
         let temp=[];
         if (predictors.length !== 0) {
             if (queries.length > 0) {
+
                 for (let i=0;i<predictors.length;i++) {
                     let name=predictors[i].name;
                     temp.push(
+
                         <label>{name}:
                             <select id={name} onChange={this.pushConnectionsList}>
                                 <option value="">select node</option>
@@ -67,9 +71,18 @@ class CollegamentoView extends PureComponent<MyProps> {
         else
             return (<select id="collegamento">
                 <option value="noP">No file found</option></select>)
-        return temp;
+        return (
+            <div>
+            <input type="text" placeholder="enter name connection" onChange={this.setName} />
+            {temp}
+            </div>
+        );
     }
 
+
+    setName=(e:any)=>{
+        this.setState({nameConnection:e.target.value})
+    }
     pushConnectionsList=(e:any)=>{
 
         for (let i=0;i<this.state.connectionsList.length;i++) {
@@ -82,12 +95,13 @@ class CollegamentoView extends PureComponent<MyProps> {
     sendConnectionToController=()=>{
         let notUndefined=true;
         for (let i=0;i<this.state.connectionsList.length;i++) {
-           if(this.state.connectionsList[i].query===undefined)
+           if(this.state.connectionsList[i].query===undefined || this.state.nameConnection==="")
                notUndefined=false;
         }
 
-        if(notUndefined===true){
-            this.props.controller.setListPredictorQuery(this.state.connectionsList)
+        if(notUndefined){
+
+            this.props.controller.setListPredictorQuery({name:this.state.nameConnection,list:this.state.connectionsList})
             alert("collegamento inserito");
         }
         else
@@ -108,7 +122,7 @@ class CollegamentoView extends PureComponent<MyProps> {
     }
 
     render() {
-
+        console.log(this.state.nameConnection)
         const {queries} = this.props;
         return (
             <div>
