@@ -11,7 +11,9 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
 
 
     showConnection=()=>{
+
         let list=this.props.controller.getListPredictorQuery();
+        console.log(list);
         if(list=== undefined)
             return <label>nessun collegamento inserito</label>
         else {
@@ -19,6 +21,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
         }
     }
     render() {
+
         return (
             <div>
                 <PanelOptionsGrid>
@@ -29,6 +32,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
                         <VerticalGroup>
                             <p>Predittore------->Query</p>
                             {this.showConnection()}
+                            <p>---------------------------</p>
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
