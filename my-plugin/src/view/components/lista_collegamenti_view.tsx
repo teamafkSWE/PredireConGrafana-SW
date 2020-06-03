@@ -16,7 +16,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
         let objNameList=this.props.controller.getListPredictorQuery();
         let viewNameList=[];
         if(objNameList.length=== 0)
-            return <label>nessun collegamento inserito</label>
+            return <label style={{fontStyle: "italic"}}>Nessun collegamento inserito.</label>
         else {
             for (let i=0;i<objNameList.length;i++) {
                 let id=objNameList[i].id;
@@ -48,7 +48,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
 
                     <PanelOptionsGroup title="Lista collegamenti">
                         <VerticalGroup>
-                            <p>Predittore ---> Query</p>
+                            <p style={{fontStyle: "italic"}}>Legenda: Predittore ---> Query</p>
                             {this.showConnection()}
                         </VerticalGroup>
 
@@ -60,7 +60,6 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
                         <VerticalGroup spacing="md">
                             <Button>Modifica collegamento</Button>
                             <Button>Scollega predittore</Button>
-                            <Button>Nuovo Collegamento</Button>
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
