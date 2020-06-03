@@ -1,7 +1,7 @@
 
 import SVMTrain from "../model/svm_train";
 import RLTrain from "../model/rl_train";
-class Control {
+class ViewModel {
     algorithm;
     file;
     hasFile;
@@ -91,4 +91,4 @@ class Control {
 
 }
 
-export default Control;
+export default ViewModel;

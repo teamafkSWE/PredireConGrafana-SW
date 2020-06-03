@@ -4,12 +4,12 @@ import './app.css';
 import Header from "./uiComponents/header";
 import InsertCsvButton from "./uiComponents/insert_csv_button"
 import ComboBoxAlgorithm from "./uiComponents/combo_box_algorithm"
-import Control from "../viewModel/control";
+import ViewModel from "../viewModel/viewModel";
 import TrainButton from "./uiComponents/train_button";
 import DownloadJson from "./uiComponents/download_Json";
 import Chart from "./uiComponents/chart";
 class App extends Component{
-  control=null;
+  viewModel=null;
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +19,7 @@ class App extends Component{
             algorithm: "",
             jsonData:null
         }
-         this.control= new Control();
+         this.viewModel= new ViewModel();
     }
     changeAlgorithm =(event)=> {
         this.setState({algorithm: event.target.value});
@@ -31,14 +31,14 @@ class App extends Component{
         this.setState({data:data, fileName: fileInfo.name, hasFile:true,algorithm:'',jsonData:null});
     };
     handleTraining =()=> {
-        this.control.setData(this.state.algorithm,this.state.data,this.state.hasFile)
-        let success=this.control.performTraining();
+        this.viewModel.setData(this.state.algorithm,this.state.data,this.state.hasFile)
+        let success=this.viewModel.performTraining();
         if(success===false){
             this.resetAlgorithm("");
             this.setState({jsonData:null});
         }
         else {
-            this.setState({jsonData:this.control.getJsonContent()});
+            this.setState({jsonData:this.viewModel.getJsonContent()});
         }
     }
 
@@ -66,7 +66,7 @@ class App extends Component{
                 </div>
             </div>
             <div id={"chart"}>
-                <Chart dataChart={this.control.getChartData()} json={this.state.jsonData}/>
+                <Chart dataChart={this.viewModel.getChartData()} json={this.state.jsonData}/>
             </div>
         </div>
     );
