@@ -1,9 +1,27 @@
 import React, {PureComponent} from 'react';
-import {PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
+import {Button, PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
+//import Calendar from 'react-calendar'
+import DatePicker from 'react-datepicker/dist/react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
-class PrevisioneView extends PureComponent {
+class PrevisioneView extends PureComponent  {
 
+    state = {
+        startDate: new Date(),
+        endDate: new Date()
+    };
 
+    handleChangeStartDate = (date:any) => {
+        this.setState({
+            startDate: date
+        });
+    };
+
+    handleChangeEndDate = (date:any) => {
+        this.setState({
+            endDate: date
+        });
+    };
 
     render() {
         return (
@@ -11,27 +29,42 @@ class PrevisioneView extends PureComponent {
                 <PanelOptionsGrid>
 
                     <PanelOptionsGroup title="Selezione politica temporale">
-                        <h1>TO DO: </h1>
-                        <ul>
-                            <li>
-                                <p>aggiugere label "Selezionare una politica temporale per la previsione";</p>
-                            </li>
-                            <li>
-                                <p>aggiungere componente per inserimento temporale ore:min:sec.</p>
-                            </li>
-                        </ul>
+                        <p>Definisci la politica temporale:</p>
+                        <form id="datePicker">
+                            <label htmlFor="datePickerStart">Seleziona la data di inizio:</label>
+                            <div id="datePickerStart">
+                                <DatePicker
+                                    dateFormat="yyyy/MM/dd"
+                                    selected={this.state.startDate}
+                                    onChange={this.handleChangeStartDate}
+                                    startDate={this.state.startDate}
+                                    endDate={this.state.endDate}
+                                />
+                            </div>
+                            <p></p>
+                            <label htmlFor="datePickerEnd">Seleziona la data di fine:</label>
+                            <div id="datePickerEnd">
+                                <DatePicker
+                                    dateFormat="yyyy/MM/dd"
+                                    selected={this.state.endDate}
+                                    onChange={this.handleChangeEndDate}
+                                    startDate={this.state.startDate}
+                                    endDate={this.state.endDate}
+                                    minDate={this.state.startDate}
+                                />
+                            </div>
+                        </form>
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Monitoraggio">
-                        <h1>TO DO: </h1>
-                        <ul>
-                            <li>
-                                <p>aggiungere pulsante di avvio monitoraggio/interruzione;</p>
-                            </li>
-                            <li>
-                                <p>aggiungere componente di salvataggio previsione(?).</p>
-                            </li>
-                        </ul>
+                        <div id="bottoniMonitoraggio" style={{display: "inline-block"}}>
+                            <Button>Avvia monitoraggio</Button>
+                            <Button style={{marginLeft: "20px"}}>Interrompi monitoraggio</Button>
+                        </div>
+                    </PanelOptionsGroup>
+
+                    <PanelOptionsGroup title="Salvataggio previsione">
+                        <Button>Salva previsione</Button>
                     </PanelOptionsGroup>
 
                 </PanelOptionsGrid>

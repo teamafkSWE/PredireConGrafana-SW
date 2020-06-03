@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Button, ConfirmButton, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
+import {Button, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
 import {DataFrame} from "@grafana/data";
 //import {DataFrame, timeZoneAbbrevation} from "@grafana/data";
 
@@ -57,8 +57,8 @@ class CollegamentoView extends PureComponent<MyProps> {
                     temp.push(
                         <p>
                         <label>{name}:
-                            <select id={name} onChange={this.pushConnectionsList}>
-                                <option value="">select node</option>
+                            <select id={name} onChange={this.pushConnectionsList} style={{margin: "10px"}}>
+                                <option value="" >Seleziona il nodo</option>
                                 {queries.map((query:DataFrame ) => <option value={query.name}>{query.name}</option>)}
                             </select></label>
                         </p>
@@ -74,7 +74,8 @@ class CollegamentoView extends PureComponent<MyProps> {
                 <option value="noP">No file found</option></select>)
         return (
             <div>
-            <input type="text" placeholder="ID the connection" onChange={this.setName} />
+                <label htmlFor={"nome_collegamento"}>Nome del collegamento:</label>
+                <input type="text" placeholder="nome_collegamento" id="nome_collegamento" onChange={this.setName} style={{marginLeft: "10px"}} />
             {temp}
             </div>
         );
@@ -103,10 +104,10 @@ class CollegamentoView extends PureComponent<MyProps> {
         if(notUndefined){
 
             this.props.controller.setListPredictorQuery({name:this.state.nameConnection,list:this.state.connectionsList})
-            alert("collegamento inserito");
+            alert("Collegamento inserito.");
         }
         else
-            alert("collega tutti i predittori");
+            alert("Collega tutti i predittori.");
     }
 
 
@@ -129,34 +130,28 @@ class CollegamentoView extends PureComponent<MyProps> {
                 <PanelOptionsGrid>
                     <PanelOptionsGroup title="Lista predittori">
                         <VerticalGroup>
-                            <p>Effettuare collegamenti per tutti i predittori</p>
-                                <label htmlFor="predictors">Select predictors:</label>
+                            <p style={{fontStyle: "italic"}}>
+                                Attenzione: effettuare i collegamenti per tutti i predittori.
+                            </p>
                             {this.getPredictors()}
-                            <button onClick={()=>this.sendConnectionToController()}>Insert Connection</button>
+                            <p></p>
+                            <Button onClick={()=>this.sendConnectionToController()}>Inserisci collegamento</Button>
                         </VerticalGroup>
-
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Impostazione soglie">
+                        <p style={{fontStyle: "italic"}}> Attenzione: vanno impostate entrambe le soglie. </p>
                         <form>
                             <label htmlFor="sogliaMin">Min:</label>
-                            <input type="number" id="sogliaMin" value={this.state.valueMin} onChange={this.handleChangeMin}/>
+                            <input type="number" id="sogliaMin" value={this.state.valueMin} onChange={this.handleChangeMin} style={{marginLeft: "10px"}}/>
                             <p></p>
                             <label htmlFor="sogliaMax">Max:</label>
-                            <input type="number" id="sogliaMax" value={this.state.valueMax} onChange={this.handleChangeMax}/>
+                            <input type="number" id="sogliaMax" value={this.state.valueMax} onChange={this.handleChangeMax} style={{marginLeft: "10px"}}/>
                             <p></p>
                             {console.log(this.state.valueMin, this.state.valueMax)}
                         </form>
-                    </PanelOptionsGroup>
-
-                    <PanelOptionsGroup title="Conferma Collegamento">
-
-                        <VerticalGroup spacing={"lg"}>
-                            <ConfirmButton onConfirm={confirm}>Conferma collegamento</ConfirmButton>
-                            <Button>Visualizza Collegamenti</Button>
-                            <Button>Visualizza Collegamenti</Button>
-                        </VerticalGroup>
-
+                        <p></p>
+                        <Button>Conferma collegamento</Button>
                     </PanelOptionsGroup>
 
                 </PanelOptionsGrid>
