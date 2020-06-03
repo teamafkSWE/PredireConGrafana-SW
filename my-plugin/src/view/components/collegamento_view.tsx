@@ -14,22 +14,29 @@ interface MyProps {
     controller: Controller
 }
 
-class CollegamentoView extends PureComponent<MyProps> {
-    state={
-        valueMin: 0,
-        valueMax: 0,
-        nameConnection: "",
-        connectionsList: [] as any
-    }
+interface State {
+    valueMin: number,
+    valueMax: number,
+    nameConnection: string,
+    connectionsList: {predictor: string, query:string|undefined}[]
+}
+
+class CollegamentoView extends PureComponent<MyProps, State> {
 
     constructor(props: Readonly<MyProps>) {
         super(props);
 
-        const min = this.props.controller.getSogliaMin()
-        this.state.valueMin = min === undefined ? 0 : min
+        this.state = {
+            valueMin: 0,
+            valueMax: 0,
+            nameConnection: "",
+            connectionsList: []
+        }
 
+        const min = this.props.controller.getSogliaMin()
         const max = this.props.controller.getSogliaMax()
-        this.state.valueMax = max === undefined ? 0 : max
+
+        this.setState({valueMin:min === undefined ? 0 : min, valueMax: max === undefined ? 0 : max})
         let listSelectPredictors=this.props.controller.getPredictors();
         for (let i=0;i<listSelectPredictors.length;i++) {
             this.state.connectionsList.push({predictor:listSelectPredictors[i].name,query:undefined})
@@ -101,8 +108,7 @@ class CollegamentoView extends PureComponent<MyProps> {
         }
 
         if(notUndefined){
-
-            this.props.controller.setListPredictorQuery({name:this.state.nameConnection,list:this.state.connectionsList})
+            this.props.controller.setListPredictorQuery({name:this.state.nameConnection,list:(this.state.connectionsList as {predictor: string, query:string}[])})
             alert("collegamento inserito");
         }
         else

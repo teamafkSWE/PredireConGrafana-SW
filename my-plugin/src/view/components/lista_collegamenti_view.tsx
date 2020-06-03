@@ -21,7 +21,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
             for (let i=0;i<objNameList.length;i++) {
                 let id=objNameList[i].id;
                 let name=objNameList[i].name;
-                let list=objNameList[i].list;
+                let list=objNameList[i].queries;
                 viewNameList.push(
                     <div>
                         <HorizontalGroup>
