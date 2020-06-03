@@ -1,4 +1,4 @@
-import SupportSvm from "./train/train_svm"
+import SupportSvm from "./train/support_svm"
 import Train from "./abstractTrain";
 class SVMTrain extends Train{
     algorithm=null;

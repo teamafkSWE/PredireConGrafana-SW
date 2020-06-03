@@ -1,10 +1,10 @@
-import Reg from "./train/train_reg";
+import SupportRl from "./train/support_rl";
 import Train from "./abstractTrain";
 class RLTrain extends Train {
     algorithm=null;
     constructor(dataRl) {
         super();
-        this.algorithm=new Reg(dataRl);
+        this.algorithm=new SupportRl(dataRl);
     }
     train =()=> {
         this.algorithm.insert();
