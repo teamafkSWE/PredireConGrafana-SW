@@ -123,7 +123,6 @@ class CollegamentoView extends PureComponent<MyProps> {
     }
 
     render() {
-        console.log(this.state.nameConnection)
         return (
             <div>
                 <PanelOptionsGrid>
@@ -145,7 +144,6 @@ class CollegamentoView extends PureComponent<MyProps> {
                             <label htmlFor="sogliaMax">Max:</label>
                             <input type="number" id="sogliaMax" value={this.state.valueMax} onChange={this.handleChangeMax}/>
                             <p></p>
-                            {console.log(this.state.valueMin, this.state.valueMax)}
                         </form>
                     </PanelOptionsGroup>
 

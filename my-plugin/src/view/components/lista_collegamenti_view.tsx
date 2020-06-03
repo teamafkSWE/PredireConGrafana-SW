@@ -10,15 +10,11 @@ interface MyProps {
 
 class ListaCollegamentiView extends PureComponent<MyProps> {
     showId=(e:any)=>{
-
-       // console.log(e.target.id);
         this.props.controller.removeListPredictorQuery(e.target.id);
     }
     showConnection=()=>{
         let objNameList=this.props.controller.getListPredictorQuery();
         let viewNameList=[];
-
-        console.log(objNameList);
         if(objNameList.length=== 0)
             return <label>nessun collegamento inserito</label>
         else {
@@ -69,10 +65,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
 
                     </PanelOptionsGroup>
                 </PanelOptionsGrid>
-
             </div>
-
-
         );
     }
 }
