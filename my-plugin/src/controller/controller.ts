@@ -3,20 +3,21 @@ import Observable from "./observable";
 import Algorithm from "../model/algorithm";
 import {Svm, SvmData} from "../model/algorithms/svm";
 import {Regression, RLData} from "../model/algorithms/regression";
-import {DataFrame} from "@grafana/data";
+import {DataFrame, FieldType} from "@grafana/data";
 
 export default class Controller extends Observable {
-    private _json: any
-    private _file: File | undefined
-    private _predictors: Predictor[] = []
+    private _json: any;
+    private _file: File | undefined;
+    private _predictors: Predictor[] = [];
     private _b: number | undefined;
     private _algorithm: Algorithm | undefined;
     private _sogliaMin: number | undefined;
     private _sogliaMax: number | undefined;
-    private _queries: DataFrame[] = [];
-    private _listPredictorQuery: { id: string, name: string, list: [] }[] = [];
-    private _indexListPredictorQuery = 0;
+    private _queries: DataFrame[] = []; //a che serve questo campo?
+    private _connections: { id: string, name: string, queries: { predictor: string, query: string }[] }[] = [];
+    private _newConnectionIndex = 0; //attenzione, può solo incrementare, non credo vada bene
     private _isMonitoring: boolean = false;
+    private _predictedData: { name: string, data: number[][] }[] = [];
 
     private _definePredictors = () => {
         this._predictors = [];
@@ -59,6 +60,7 @@ export default class Controller extends Observable {
         const fr = new FileReader()
         fr.onload = (event) => {
             if (event.target !== null && typeof event.target.result === "string") {
+                //todo: aggiungere controllo in caso il json caricato non contenga le informazioni a noi utili
                 this._json = JSON.parse(event.target.result);
                 this._definePredictors()
                 this._setStrategy()
@@ -68,16 +70,6 @@ export default class Controller extends Observable {
         }
         fr.readAsText(file);
         return this
-    }
-
-    public getPrediction = (inputs: number[]) => {
-        if (this._algorithm !== undefined)
-            return this._algorithm.predict(inputs);
-        return
-    }
-
-    public getListPredictorQuery = () => {
-        return this._listPredictorQuery;
     }
 
     public setSogliaMin = (valueSogliaMin: number) => {
@@ -104,15 +96,15 @@ export default class Controller extends Observable {
         }
     }
 
-    public setListPredictorQuery = (obj: { name: string, list: [] }) => {
-        this._listPredictorQuery.push({id: this._indexListPredictorQuery.toString(), name: obj.name, list: obj.list});
-        this._indexListPredictorQuery++;
+    public setListPredictorQuery = (obj: { name: string, list: { predictor: string, query: string }[] }) => {
+        this._connections.push({id: this._newConnectionIndex.toString(), name: obj.name, queries: obj.list});
+        this._newConnectionIndex++;
     }
 
     public removeListPredictorQuery = (id: string) => {
-        for (let i = 0; i < this._listPredictorQuery.length; i++) {
-            if (this._listPredictorQuery[i].id === id) {
-                this._listPredictorQuery.splice(i, 1);
+        for (let i = 0; i < this._connections.length; i++) {
+            if (this._connections[i].id === id) {
+                this._connections.splice(i, 1);
             }
         }
     }
@@ -121,22 +113,79 @@ export default class Controller extends Observable {
         this._queries = queries;
     }
 
-    public startMonitoring = () => {
-        this._isMonitoring = true
-        this.notifyAll()
+    public updatePredictions = (series: DataFrame[]) => {
+        this._connections.forEach(connection => { //calcolo la previsione per ogni collegamento
+            const inputs: number[] = [] //array usato per calcolare la predizione
+            series.forEach(query => {
+                const queries: string[] = [] //array che contiene tutti i nomi delle query per questo collegamento
+                connection.queries.forEach(ele => queries.push(ele.query))
+                if (queries.includes(query.name as string)) {// questa query serve al calcolo della previsione
+                    if (query.fields[0].type === FieldType.number) {
+                        let i = query.length - 1
+                        while (query.fields[0].values.get(i) != null && i >= 0) {
+                            i--
+                        }
+                        inputs.push(query.fields[0].values.get(i)) //inserisco il primo valore non nullo
+                    }
+                }
+            })
+            const predicted = this.getPrediction(inputs)
+            if (predicted === null) // se non è stato possibilie calcolare la previzione allora non ha senso continuare
+                return;
+
+            let time: number = 0 //timestamp da associare alla predizione
+            for (let ele of series[0].fields){
+                if (ele.type === FieldType.time) {
+                    //appena trovo una serie che contiene gli orari mi fermo (si potrebbe farlo continuare ma secondo me non è sicuro)
+                    time = ele.values.get(ele.values.length - 1) //inserisco l'ultimo orario (che dovrebbe essere quello della previsione)
+                    break
+                }
+            }
+            let data = [time, predicted]
+            let inserted = false
+            for (let serie of this._predictedData){
+                if (serie.name === connection.name){
+                    serie.data.push(data)
+                    inserted = true
+                }
+            }
+            if (!inserted)
+                this._predictedData.push({name:connection.name, data:[data]})
+        })
     }
 
-    public stopMonitoring = () => {
-        this._isMonitoring = false
-        this.notifyAll()
-    }
-    /*
+
+    /*  non credo sia una funzione utile
+
         public setController = (queries: DataFrame[], valueSogliaMin: number, valueSogliaMax: number,) =>{
             this.setQueries(queries);
             this.setSogliaMax(valueSogliaMin);
             this.setSogliaMin(valueSogliaMax);
         }
     */
+
+    //potrebbe essere un metodo privato, ma forse è meglio lasciarlo pubblico
+    public getPrediction = (inputs: number[]) => {
+        if (this._algorithm !== undefined)
+            return this._algorithm.predict(inputs);
+        return null
+    }
+
+    public getPredictedData = (connectionName: string): number[][] => {
+        let data: number[][] = [];
+        this._predictedData.forEach(ele => {
+            if (ele.name === connectionName) {
+                data = ele.data;
+                return
+            }
+        })
+        return data;
+    }
+
+    public getListPredictorQuery = () => {
+        return this._connections;
+    }
+
     public getFile = () => {
         return this._file
     }
@@ -167,6 +216,16 @@ export default class Controller extends Observable {
 
     public isMonitoring = () => {
         return this._isMonitoring
+    }
+
+    public startMonitoring = () => {
+        this._isMonitoring = true
+        this.notifyAll()
+    }
+
+    public stopMonitoring = () => {
+        this._isMonitoring = false
+        this.notifyAll()
     }
 }
 
