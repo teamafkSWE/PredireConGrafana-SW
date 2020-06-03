@@ -108,11 +108,31 @@ export default class Controller extends Observable {
     }
 
     public setSogliaMin = (valueSogliaMin: number) => {
-        this._sogliaMin = valueSogliaMin;
+        if(this._sogliaMax !== undefined) {
+            if(this._sogliaMax < valueSogliaMin) {
+                alert("Soglia max minore di soglia min");
+            }
+            else {
+                this._sogliaMin = valueSogliaMin;
+            }
+        }
+        else {
+            this._sogliaMin = valueSogliaMin;
+        }
     }
 
     public setSogliaMax = (valueSogliaMax: number) => {
-        this._sogliaMax = valueSogliaMax;
+        if(this._sogliaMin !== undefined) {
+            if(this._sogliaMin > valueSogliaMax) {
+                alert("Soglia min maggiore di soglia max");
+            }
+            else {
+                this._sogliaMax = valueSogliaMax;
+            }
+        }
+        else {
+            this._sogliaMax = valueSogliaMax;
+        }
     }
 
     public setQuery = (query: DataFrame[]) => {

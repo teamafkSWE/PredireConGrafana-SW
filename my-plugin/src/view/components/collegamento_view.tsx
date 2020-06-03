@@ -55,12 +55,13 @@ class CollegamentoView extends PureComponent<MyProps> {
                 for (let i=0;i<predictors.length;i++) {
                     let name=predictors[i].name;
                     temp.push(
-
+                        <p>
                         <label>{name}:
                             <select id={name} onChange={this.pushConnectionsList}>
                                 <option value="">select node</option>
                                 {queries.map((query:DataFrame ) => <option value={query.name}>{query.name}</option>)}
                             </select></label>
+                        </p>
                     );
                 }
             } else
@@ -73,7 +74,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                 <option value="noP">No file found</option></select>)
         return (
             <div>
-            <input type="text" placeholder="enter name connection" onChange={this.setName} />
+            <input type="text" placeholder="ID the connection" onChange={this.setName} />
             {temp}
             </div>
         );
@@ -128,10 +129,10 @@ class CollegamentoView extends PureComponent<MyProps> {
                 <PanelOptionsGrid>
                     <PanelOptionsGroup title="Lista predittori">
                         <VerticalGroup>
-                            <p>Selezionare uno o più predittori dalla lista</p>
+                            <p>Effettuare collegamenti per tutti i predittori</p>
                                 <label htmlFor="predictors">Select predictors:</label>
                             {this.getPredictors()}
-                            <button onClick={()=>this.sendConnectionToController()}>prova</button>
+                            <button onClick={()=>this.sendConnectionToController()}>Insert Connection</button>
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
