@@ -73,7 +73,7 @@ class Editor extends PureComponent<PanelEditorProps<Options>> {
                                                                       controller={this._controller}
                                 />}
                                 {state[2].active && <ListaCollegamentiView  controller={this._controller}/>}
-                                {state[3].active && <PrevisioneView/>}
+                                {state[3].active && <PrevisioneView isMonitoring={this._controller.isMonitoring} start={this._controller.startMonitoring} stop={this._controller.stopMonitoring} attach={this._controller.attach} detach={this._controller.detach}/>}
                             </TabContent>
                             </>
                         );

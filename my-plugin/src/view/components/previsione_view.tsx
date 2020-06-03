@@ -3,8 +3,23 @@ import {Button, PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
 //import Calendar from 'react-calendar'
 import DatePicker from 'react-datepicker/dist/react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import {PanelOptionsGrid, PanelOptionsGroup, Button} from "@grafana/ui";
+import Observer from "./observer/observer";
 
-class PrevisioneView extends PureComponent  {
+
+interface Props {
+    start: () => void
+    stop: () => void
+    isMonitoring: () => boolean
+    attach: (o:Observer) => void
+    detach: (o:Observer) => void
+}
+
+interface State {
+    monitoring: boolean
+}
+
+class PrevisioneView extends PureComponent<Props, State> implements Observer{
 
     state = {
         startDate: new Date(),
@@ -22,6 +37,35 @@ class PrevisioneView extends PureComponent  {
             endDate: date
         });
     };
+
+    constructor(props: Readonly<Props>) {
+        super(props);
+        this.props.attach(this)
+        this.state = {
+            monitoring: false
+        }
+    }
+
+    componentWillUnmount() {
+        this.props.detach(this)
+    }
+
+    update(): void {
+        if (this.props.isMonitoring())
+            this.setState({monitoring: true})
+        else
+            this.setState({monitoring: false})
+    }
+
+    private startStopButton = () => {
+        const {monitoring} = this.state
+        if (monitoring) {
+            return <Button variant={"secondary"} icon={"pause"} onClick={this.props.stop}>Interrompi monitoraggio</Button>
+        }
+        else {
+            return <Button variant={"primary"} icon={"play"} onClick={this.props.start}>Avvia monitoraggio</Button>
+        }
+    }
 
     render() {
         return (
@@ -65,6 +109,7 @@ class PrevisioneView extends PureComponent  {
 
                     <PanelOptionsGroup title="Salvataggio previsione">
                         <Button>Salva previsione</Button>
+                        {this.startStopButton()}
                     </PanelOptionsGroup>
 
                 </PanelOptionsGrid>
