@@ -123,7 +123,6 @@ class CollegamentoView extends PureComponent<MyProps> {
 
     render() {
         console.log(this.state.nameConnection)
-        const {queries} = this.props;
         return (
             <div>
                 <PanelOptionsGrid>
@@ -135,19 +134,6 @@ class CollegamentoView extends PureComponent<MyProps> {
                             <button onClick={()=>this.sendConnectionToController()}>prova</button>
                         </VerticalGroup>
 
-                    </PanelOptionsGroup>
-
-                    <PanelOptionsGroup title="Selezione del flusso dati">
-                        <h1>TO DO: </h1>
-                        <label htmlFor="queries">Select query:</label>
-                        <select id="queries">
-                            {this.getOptions(queries)}
-                        </select>
-                        <ul>
-                            <li>
-                                <p>migliorare componente della lista delle query disponibili;</p>
-                            </li>
-                        </ul>
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Impostazione soglie">
