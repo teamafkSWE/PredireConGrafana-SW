@@ -34,8 +34,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
                             <button id={id} onClick={this.showId} className='btn btn-secondary btn-sm'>Elimina Collegamento</button>
                         </HorizontalGroup>
                         <p>
-                            {list.map((list:any) => <p>{list.predictor}----->{list.query}</p>)}
-                            <p>---------------------------------</p>
+                            {list.map((list:any) => <p>{list.predictor} ---> {list.query}</p>)}
                         </p>
                     </div>
 
@@ -52,12 +51,9 @@ class ListaCollegamentiView extends PureComponent<MyProps> {
                 <PanelOptionsGrid>
 
                     <PanelOptionsGroup title="Lista collegamenti">
-                        <h1>TO DO: </h1>
-
                         <VerticalGroup>
-                            <p>Predittore------->Query</p>
+                            <p>Predittore ---> Query</p>
                             {this.showConnection()}
-
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
