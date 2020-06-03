@@ -13,9 +13,10 @@ export default class Controller extends Observable {
     private _algorithm: Algorithm | undefined;
     private _sogliaMin: number | undefined;
     private _sogliaMax: number | undefined;
-    private _query: DataFrame[] = [];
-    private _listPredictorQuery: {id:string,name:string,list:[]}[] =[];
-    private _indexListPredictorQuery=0;
+    private _queries: DataFrame[] = [];
+    private _listPredictorQuery: { id: string, name: string, list: [] }[] = [];
+    private _indexListPredictorQuery = 0;
+    private _isMonitoring: boolean = false;
 
     private _definePredictors = () => {
         this._predictors = [];
@@ -69,6 +70,73 @@ export default class Controller extends Observable {
         return this
     }
 
+    public getPrediction = (inputs: number[]) => {
+        if (this._algorithm !== undefined)
+            return this._algorithm.predict(inputs);
+        return
+    }
+
+    public getListPredictorQuery = () => {
+        return this._listPredictorQuery;
+    }
+
+    public setSogliaMin = (valueSogliaMin: number) => {
+        if (this._sogliaMax !== undefined) {
+            if (this._sogliaMax < valueSogliaMin) {
+                alert("Soglia max minore di soglia min");
+            } else {
+                this._sogliaMin = valueSogliaMin;
+            }
+        } else {
+            this._sogliaMin = valueSogliaMin;
+        }
+    }
+
+    public setSogliaMax = (valueSogliaMax: number) => {
+        if (this._sogliaMin !== undefined) {
+            if (this._sogliaMin > valueSogliaMax) {
+                alert("Soglia min maggiore di soglia max");
+            } else {
+                this._sogliaMax = valueSogliaMax;
+            }
+        } else {
+            this._sogliaMax = valueSogliaMax;
+        }
+    }
+
+    public setListPredictorQuery = (obj: { name: string, list: [] }) => {
+        this._listPredictorQuery.push({id: this._indexListPredictorQuery.toString(), name: obj.name, list: obj.list});
+        this._indexListPredictorQuery++;
+    }
+
+    public removeListPredictorQuery = (id: string) => {
+        for (let i = 0; i < this._listPredictorQuery.length; i++) {
+            if (this._listPredictorQuery[i].id === id) {
+                this._listPredictorQuery.splice(i, 1);
+            }
+        }
+    }
+
+    public setQueries = (queries: DataFrame[]) => {
+        this._queries = queries;
+    }
+
+    public startMonitoring = () => {
+        this._isMonitoring = true
+        this.notifyAll()
+    }
+
+    public stopMonitoring = () => {
+        this._isMonitoring = false
+        this.notifyAll()
+    }
+    /*
+        public setController = (queries: DataFrame[], valueSogliaMin: number, valueSogliaMax: number,) =>{
+            this.setQueries(queries);
+            this.setSogliaMax(valueSogliaMin);
+            this.setSogliaMin(valueSogliaMax);
+        }
+    */
     public getFile = () => {
         return this._file
     }
@@ -81,84 +149,24 @@ export default class Controller extends Observable {
         return this._predictors
     }
 
-    public getSogliaMin = () =>{
+    public getSogliaMin = () => {
         return this._sogliaMin;
     }
 
-    public getSogliaMax = () =>{
+    public getSogliaMax = () => {
         return this._sogliaMax;
     }
 
-    public getQuery = () => {
-        return this._query;
+    public getQueries = () => {
+        return this._queries;
     }
 
     public getB = () => {
         return this._b
     }
 
-    public getPrediction = (inputs: number[]) => {
-        if (this._algorithm !== undefined)
-            return this._algorithm.predict(inputs);
-        return
+    public isMonitoring = () => {
+        return this._isMonitoring
     }
-
-    public getListPredictorQuery = () => {
-            return   this._listPredictorQuery;
-    }
-
-    public setSogliaMin = (valueSogliaMin: number) => {
-        if(this._sogliaMax !== undefined) {
-            if(this._sogliaMax < valueSogliaMin) {
-                alert("Soglia max minore di soglia min");
-            }
-            else {
-                this._sogliaMin = valueSogliaMin;
-            }
-        }
-        else {
-            this._sogliaMin = valueSogliaMin;
-        }
-    }
-
-    public setSogliaMax = (valueSogliaMax: number) => {
-        if(this._sogliaMin !== undefined) {
-            if(this._sogliaMin > valueSogliaMax) {
-                alert("Soglia min maggiore di soglia max");
-            }
-            else {
-                this._sogliaMax = valueSogliaMax;
-            }
-        }
-        else {
-            this._sogliaMax = valueSogliaMax;
-        }
-    }
-
-    public setQuery = (query: DataFrame[]) => {
-        this._query = query;
-    }
-
-    public setListPredictorQuery = (obj:{name:string,list:[]}) => {
-      //  this._listPredictorQuery.push(list);
-        this._listPredictorQuery.push({id:this._indexListPredictorQuery.toString(),name:obj.name,list:obj.list});
-        this._indexListPredictorQuery++;
-    }
-
-    public removeListPredictorQuery = (id:string) => {
-        for(let i=0;i< this._listPredictorQuery.length;i++){
-            if( this._listPredictorQuery[i].id===id){
-                this._listPredictorQuery.splice(i, 1);
-            }
-        }
-    }
-
-
-    public setController = (query: DataFrame[], valueSogliaMin: number, valueSogliaMax: number,) =>{
-        this.setQuery(query);
-        this.setSogliaMax(valueSogliaMin);
-        this.setSogliaMin(valueSogliaMax);
-    }
-
 }
 
