@@ -3,7 +3,6 @@ import {Button, PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
 //import Calendar from 'react-calendar'
 import DatePicker from 'react-datepicker/dist/react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import {PanelOptionsGrid, PanelOptionsGroup, Button} from "@grafana/ui";
 import Observer from "./observer/observer";
 
 
@@ -15,15 +14,12 @@ interface Props {
     detach: (o:Observer) => void
 }
 
-interface State {
-    monitoring: boolean
-}
-
-class PrevisioneView extends PureComponent<Props, State> implements Observer{
+class PrevisioneView extends PureComponent<Props> implements Observer{
 
     state = {
         startDate: new Date(),
-        endDate: new Date()
+        endDate: new Date(),
+        monitoring: false
     };
 
     handleChangeStartDate = (date:any) => {
@@ -41,9 +37,6 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer{
     constructor(props: Readonly<Props>) {
         super(props);
         this.props.attach(this)
-        this.state = {
-            monitoring: false
-        }
     }
 
     componentWillUnmount() {
@@ -101,16 +94,11 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer{
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Monitoraggio">
-                        <div id="bottoniMonitoraggio" style={{display: "inline-block"}}>
-                            <Button>Avvia monitoraggio</Button>
-                            <Button style={{marginLeft: "20px"}}>Interrompi monitoraggio</Button>
-                        </div>
+                        {this.startStopButton()}
+                        <p></p>
+                        <Button>Salva previsione</Button>
                     </PanelOptionsGroup>
 
-                    <PanelOptionsGroup title="Salvataggio previsione">
-                        <Button>Salva previsione</Button>
-                        {this.startStopButton()}
-                    </PanelOptionsGroup>
 
                 </PanelOptionsGrid>
             </div>
