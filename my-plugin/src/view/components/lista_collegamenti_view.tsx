@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup, Button, HorizontalGroup} from "@grafana/ui";
 import Controller from "../../controller/controller";
+import Observer from "./observer/observer";
 //import {DataFrame} from "@grafana/data";
 
 interface MyProps {
@@ -8,7 +9,11 @@ interface MyProps {
     controller: Controller
 }
 
-class ListaCollegamentiView extends PureComponent<MyProps> {
+class ListaCollegamentiView extends PureComponent<MyProps> implements Observer{
+    update(): void {
+        this.forceUpdate();
+    }
+
     showId=(e:any)=>{
         this.props.controller.removeListPredictorQuery(e.target.id);
     }

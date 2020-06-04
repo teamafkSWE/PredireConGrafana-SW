@@ -48,6 +48,7 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
             console.log('panel updating')
             this._controller.updatePredictions(this.props.data.series)
             this._setupGraphSeries()
+            console.log(this._series)
         }
         return( <Graph  height={this.props.height}
                         width={this.props.width /*prende la larghezza del monitor*/}

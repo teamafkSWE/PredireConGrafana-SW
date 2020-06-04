@@ -99,6 +99,7 @@ export default class Controller extends Observable {
     public setListPredictorQuery = (obj: { name: string, list: { predictor: string, query: string }[] }) => {
         this._connections.push({id: this._newConnectionIndex.toString(), name: obj.name, queries: obj.list});
         this._newConnectionIndex++;
+        this.notifyAll();
     }
 
     public removeListPredictorQuery = (id: string) => {
@@ -107,6 +108,7 @@ export default class Controller extends Observable {
                 this._connections.splice(i, 1);
             }
         }
+        this.notifyAll();
     }
 
     public setQueries = (queries: DataFrame[]) => {
@@ -128,10 +130,12 @@ export default class Controller extends Observable {
                     if (query.fields[0].type === FieldType.number) {
                         console.log('found a number query')
                         let i = query.length - 1
-                        while (query.fields[0].values.get(i) != null && i >= 0) {
+                        while (query.fields[0].values.get(i) != null && i > 0) {
                             i--
                         }
+                        console.log(query,i)
                         inputs.push(query.fields[0].values.get(i)) //inserisco il primo valore non nullo
+                        console.log(inputs);
                         console.log(inputs[inputs.length-1])
                     }
                 }
