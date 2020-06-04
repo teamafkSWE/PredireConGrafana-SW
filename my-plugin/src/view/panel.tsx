@@ -45,6 +45,7 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
 
     render(){
         if (this._controller.isMonitoring()) {
+            console.log('panel updating')
             this._controller.updatePredictions(this.props.data.series)
             this._setupGraphSeries()
         }

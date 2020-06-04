@@ -114,29 +114,34 @@ export default class Controller extends Observable {
     }
 
     public updatePredictions = (series: DataFrame[]) => {
+        console.log('updating predictions')
         for (let connection of this._connections) { //calcolo la previsione per ogni collegamento
-
+            console.log('connection name', connection.name)
+            console.log('connection', connection)
             const inputs: number[] = [] //array usato per calcolare la predizione
             for (let query of series) {
-
+                console.log('query', query)
                 const queries: string[] = [] //array che contiene tutti i nomi delle query per questo collegamento
                 connection.queries.forEach(ele => queries.push(ele.query))
-
+                console.log('queries selected', queries)
                 if (queries.includes(query.name as string)) {// questa query serve al calcolo della previsione
                     if (query.fields[0].type === FieldType.number) {
+                        console.log('found a number query')
                         let i = query.length - 1
                         while (query.fields[0].values.get(i) != null && i >= 0) {
                             i--
                         }
                         inputs.push(query.fields[0].values.get(i)) //inserisco il primo valore non nullo
+                        console.log(inputs[inputs.length-1])
                     }
                 }
             }
-
+            console.log('input length', inputs.length)
             if (inputs.length === 0)
                 return; //se non sono stati inseriti input allora non sono state impostate correttamente i predittori
 
             const predicted = this.getPrediction(inputs)
+            console.log('predicted value', predicted)
             if (predicted === null) // se non è stato possibilie calcolare la previzione allora non ha senso continuare
                 return;
 
@@ -145,20 +150,25 @@ export default class Controller extends Observable {
                 if (ele.type === FieldType.time) {
                     //appena trovo una serie che contiene gli orari mi fermo (si potrebbe farlo continuare ma secondo me non è sicuro)
                     time = ele.values.get(ele.values.length - 1) //inserisco l'ultimo orario (che dovrebbe essere quello della previsione)
+                    console.log('time found', time)
                     break
                 }
             }
             let data = [time, predicted]
+            console.log('data to be written in panel', data)
             let inserted = false
             for (let serie of this._predictedData){
                 if (serie.name === connection.name){
                     serie.data.push(data)
+                    console.log('data pushed to an already existing connection')
                     inserted = true
                 }
             }
             if (!inserted)
                 this._predictedData.push({name:connection.name, data:[data]})
+            console.log('created a new serie of data')
         }
+        console.log('update finished')
     }
 
 
