@@ -37,6 +37,7 @@ class PrevisioneView extends PureComponent<Props> implements Observer{
     constructor(props: Readonly<Props>) {
         super(props);
         this.props.attach(this)
+        this.state.monitoring = this.props.isMonitoring()
     }
 
     componentWillUnmount() {
