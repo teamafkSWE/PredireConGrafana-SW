@@ -8,6 +8,10 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
     private _controller: Controller = this.props.options.controller;
     private _series: GraphSeriesXY[] = [];
 
+    state = {
+        line: false
+    }
+
     private _randomColors = ()=> {
         let r = Math.floor(Math.random() * 255);
         let g = Math.floor(Math.random() * 255);
@@ -63,6 +67,13 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
     }
 
     render(){
+        const json = this._controller.getJson()
+        if (json != undefined){
+            if (json.algorithm === 'Linear Regression')
+                this.state.line = true
+            else
+                this.state.line = false
+        }
         if (this._controller.isMonitoring()) {
             //console.log('panel updating')
             this._controller.updatePredictions(this.props.data.series)
@@ -73,6 +84,8 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
                         width={this.props.width /*prende la larghezza del monitor*/}
                         series={this._series}
                         timeRange={this.props.data.timeRange /*prende il range orario(last x hours/mins) impostato sulla dashoard*/}
-                        timeZone="browser"/>);
+                        timeZone="browser"
+                        showLines={this.state.line}
+                        showPoints={!this.state.line}/>);
     }
 }

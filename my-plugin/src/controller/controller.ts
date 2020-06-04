@@ -116,7 +116,7 @@ export default class Controller extends Observable {
     }
 
     public updatePredictions = (series: DataFrame[]) => {
-        console.log('updating predictions')
+        //console.log('updating predictions')
         for (let connection of this._connections) { //calcolo la previsione per ogni collegamento
             //console.log('connection name', connection.name)
             //console.log('connection', connection)
