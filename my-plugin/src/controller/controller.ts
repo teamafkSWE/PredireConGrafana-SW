@@ -114,11 +114,14 @@ export default class Controller extends Observable {
     }
 
     public updatePredictions = (series: DataFrame[]) => {
-        this._connections.forEach(connection => { //calcolo la previsione per ogni collegamento
+        for (let connection of this._connections) { //calcolo la previsione per ogni collegamento
+
             const inputs: number[] = [] //array usato per calcolare la predizione
-            series.forEach(query => {
+            for (let query of series) {
+
                 const queries: string[] = [] //array che contiene tutti i nomi delle query per questo collegamento
                 connection.queries.forEach(ele => queries.push(ele.query))
+
                 if (queries.includes(query.name as string)) {// questa query serve al calcolo della previsione
                     if (query.fields[0].type === FieldType.number) {
                         let i = query.length - 1
@@ -128,7 +131,11 @@ export default class Controller extends Observable {
                         inputs.push(query.fields[0].values.get(i)) //inserisco il primo valore non nullo
                     }
                 }
-            })
+            }
+
+            if (inputs.length === 0)
+                return; //se non sono stati inseriti input allora non sono state impostate correttamente i predittori
+
             const predicted = this.getPrediction(inputs)
             if (predicted === null) // se non è stato possibilie calcolare la previzione allora non ha senso continuare
                 return;
@@ -151,7 +158,7 @@ export default class Controller extends Observable {
             }
             if (!inserted)
                 this._predictedData.push({name:connection.name, data:[data]})
-        })
+        }
     }
 
 
