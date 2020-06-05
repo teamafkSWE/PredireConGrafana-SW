@@ -1,4 +1,4 @@
-import {Predictor} from "../types";
+import {Predictor, Connection} from "../types";
 import Observable from "./observable";
 import Algorithm from "../model/algorithm";
 import {Svm, SvmData} from "../model/algorithms/svm";
@@ -14,7 +14,7 @@ export default class Controller extends Observable {
     private _sogliaMin: number | undefined;
     private _sogliaMax: number | undefined;
     private _queries: DataFrame[] = []; //a che serve questo campo?
-    private _connections: { id: string, name: string, queries: { predictor: string, query: string }[] }[] = [];
+    private _connections: Connection[] = [];
     private _newConnectionIndex = 0; //attenzione, può solo incrementare, non credo vada bene
     private _isMonitoring: boolean = false;
     private _predictedData: { name: string, data: number[][] }[] = [];
@@ -203,7 +203,7 @@ export default class Controller extends Observable {
         return data;
     }
 
-    public getListPredictorQuery = () => {
+    public getConnections = () => {
         return this._connections;
     }
 

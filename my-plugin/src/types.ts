@@ -8,3 +8,9 @@ export interface Predictor {
     name: string,
     value: number
 }
+
+export interface Connection {
+    id: string,
+    name: string,
+    queries: { predictor: string, query: string }[]
+}

@@ -18,7 +18,7 @@ class ListaCollegamentiView extends PureComponent<MyProps> implements Observer{
         this.props.controller.removeListPredictorQuery(e.target.id);
     }
     showConnection=()=>{
-        let objNameList=this.props.controller.getListPredictorQuery();
+        let objNameList=this.props.controller.getConnections();
         let viewNameList=[];
         if(objNameList.length=== 0)
             return <label style={{fontStyle: "italic"}}>Nessun collegamento inserito.</label>

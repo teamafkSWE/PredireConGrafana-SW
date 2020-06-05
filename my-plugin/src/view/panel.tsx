@@ -12,7 +12,7 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
         line: false
     }
 
-    private _randomColors = ()=> {
+    private _randomColor = ()=> {
         let r = Math.floor(Math.random() * 255);
         let g = Math.floor(Math.random() * 255);
         let b = Math.floor(Math.random() * 255);
@@ -21,7 +21,7 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
 
     //inserisco dentro _series una linea per ogni collegamento impostato
     private _setupGraphSeries = () => {
-        const connections = this._controller.getListPredictorQuery() //tutte le connesioni che devo mostrare
+        const connections = this._controller.getConnections() //tutte le connesioni che devo mostrare
         for (let connection of connections){
             let updated = false
             for (let serie of this._series){ //cerco una serie con il nome della connessione
@@ -36,14 +36,14 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
                 this._series.push({ // linea
                     //array 2d, primo valore è il timestamp, il secondo è il valore da mostrare
                     data: this._controller.getPredictedData(connection.name), //aggiorno i punti del grafico
-                    color: this._randomColors(), //colore della linea todo: impostare colore random
+                    color: this._randomColor(), //colore della linea
                     isVisible: true, //visibilità della linea (non credo abbia senso metterlo false)
                     label: connection.name, //nome della linea, che equivale al nome del collegamento
                     seriesIndex: this._series.length, //indice della linea (forse per indicare quale linea deve stare davanti e quale dietro)
                     timeField: {//non ho idea di cosa serva
                         type: FieldType.time,
                         name: 'time',
-                        values: new ArrayVector(),
+                        values: new ArrayVector(), //forse serve per visualizzare il valore quando si clicca sul grafico
                         config: {},
                     },
                     valueField: {//non ho idea di cosa serva
