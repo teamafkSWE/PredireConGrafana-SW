@@ -90,34 +90,33 @@ class CollegamentoView extends PureComponent<MyProps, State> {
 
 
     setName = (e: any) => {
-        this.setState({ nameConnection: e.target.value })
+        this.setState({nameConnection: e.target.value})
     }
-    pushConnectionsList = (e: any) => {
 
+    pushConnectionsList = (e: any) => {
         for (let i = 0; i < this.state.connectionsList.length; i++) {
             if (e.target.id === this.state.connectionsList[i].predictor) {
                 this.state.connectionsList[i].query = e.target.value;
             }
         }
-
     }
+
     sendConnectionToController = () => {
         let notUndefined = true;
+
         for (let i = 0; i < this.state.connectionsList.length; i++) {
             if (this.state.connectionsList[i].query === undefined || this.state.nameConnection === "")
                 notUndefined = false;
         }
 
+        console.log(notUndefined)
+
         if (notUndefined) {
             this.props.controller.setListPredictorQuery({ name: this.state.nameConnection, list: (this.state.connectionsList as { predictor: string, query: string }[]) })
-            alert("collegamento inserito");
-        }
-        else
-            alert("Collega tutti i predittori.");
+            alert("Collegamento inserito.")
+        } else
+            alert("Collega tutti i predittori.")
     }
-
-
-
 
     handleChangeMin = (event: any) => {
         this.setState({ valueMin: event.target.value });
@@ -127,6 +126,13 @@ class CollegamentoView extends PureComponent<MyProps, State> {
     handleChangeMax = (event: any) => {
         this.setState({ valueMax: event.target.value });
         this.props.controller.setSogliaMax(event.target.value);
+    }
+
+    confermaSoglie = (event: any) => {
+        console.log(this.state.valueMin, this.state.valueMax )
+        //console.log(this.state.valueMax, this.state.valueMin)
+        //this.props.controller.handleSoglie(this.state.valueMin, this.state.valueMax)
+        this.props.controller.handleSoglie(this.state.valueMin, this.state.valueMax)
     }
 
     render() {
@@ -155,6 +161,11 @@ class CollegamentoView extends PureComponent<MyProps, State> {
                             <p></p>
                         </form>
                         <p></p>
+                        <Button onClick={this.confermaSoglie}>Conferma soglie</Button>
+                    </PanelOptionsGroup>
+
+                    <PanelOptionsGroup title="Conferma">
+                        <p style={{ fontStyle: "italic" }}> Cliccare il bottone per confermare il collegamento ed aggiungerlo alla lista dei collegamenti disponibili. </p>
                         <Button>Conferma collegamento</Button>
                     </PanelOptionsGroup>
 
