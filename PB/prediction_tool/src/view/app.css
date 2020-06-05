@@ -1,0 +1,20 @@
+*{
+  color: #d8d9da;
+}
+
+body{
+  background-color: #161719;
+}
+#chart{
+  padding: 1%;
+  /* rgb(64,64,64);*/
+  background-color: rgb(36,41,46);
+  border-radius: 10px;
+
+}
+.header{
+  border-bottom-width: thick;
+  border-bottom-style: solid;
+  border-image-source: linear-gradient(90deg,#f05a28 30%,#fbca0a 99%);
+  border-image-slice: 1;
+}
