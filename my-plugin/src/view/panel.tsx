@@ -66,7 +66,7 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
         }
     }
 
-    render(){
+    private _viewGraph = () => {
         const json = this._controller.getJson()
         if (json != undefined){
             if (json.algorithm === 'Linear Regression')
@@ -80,6 +80,11 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
             this._setupGraphSeries()
             //console.log(this._series)
         }
+    }
+
+
+    render(){
+        {this._viewGraph()}
         return( <Graph  height={this.props.height}
                         width={this.props.width /*prende la larghezza del monitor*/}
                         series={this._series}
