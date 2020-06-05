@@ -4,6 +4,7 @@ import Algorithm from "../model/algorithm";
 import {Svm, SvmData} from "../model/algorithms/svm";
 import {Regression, RLData} from "../model/algorithms/regression";
 import {DataFrame, FieldType} from "@grafana/data";
+//import React from 'react';
 
 export default class Controller extends Observable {
     private _json: any;
@@ -68,32 +69,16 @@ export default class Controller extends Observable {
                 this.notifyAll()
             }
         }
-        fr.readAsText(file);
+        fr.readAsText(file)
         return this
     }
 
     public setSogliaMin = (valueSogliaMin: number) => {
-        if (this._sogliaMax !== undefined) {
-            if (this._sogliaMax < valueSogliaMin) {
-                alert("Soglia max minore di soglia min");
-            } else {
-                this._sogliaMin = valueSogliaMin;
-            }
-        } else {
-            this._sogliaMin = valueSogliaMin;
-        }
+        this._sogliaMin = valueSogliaMin;
     }
 
     public setSogliaMax = (valueSogliaMax: number) => {
-        if (this._sogliaMin !== undefined) {
-            if (this._sogliaMin > valueSogliaMax) {
-                alert("Soglia min maggiore di soglia max");
-            } else {
-                this._sogliaMax = valueSogliaMax;
-            }
-        } else {
-            this._sogliaMax = valueSogliaMax;
-        }
+        this._sogliaMax = valueSogliaMax;
     }
 
     public setListPredictorQuery = (obj: { name: string, list: { predictor: string, query: string }[] }) => {
@@ -110,6 +95,42 @@ export default class Controller extends Observable {
         }
         this.notifyAll();
     }
+
+    public handleSoglie = (sMin: number, sMax: number) => {
+        if(sMin !== null && sMin.toString().length === 1)
+            sMin = parseInt("0" + sMin)
+        if(sMax !== null && sMax.toString().length === 1)
+            sMax = parseInt("0" + sMax)
+        if(sMin >= sMax || (sMin === 0 && sMax === 0)) {
+            alert("SogliaMin non valida. Inserire un valore minore della sogliaMax.")
+            return false
+        }else{
+            alert("Soglie inserite correttamente.")
+        }
+        return true
+    }
+
+    /*public handleInserimentoCollegamento = (bool: any) => {
+        if(bool === true)
+            return true
+        else
+            return false
+    }*/
+    /*
+    public handleConfermaCollegamento = (bool: any) => {
+        if (this.handleSoglie() && bool === true){
+            alert("Collegamento confermato.")
+            return true
+        }else {
+            if(!this.handleSoglie() && bool === true)
+                alert("Soglie non impostate correttamente.")
+            else if (this.handleSoglie() && bool === false)
+                alert("Collegamento non inserito correttamente.")
+            else
+                alert("Inserire un collegamento ed impostare le relative soglie.")
+            return false
+        }
+    }*/
 
     public setQueries = (queries: DataFrame[]) => {
         this._queries = queries;

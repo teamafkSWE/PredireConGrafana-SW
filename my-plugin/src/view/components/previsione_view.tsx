@@ -1,7 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Button, PanelOptionsGrid, PanelOptionsGroup} from "@grafana/ui";
-//import Calendar from 'react-calendar'
-import DatePicker from 'react-datepicker/dist/react-datepicker';
+import {Button, HorizontalGroup, PanelOptionsGroup} from "@grafana/ui";
 import "react-datepicker/dist/react-datepicker.css";
 import Observer from "./observer/observer";
 
@@ -20,18 +18,6 @@ class PrevisioneView extends PureComponent<Props> implements Observer{
         startDate: new Date(),
         endDate: new Date(),
         monitoring: false
-    };
-
-    handleChangeStartDate = (date:any) => {
-        this.setState({
-            startDate: date
-        });
-    };
-
-    handleChangeEndDate = (date:any) => {
-        this.setState({
-            endDate: date
-        });
     };
 
     constructor(props: Readonly<Props>) {
@@ -64,47 +50,16 @@ class PrevisioneView extends PureComponent<Props> implements Observer{
     render() {
         return (
             <div>
-                <PanelOptionsGrid>
-
-                    <PanelOptionsGroup title="Selezione politica temporale">
-                        <p>Definisci la politica temporale:</p>
-                        <form id="datePicker">
-                            <label htmlFor="datePickerStart">Seleziona la data di inizio:</label>
-                            <div id="datePickerStart">
-                                <DatePicker
-                                    dateFormat="yyyy/MM/dd"
-                                    selected={this.state.startDate}
-                                    onChange={this.handleChangeStartDate}
-                                    startDate={this.state.startDate}
-                                    endDate={this.state.endDate}
-                                />
-                            </div>
-                            <p></p>
-                            <label htmlFor="datePickerEnd">Seleziona la data di fine:</label>
-                            <div id="datePickerEnd">
-                                <DatePicker
-                                    dateFormat="yyyy/MM/dd"
-                                    selected={this.state.endDate}
-                                    onChange={this.handleChangeEndDate}
-                                    startDate={this.state.startDate}
-                                    endDate={this.state.endDate}
-                                    minDate={this.state.startDate}
-                                />
-                            </div>
-                        </form>
+                <HorizontalGroup>
+                    <PanelOptionsGroup title="Avvia monitoraggio">
+                        {this.startStopButton()}
                     </PanelOptionsGroup>
 
-                    <PanelOptionsGroup title="Monitoraggio">
-                        {this.startStopButton()}
-                        <p></p>
+                    <PanelOptionsGroup title="Salva previsione">
                         <Button>Salva previsione</Button>
                     </PanelOptionsGroup>
-
-
-                </PanelOptionsGrid>
+                </HorizontalGroup>
             </div>
-
-
         );
     }
 }
