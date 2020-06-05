@@ -103,19 +103,31 @@ class CollegamentoView extends PureComponent<MyProps, State> {
 
     sendConnectionToController = () => {
         let notUndefined = true;
+        if(this.state.connectionsList.length===0) {
+            alert("inserisci file");
+        }
+        else {
+            if(this.props.queries.length>0) {
+                for (let i = 0; i < this.state.connectionsList.length; i++) {
+                    if (this.state.connectionsList[i].query === undefined || this.state.nameConnection === "")
+                        notUndefined = false;
+                }
 
-        for (let i = 0; i < this.state.connectionsList.length; i++) {
-            if (this.state.connectionsList[i].query === undefined || this.state.nameConnection === "")
-                notUndefined = false;
+                if (notUndefined) {
+                    this.props.controller.setListPredictorQuery({
+                        name: this.state.nameConnection,
+                        list: (this.state.connectionsList as { predictor: string, query: string }[])
+                    })
+                    alert("Collegamento inserito.")
+                } else
+                    alert("Collega tutti i predittori.")
+            }
+            else
+                alert("inserisci query.")
         }
 
-        console.log(notUndefined)
 
-        if (notUndefined) {
-            this.props.controller.setListPredictorQuery({ name: this.state.nameConnection, list: (this.state.connectionsList as { predictor: string, query: string }[]) })
-            alert("Collegamento inserito.")
-        } else
-            alert("Collega tutti i predittori.")
+
     }
 
     handleChangeMin = (event: any) => {
