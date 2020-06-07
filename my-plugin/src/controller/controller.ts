@@ -86,7 +86,15 @@ export default class Controller extends Observable {
         this._newConnectionIndex++;
         this.notifyAll();
     }
+    public editListPredictorQuery = (id:string ,obj: { name: string, list: { predictor: string, query: string }[] }) => {
 
+        for (let i = 0; i < this._connections.length; i++) {
+            if(this._connections[i].id===id){
+                this._connections[i].name=obj.name;
+                this._connections[i].queries=obj.list;
+            }
+        }
+    }
     public removeListPredictorQuery = (id: string) => {
         for (let i = 0; i < this._connections.length; i++) {
             if (this._connections[i].id === id) {

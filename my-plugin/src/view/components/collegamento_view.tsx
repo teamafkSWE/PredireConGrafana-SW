@@ -22,27 +22,28 @@ interface State {
 }
 
 class CollegamentoView extends PureComponent<MyProps, State> {
-
+    state = {
+        valueMin: 0,
+        valueMax: 0,
+        nameConnection: "",
+        connectionsList: [] as any
+    }
     constructor(props: Readonly<MyProps>) {
         super(props);
-
-        this.state = {
-            valueMin: 0,
-            valueMax: 0,
-            nameConnection: "",
-            connectionsList: []
-        }
 
         const min = this.props.controller.getSogliaMin()
         const max = this.props.controller.getSogliaMax()
 
         this.setState({ valueMin: min === undefined ? 0 : min, valueMax: max === undefined ? 0 : max })
+      this.resetList();
+    }
+    resetList=()=>{
+        this.state.connectionsList=[];
         let listSelectPredictors = this.props.controller.getPredictors();
         for (let i = 0; i < listSelectPredictors.length; i++) {
             this.state.connectionsList.push({ predictor: listSelectPredictors[i].name, query: undefined })
         }
     }
-
     getOptions = (queries: DataFrame[]) => {
         if (queries.length > 0) {
             return <>{queries.map((query: DataFrame) => <option value={query.name}>{query.name}</option>)}</>
@@ -114,10 +115,13 @@ class CollegamentoView extends PureComponent<MyProps, State> {
                 }
 
                 if (notUndefined) {
+                    console.log(this.props.controller.getConnections())
                     this.props.controller.setListPredictorQuery({
                         name: this.state.nameConnection,
                         list: (this.state.connectionsList as { predictor: string, query: string }[])
                     })
+                    console.log(this.props.controller.getConnections())
+                    this.resetList();
                     alert("Collegamento inserito.")
                 } else
                     alert("Collega tutti i predittori.")
@@ -148,6 +152,7 @@ class CollegamentoView extends PureComponent<MyProps, State> {
     }
 
     render() {
+
         return (
             <div>
                 <PanelOptionsGrid>

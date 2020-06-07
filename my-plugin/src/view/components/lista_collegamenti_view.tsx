@@ -1,22 +1,24 @@
 import React, {PureComponent} from 'react';
-import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup, HorizontalGroup} from "@grafana/ui";
+import { PanelOptionsGroup, VerticalGroup, HorizontalGroup} from "@grafana/ui";
 import Controller from "../../controller/controller";
+import {DataFrame} from "@grafana/data";
+import FormEdit from "./form_edit"
 //import Observer from "./observer/observer";
-//import {DataFrame} from "@grafana/data";
 
 interface MyProps {
+    queries: DataFrame[],
     controller: Controller
 }
 
 class ListaCollegamentiView extends PureComponent<MyProps>{
     state={
-        listConnection:[] as any
+        listConnection:[] as any,
+        isEditClicked:false,
+        idEdit:""
     }
     constructor(props: Readonly<MyProps>) {
         super(props);
-        console.log(this.props.controller.getConnections())
        this.state.listConnection=this.props.controller.getConnections()
-        console.log(this.state.listConnection)
     }
 
     handleDelete=(e:any)=>{
@@ -27,6 +29,10 @@ class ListaCollegamentiView extends PureComponent<MyProps>{
             this.forceUpdate();
         }
     }
+    handleEdit=(e:any)=>{
+        this.setState({isEditClicked:true,idEdit:e.target.id});
+    }
+
     showConnection=()=>{
         let listConn=this.state.listConnection;
         let viewNameList=[];
@@ -41,7 +47,8 @@ class ListaCollegamentiView extends PureComponent<MyProps>{
                     <div>
                         <HorizontalGroup>
                             <label>{name}:</label>
-                            <button id={id} className='btn btn-secondary btn-sm'>Modifica collegamento</button>
+
+                            <button id={id} className='btn btn-secondary btn-sm' onClick={this.handleEdit}>Modifica collegamento</button>
                             <button id={id} onClick={this.handleDelete} className='btn btn-secondary btn-sm'>Elimina Collegamento</button>
                         </HorizontalGroup>
                         <p>
@@ -55,12 +62,15 @@ class ListaCollegamentiView extends PureComponent<MyProps>{
             return viewNameList;
         }
     }
+    closeEdit=()=>{
+        this.setState({isEditClicked:false,idEdit:""});
+    }
 
     render() {
 
         return (
             <div>
-                <PanelOptionsGrid>
+                <HorizontalGroup>
 
                     <PanelOptionsGroup title="Lista collegamenti">
                         <VerticalGroup>
@@ -69,9 +79,10 @@ class ListaCollegamentiView extends PureComponent<MyProps>{
                         </VerticalGroup>
 
                     </PanelOptionsGroup>
+                    {this.state.isEditClicked && <FormEdit idEdit={this.state.idEdit} closeEdit={this.closeEdit} controller={this.props.controller} queries={this.props.queries}/>}
+                </HorizontalGroup>
+        </div>
 
-                </PanelOptionsGrid>
-            </div>
         );
     }
 }
