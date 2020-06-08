@@ -8,6 +8,7 @@ class ViewModel {
     json;
     strategy;
 
+
     constructor() {
         this.algorithm = null;
         this.file = null;
@@ -16,10 +17,12 @@ class ViewModel {
         this.strategy=null;
 
     }
-    setData =(algorithm,data,hasFile)=> {
-        this.algorithm = algorithm;
+    setFileData=(data,hasFile)=>{
         this.file = data;
         this.hasFile = hasFile;
+    }
+    setAlgorithm =(algorithm)=> {
+        this.algorithm = algorithm;
         this.strategy=null;
         this.checkAlgorithm();
     }
@@ -82,11 +85,71 @@ class ViewModel {
         return this.strategy.getJSON();
     }
 
-    getChartData =()=> {
-        if(this.strategy!==null)
-            return this.strategy.getDataChart();
-        else
-            return null;
+    dynamicColors = ()=> {
+        let r = Math.floor(Math.random() * 255);
+        let g = Math.floor(Math.random() * 255);
+        let b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    }
+    RLChart=()=>{
+        let dataSetsRl=[];
+        for (let i = 0; i < this.file[0].length - 1; i++) {
+            let setData = {
+                label: this.file[0][i], // Name the series
+                data: [], // Specify the data values array
+                backgroundColor: this.dynamicColors(), // Add custom color background (Points and Fill)
+            };
+            for (let j = 1; j < this.file.length; j++) {
+
+                setData.data.push({x: this.file[j][i], y: this.file[j][this.file[0].length - 1]});
+
+            }
+            dataSetsRl.push(setData);
+        }
+
+        return {data:dataSetsRl,legend:true};
+    }
+
+    SVMChart=()=>{
+        let dataSetsSvm=[];
+        if(this.file[0].length===2)
+        {
+            let setData = {
+                label: this.file[0][0], // Name the series
+                data: [], // Specify the data values array
+                backgroundColor: [],
+            }
+            for (let j = 1; j < this.file.length; j++) {
+                if(this.file[j][this.file[0].length - 1]==="1")
+                    setData.backgroundColor.push("green");
+                else
+                    setData.backgroundColor.push("red");
+
+                setData.data.push({x: this.file[j][0], y: 0});
+            }
+            dataSetsSvm.push(setData);
+        }
+        else {
+            for (let i = 0; i < this.file[0].length - 2; i++) {
+                let setData = {
+                    label: this.file[0][i], // Name the series
+                    data: [], // Specify the data values array
+                    backgroundColor: [],
+                }
+
+                for (let j = 1; j < this.file.length; j++) {
+
+                    if (this.file[j][this.file[0].length - 1] === "1")
+                        setData.backgroundColor.push("green");
+                    else
+                        setData.backgroundColor.push("red");
+                    setData.data.push({x: this.file[j][i], y: this.file[j][this.file[0].length - 2]});
+                }
+
+                dataSetsSvm.push(setData);
+            }
+        }
+        return {data:dataSetsSvm,legend:false};
     }
 
 }

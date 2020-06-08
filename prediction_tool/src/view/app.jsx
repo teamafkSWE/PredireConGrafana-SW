@@ -28,10 +28,12 @@ class App extends Component{
         this.setState({algorithm:algorithm});
     }
     setDataFromFile =(data, fileInfo)=> {
+        this.viewModel.setFileData(data,true);
         this.setState({data:data, fileName: fileInfo.name, hasFile:true,algorithm:'',jsonData:null});
+
     };
     handleTraining =()=> {
-        this.viewModel.setData(this.state.algorithm,this.state.data,this.state.hasFile)
+        this.viewModel.setAlgorithm(this.state.algorithm)
         let success=this.viewModel.performTraining();
         if(success===false){
             this.resetAlgorithm("");
@@ -66,7 +68,7 @@ class App extends Component{
                 </div>
             </div>
             <div id={"chart"}>
-                <Chart dataChart={this.viewModel.getChartData()} json={this.state.jsonData}/>
+                <Chart json={this.state.jsonData} viewModel={this.viewModel} hasFile={this.state.hasFile}/>
             </div>
         </div>
     );

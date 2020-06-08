@@ -25,9 +25,6 @@ class SVMTrain extends Train{
         return this.algorithm.JSONData();
     }
 
-    getDataChart =()=>{
-        return this.algorithm.getDataChartSvm();
-    }
 
 }
 export default SVMTrain;

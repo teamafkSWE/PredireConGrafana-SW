@@ -93,30 +93,6 @@ class SupportRl {
          } else
              return false
      }
-    dynamicColors = ()=> {
-        let r = Math.floor(Math.random() * 255);
-        let g = Math.floor(Math.random() * 255);
-        let b = Math.floor(Math.random() * 255);
-        return "rgb(" + r + "," + g + "," + b + ")";
-    }
 
-     getDataChartRl =()=> {
-        let dataSetsRl=[];
-             for (let i = 0; i < this.dataRl[0].length - 1; i++) {
-                 let setData = {
-                     label: this.dataRl[0][i], // Name the series
-                     data: [], // Specify the data values array
-                     backgroundColor: this.dynamicColors(), // Add custom color background (Points and Fill)
-                 };
-                 for (let j = 1; j < this.dataRl.length; j++) {
-
-                     setData.data.push({x: this.dataRl[j][i], y: this.dataRl[j][this.dataRl[0].length - 1]});
-
-                 }
-                 dataSetsRl.push(setData);
-             }
-
-         return {data:dataSetsRl,legend:true};
-     }
 }
 export default SupportRl;

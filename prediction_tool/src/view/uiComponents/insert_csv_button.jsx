@@ -6,7 +6,6 @@ import CSVReader from "react-csv-reader";
 class InsertCsvButton extends Component {
 
     render() {
-        
         return (
             <React.Fragment>
                 <label className="btn btn-dark" htmlFor="1">Selezionare il file:</label>

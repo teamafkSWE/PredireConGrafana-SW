@@ -24,9 +24,7 @@ class RLTrain extends Train {
         return this.algorithm.JSONData();
     }
 
-    getDataChart =()=>{
-        return this.algorithm.getDataChartRl();
-    }
+
 
 }
 

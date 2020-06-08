@@ -76,46 +76,7 @@ class SupportSvm {
             return false;
         }
     }
-    getDataChartSvm =()=> {
-        let dataSetsSvm=[];
-        if(this.dataSVM[0].length===2)
-        {
-            let setData = {
-                label: this.dataSVM[0][0], // Name the series
-                data: [], // Specify the data values array
-                backgroundColor: [],
-            }
-            for (let j = 1; j < this.dataSVM.length; j++) {
-                if(this.dataSVM[j][this.dataSVM[0].length - 1]==="1")
-                    setData.backgroundColor.push("green");
-                else
-                    setData.backgroundColor.push("red");
 
-                setData.data.push({x: this.dataSVM[j][0], y: 0});
-            }
-            dataSetsSvm.push(setData);
-        }
-        else {
-            for (let i = 0; i < this.dataSVM[0].length - 2; i++) {
-                let setData = {
-                    label: this.dataSVM[0][0], // Name the series
-                    data: [], // Specify the data values array
-                    backgroundColor: [],
-                }
-
-                for (let j = 1; j < this.dataSVM.length; j++) {
-
-                    if (this.dataSVM[j][this.dataSVM[0].length - 1] === "1")
-                        setData.backgroundColor.push("green");
-                    else
-                        setData.backgroundColor.push("red");
-                    setData.data.push({x: this.dataSVM[j][i], y: this.dataSVM[j][this.dataSVM[0].length - 2]});
-                }
-                dataSetsSvm.push(setData);
-            }
-        }
-        return {data:dataSetsSvm,legend:false};
-    }
 
 }
 export default SupportSvm;

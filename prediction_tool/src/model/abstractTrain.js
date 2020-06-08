@@ -21,11 +21,7 @@ class  Train{
         );
     }
 
-    getDataChart =()=>{
-        throw new TypeError(
-            "Do not call abstract method getDataChart from child."
-        );
-    }
+
 }
 
 export default Train;

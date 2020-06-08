@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {Scatter} from "react-chartjs-2";
 
 class Chart extends Component{
-
     state={
         data : {
 
@@ -41,10 +40,19 @@ class Chart extends Component{
 
     }
 
+
     formatData=()=> {
-        if (this.props.dataChart !== null && this.props.json!==null) {
-            this.state.data.datasets =this.props.dataChart.data;
-            this.state.options.legend.display = this.props.dataChart.legend;
+        if (this.props.hasFile !== false && this.props.json!=null) {
+            this.state.data.datasets = [];
+            if (this.props.viewModel.isSVM()) {
+                this.state.data.datasets = this.props.viewModel.SVMChart().data;
+                this.state.options.legend.display = this.props.viewModel.SVMChart().legend;
+            }
+            else{
+                this.state.data.datasets =this.props.viewModel.RLChart().data;
+                this.state.options.legend.display=this.props.viewModel.RLChart().legend;
+
+            }
         }
         else
             this.state.data.datasets = [];
