@@ -5,7 +5,6 @@ class ViewModel {
     algorithm;
     file;
     hasFile;
-    json;
     strategy;
 
 
@@ -13,7 +12,6 @@ class ViewModel {
         this.algorithm = null;
         this.file = null;
         this.hasFile = null;
-        this.json=null;
         this.strategy=null;
 
     }
