@@ -42,6 +42,7 @@ class Chart extends Component{
 
 
     formatData=()=> {
+
         if (this.props.hasFile !== false && this.props.json!=null) {
             this.state.data.datasets = [];
             if (this.props.viewModel.isSVM()) {

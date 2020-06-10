@@ -30,7 +30,6 @@ class App extends Component{
     }
     setDataFromFile =(data, fileInfo)=> {
         this.#viewModel.setFileData(data,true);
-        console.log(this.#viewModel.file);
         this.setState({data:data, fileName: fileInfo.name, hasFile:true,algorithm:'',jsonData:null});
 
     };
@@ -51,7 +50,7 @@ class App extends Component{
         return <DownloadJson jsonData={this.state.jsonData} viewModel={this.#viewModel}/>
     }
     render(){
-    return(
+        return(
         <div className="mt-4 mb-4 text-center" >
             <Header/>
             <div className={"w-100 p-3 row text-center"}>

@@ -81,7 +81,7 @@ class ViewModel {
         return this.#strategy.getJSON();
     }
 
-    dynamicColors = ()=> {
+    #dynamicColors = ()=> {
         let r = Math.floor(Math.random() * 255);
         let g = Math.floor(Math.random() * 255);
         let b = Math.floor(Math.random() * 255);
@@ -93,7 +93,7 @@ class ViewModel {
             let setData = {
                 label: this.#file[0][i], // Name the series
                 data: [], // Specify the data values array
-                backgroundColor: this.dynamicColors(), // Add custom color background (Points and Fill)
+                backgroundColor: this.#dynamicColors(), // Add custom color background (Points and Fill)
             };
             for (let j = 1; j < this.#file.length; j++) {
 
