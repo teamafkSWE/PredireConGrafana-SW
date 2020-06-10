@@ -22,7 +22,7 @@ class ListaCollegamentiView extends PureComponent<MyProps>{
     }
 
     handleDelete=(e:any)=>{
-        if(confirm("Scollegare il collegamento?")){
+        if(confirm("Scollegare il predittore?")){
             this.props.controller.removeListPredictorQuery(e.target.id);
             this.setState({listConnection:this.props.controller.getConnections()});
             console.log(this.state.listConnection)
@@ -48,8 +48,8 @@ class ListaCollegamentiView extends PureComponent<MyProps>{
                         <HorizontalGroup>
                             <label>{name}:</label>
 
-                            <button id={id} className='btn btn-secondary btn-sm' onClick={this.handleEdit}>Modifica collegamento</button>
-                            <button id={id} onClick={this.handleDelete} className='btn btn-secondary btn-sm'>Elimina Collegamento</button>
+                            <button id={id} className='btn btn-secondary btn-sm' onClick={this.handleEdit}>Modifica predittore</button>
+                            <button id={id} onClick={this.handleDelete} className='btn btn-secondary btn-sm'>Scollega predittore</button>
                         </HorizontalGroup>
                         <p>
                             {list.map((list:any) => <p>{list.predictor} ---> {list.query}</p>)}
