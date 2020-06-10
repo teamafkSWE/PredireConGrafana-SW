@@ -9,7 +9,7 @@ import TrainButton from "./uiComponents/train_button";
 import DownloadJson from "./uiComponents/download_Json";
 import Chart from "./uiComponents/chart";
 class App extends Component{
-  viewModel=null;
+  #viewModel=null;
     constructor(props) {
         super(props);
         this.state = {
@@ -19,28 +19,30 @@ class App extends Component{
             algorithm: "",
             jsonData:null
         }
-         this.viewModel= new ViewModel();
+         this.#viewModel= new ViewModel();
     }
     changeAlgorithm =(event)=> {
+
         this.setState({algorithm: event.target.value});
     }
     resetAlgorithm =(algorithm)=> {
         this.setState({algorithm:algorithm});
     }
     setDataFromFile =(data, fileInfo)=> {
-        this.viewModel.setFileData(data,true);
+        this.#viewModel.setFileData(data,true);
+        console.log(this.#viewModel.file);
         this.setState({data:data, fileName: fileInfo.name, hasFile:true,algorithm:'',jsonData:null});
 
     };
     handleTraining =()=> {
-        this.viewModel.setAlgorithm(this.state.algorithm)
-        let success=this.viewModel.performTraining();
+        this.#viewModel.setAlgorithm(this.state.algorithm)
+        let success=this.#viewModel.performTraining();
         if(success===false){
             this.resetAlgorithm("");
             this.setState({jsonData:null});
         }
         else {
-            this.setState({jsonData:this.viewModel.getJsonContent()});
+            this.setState({jsonData:this.#viewModel.getJsonContent()});
         }
     }
 
@@ -68,7 +70,7 @@ class App extends Component{
                 </div>
             </div>
             <div id={"chart"}>
-                <Chart json={this.state.jsonData} viewModel={this.viewModel} hasFile={this.state.hasFile}/>
+                <Chart json={this.state.jsonData} viewModel={this.#viewModel} hasFile={this.state.hasFile}/>
             </div>
         </div>
     );
