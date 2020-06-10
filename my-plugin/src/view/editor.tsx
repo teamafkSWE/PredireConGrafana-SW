@@ -22,26 +22,6 @@ const tabs = [
 class Editor extends PureComponent<PanelEditorProps<Options>> {
     private _controller: Controller = this.props.options.controller;
 
-    state = {
-        listSelectPredictors: [] as any
-    }
-    getPredictors = () => {
-        let predictors = this._controller.getPredictors()
-        let temp = [];
-        if (predictors.length !== 0) {
-            for (let i = 0; i < predictors.length; i++) {
-                temp.push(<select id="predictors">
-                    {predictors.map((pred: any, index: number) => {
-                        return <option value={index}>{pred.name}</option>;
-                    })}
-                </select>);
-            }
-            this.setState({listSelectPredictors: temp});
-        }
-
-
-    }
-
     render() {
         return (
             <UseState initialState={tabs}>

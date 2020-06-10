@@ -10,7 +10,6 @@ import Controller from "../../controller/controller";
 
 interface MyProps {
     queries: DataFrame[]
-    //getPredictors:()=>void
     controller: Controller
 }
 
@@ -44,13 +43,6 @@ class CollegamentoView extends PureComponent<MyProps, State> {
             this.state.connectionsList.push({ predictor: listSelectPredictors[i].name, query: undefined })
         }
     }
-    getOptions = (queries: DataFrame[]) => {
-        if (queries.length > 0) {
-            return <>{queries.map((query: DataFrame) => <option value={query.name}>{query.name}</option>)}</>
-        } else
-            return <option value="noQ">No query found</option>
-    }
-
 
     getPredictors = () => {
         let predictors = this.props.controller.getPredictors();

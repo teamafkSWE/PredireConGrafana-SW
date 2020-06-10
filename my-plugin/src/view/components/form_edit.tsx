@@ -100,7 +100,7 @@ class FormEdit extends PureComponent<MyProps> {
                         })
                         this.resetList();
                         this.props.closeEdit();
-                        alert("Collegamento inserito.")
+                        alert("Collegamento modificato.")
                     } else
                         alert("Collega tutti i predittori.")
                 }
