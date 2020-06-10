@@ -36,7 +36,7 @@ class CollegamentoView extends PureComponent<MyProps, State> {
         this.setState({ valueMin: min === undefined ? 0 : min, valueMax: max === undefined ? 0 : max })
       this.resetList();
     }
-    resetList=()=>{
+    private resetList=()=>{
         this.state.connectionsList=[];
         let listSelectPredictors = this.props.controller.getPredictors();
         for (let i = 0; i < listSelectPredictors.length; i++) {
@@ -44,7 +44,7 @@ class CollegamentoView extends PureComponent<MyProps, State> {
         }
     }
 
-    getPredictors = () => {
+    private printPredictors = () => {
         let predictors = this.props.controller.getPredictors();
         const { queries } = this.props;
 
@@ -82,11 +82,11 @@ class CollegamentoView extends PureComponent<MyProps, State> {
     }
 
 
-    setName = (e: any) => {
+    private setName = (e: any) => {
         this.setState({nameConnection: e.target.value})
     }
 
-    pushConnectionsList = (e: any) => {
+    private pushConnectionsList = (e: any) => {
         for (let i = 0; i < this.state.connectionsList.length; i++) {
             if (e.target.id === this.state.connectionsList[i].predictor) {
                 this.state.connectionsList[i].query = e.target.value;
@@ -94,7 +94,7 @@ class CollegamentoView extends PureComponent<MyProps, State> {
         }
     }
 
-    sendConnectionToController = () => {
+    private sendConnectionToController = () => {
         let notUndefined = true;
         if(this.state.connectionsList.length===0) {
             alert("inserisci file");
@@ -126,17 +126,17 @@ class CollegamentoView extends PureComponent<MyProps, State> {
 
     }
 
-    handleChangeMin = (event: any) => {
+    private handleChangeMin = (event: any) => {
         this.setState({ valueMin: event.target.value });
         this.props.controller.setSogliaMin(event.target.value);
     }
 
-    handleChangeMax = (event: any) => {
+    private handleChangeMax = (event: any) => {
         this.setState({ valueMax: event.target.value });
         this.props.controller.setSogliaMax(event.target.value);
     }
 
-    confermaSoglie = (event: any) => {
+    private confermaSoglie = (event: any) => {
         console.log(this.state.valueMin, this.state.valueMax )
         //console.log(this.state.valueMax, this.state.valueMin)
         //this.props.controller.handleSoglie(this.state.valueMin, this.state.valueMax)
@@ -153,7 +153,7 @@ class CollegamentoView extends PureComponent<MyProps, State> {
                             <p style={{ fontStyle: "italic" }}>
                                 Attenzione: effettuare i collegamenti per tutti i predittori.
                             </p>
-                            {this.getPredictors()}
+                            {this.printPredictors()}
                             <p></p>
                             <Button onClick={() => this.sendConnectionToController()}>Inserisci collegamento</Button>
                         </VerticalGroup>

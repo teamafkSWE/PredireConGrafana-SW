@@ -35,14 +35,14 @@ class FormEdit extends PureComponent<MyProps> {
 
         this.resetList();
     }
-    resetList=()=>{
+    private resetList=()=>{
         this.state.connectionsList=[];
         let listSelectPredictors = this.props.controller.getPredictors();
         for (let i = 0; i < listSelectPredictors.length; i++) {
             this.state.connectionsList.push({ predictor: listSelectPredictors[i].name, query: undefined })
         }
     }
-    getPredictors = () => {
+    private printPredictors = () => {
         let predictors = this.props.controller.getPredictors();
         const { queries } = this.props;
 
@@ -70,11 +70,11 @@ class FormEdit extends PureComponent<MyProps> {
             </div>
         );
     }
-    setName = (e: any) => {
+    private setName = (e: any) => {
         this.setState({nameConnection: e.target.value})
     }
 
-    pushConnectionsList = (e: any) => {
+    private pushConnectionsList = (e: any) => {
         for (let i = 0; i < this.state.connectionsList.length; i++) {
             if (e.target.id === this.state.connectionsList[i].predictor) {
                 this.state.connectionsList[i].query = e.target.value;
@@ -82,7 +82,7 @@ class FormEdit extends PureComponent<MyProps> {
         }
     }
 
-    sendConnectionToController = () => {
+    private sendConnectionToController = () => {
         let notUndefined = true;
         if(this.state.connectionsList.length===0) {
                 alert("inserisci file");
@@ -116,7 +116,7 @@ class FormEdit extends PureComponent<MyProps> {
             <div>
                 <PanelOptionsGroup title="Edit connection">
                     <VerticalGroup>
-                        {this.getPredictors()}
+                        {this.printPredictors()}
                         <button className='btn btn-secondary btn-sm' onClick={this.sendConnectionToController}>Save</button>
                         <button className='btn btn-secondary btn-sm' onClick={this.props.closeEdit}>Cancel</button>
                     </VerticalGroup>
