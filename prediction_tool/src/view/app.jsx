@@ -48,7 +48,7 @@ class App extends Component{
 
     downloadJsonData =()=> {
         if(this.state.jsonData!==null)
-        return <DownloadJson jsonData={this.state.jsonData} algorithm={this.state.algorithm}/>
+        return <DownloadJson jsonData={this.state.jsonData} viewModel={this.#viewModel}/>
     }
     render(){
     return(

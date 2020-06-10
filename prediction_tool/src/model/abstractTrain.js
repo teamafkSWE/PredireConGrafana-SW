@@ -1,5 +1,5 @@
 class  Train{
-    algorithm=null;
+    #algorithm=null;
     constructor() {
         if (this.constructor === Train) {
             throw new TypeError("Can not construct abstract class.");

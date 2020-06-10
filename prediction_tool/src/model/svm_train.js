@@ -1,15 +1,15 @@
 import SupportSvm from "./train/support_svm"
 import Train from "./abstractTrain";
 class SVMTrain extends Train{
-    algorithm=null;
+    #algorithm=null;
     constructor(dataSVM) {
         super();
 
-        this.algorithm=new SupportSvm(dataSVM);
+        this.#algorithm=new SupportSvm(dataSVM);
     }
     train =()=> {
-        this.algorithm.trainSvm();
-        if(this.algorithm.confermaPredizioneSvm()) {
+        this.#algorithm.trainSvm();
+        if(this.#algorithm.confermaPredizioneSvm()) {
             alert("Addestramento avvenuto correttamente.");
             return true;
         }
@@ -19,10 +19,10 @@ class SVMTrain extends Train{
         }
     }
     getCoefficients =()=> {
-       return  this.algorithm.Weights();
+       return  this.#algorithm.Weights();
     }
     getJSON =()=> {
-        return this.algorithm.JSONData();
+        return this.#algorithm.JSONData();
     }
 
 

@@ -5,9 +5,9 @@ class DownloadJson extends Component {
     downloadJsonFile =()=> {
         let element = document.createElement('a');
         element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.props.jsonData));
-        if(this.props.algorithm==="rl")
+        if(this.props.viewModel.isRL())
             element.setAttribute('download', 'predictorsRL.json');
-        if(this.props.algorithm==="svm")
+        if(this.props.viewModel.isSVM())
             element.setAttribute('download', 'predictorsSVM.json');
         element.style.display = 'none';
         document.body.appendChild(element);

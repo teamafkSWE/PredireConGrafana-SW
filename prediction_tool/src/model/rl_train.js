@@ -1,14 +1,14 @@
 import SupportRl from "./train/support_rl";
 import Train from "./abstractTrain";
 class RLTrain extends Train {
-    algorithm=null;
+    #algorithm=null;
     constructor(dataRl) {
         super();
-        this.algorithm=new SupportRl(dataRl);
+        this.#algorithm=new SupportRl(dataRl);
     }
     train =()=> {
-        this.algorithm.insert();
-        if(this.algorithm.trainRl()){
+        this.#algorithm.insert();
+        if(this.#algorithm.trainRl()){
             alert("Addestramento avvenuto correttamente.");
             return true;
         }
@@ -18,10 +18,10 @@ class RLTrain extends Train {
         }
     }
     getCoefficients =()=> {
-       return  this.algorithm.getCoefficientsRl();
+       return  this.#algorithm.getCoefficientsRl();
     }
     getJSON =()=> {
-        return this.algorithm.JSONData();
+        return this.#algorithm.JSONData();
     }
 
 
