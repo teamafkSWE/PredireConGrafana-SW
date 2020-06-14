@@ -4,17 +4,16 @@ import Algorithm from "../model/algorithm";
 import {Svm} from "../model/algorithms/svm";
 import {Regression} from "../model/algorithms/regression";
 import {DataFrame, FieldType} from "@grafana/data";
-//import React from 'react';
 
 export default class Controller extends Observable {
     private _json: any;
     private _file: File | undefined;
     private _predictors: Predictor[] = [];
-    private _b: number | undefined;
+    //private _b: number | undefined;
     private _algorithm: Algorithm | undefined;
     private _sogliaMin: number | undefined;
     private _sogliaMax: number | undefined;
-    private _queries: DataFrame[] = []; //a che serve questo campo?
+    //private _queries: DataFrame[] = []; //a che serve questo campo?
     private _connections: Connection[] = [];
     private _newConnectionIndex = 0; //attenzione, può solo incrementare, non credo vada bene
     private _isMonitoring: boolean = false;
@@ -35,7 +34,7 @@ export default class Controller extends Observable {
         }
 
         for (let i = 0; i < predictorsNames.length; i++) {
-            this._predictors.push({name: predictorsNames[i], value: predictorsValues[i]})
+            this._predictors.push(new Predictor(predictorsNames[i],predictorsValues[i]))
         }
     }
 
@@ -57,20 +56,12 @@ export default class Controller extends Observable {
                 this._json = JSON.parse(event.target.result);
                 this._definePredictors()
                 this._setStrategy()
-                this._b = this._json.result.b
+                //this._b = this._json.result.b
                 this.notifyAll()
             }
         }
         fr.readAsText(file)
         return this
-    }
-
-    public setSogliaMin = (valueSogliaMin: number) => {
-        this._sogliaMin = valueSogliaMin;
-    }
-
-    public setSogliaMax = (valueSogliaMax: number) => {
-        this._sogliaMax = valueSogliaMax;
     }
 
     public setListPredictorQuery = (obj: { name: string, list: { predictor: string, query: string }[] }) => {
@@ -105,6 +96,8 @@ export default class Controller extends Observable {
             alert("SogliaMin non valida. Inserire un valore minore della sogliaMax.")
             return false
         }else{
+            this._sogliaMin = sMin;
+            this._sogliaMax = sMax;
             alert("Soglie inserite correttamente.")
         }
         return true
@@ -132,9 +125,11 @@ export default class Controller extends Observable {
         }
     }*/
 
+    /*
     public setQueries = (queries: DataFrame[]) => {
         this._queries = queries;
     }
+    */
 
     public updatePredictions = (series: DataFrame[]) => {
         //console.log('updating predictions')
@@ -248,6 +243,7 @@ export default class Controller extends Observable {
         return this._sogliaMax;
     }
 
+    /*
     public getQueries = () => {
         return this._queries;
     }
@@ -255,6 +251,7 @@ export default class Controller extends Observable {
     public getB = () => {
         return this._b
     }
+    */
 
     public isMonitoring = () => {
         return this._isMonitoring

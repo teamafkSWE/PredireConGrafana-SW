@@ -51,6 +51,8 @@ class Editor extends PureComponent<PanelEditorProps<Options>> {
                                 {state[0].active && <CaricamentoJsonView controller={this._controller} /> }
                                 {state[1].active && <CollegamentoView queries={this.props.data.series}
                                                                       controller={this._controller}
+                                                                      getFile={this._controller.getFile}
+                                                                      getPredictors={this._controller.getPredictors}
                                 />}
                                 {state[2].active && <ListaCollegamentiView  controller={this._controller} queries={this.props.data.series}/>}
                                 {state[3].active && <PrevisioneView isMonitoring={this._controller.isMonitoring} start={this._controller.startMonitoring} stop={this._controller.stopMonitoring} attach={this._controller.attach} detach={this._controller.detach}/>}

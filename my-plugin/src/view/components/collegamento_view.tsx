@@ -4,13 +4,14 @@ import { DataFrame } from "@grafana/data";
 //import {DataFrame, timeZoneAbbrevation} from "@grafana/data";
 
 import Controller from "../../controller/controller";
-
-//import {Predictor} from "../../types";
+import {Predictor} from "../../types";
 
 
 interface MyProps {
     queries: DataFrame[]
     controller: Controller
+    getPredictors: () => Predictor[]
+    getFile: () => File | undefined
 }
 
 interface State {
@@ -45,40 +46,33 @@ class CollegamentoView extends PureComponent<MyProps, State> {
     }
 
     private printPredictors = () => {
-        let predictors = this.props.controller.getPredictors();
+        const file = this.props.getFile();
         const { queries } = this.props;
 
-        let temp = [];
-        if (predictors.length !== 0) {
-            if (queries.length > 0) {
-
-                for (let i = 0; i < predictors.length; i++) {
-                    let name = predictors[i].name;
-                    temp.push(
-                        <p>
-                            <label>{name}:
-                            <select id={name} onChange={this.pushConnectionsList} style={{ margin: "10px" }}>
-                                    <option value="" >Seleziona il nodo</option>
-                                    {queries.map((query: DataFrame) => <option value={query.name}>{query.name}</option>)}
-                                </select></label>
-                        </p>
-                    );
-                }
-            } else
-                return (<select id="collegamento">
-                    <option value="noQ">No query found</option>
-                </select>)
+        if (file === undefined) //non è stato inserito il file json
+            return (<p>Nessun json inserito, perfavore inserire prima un file json compatibile.</p>)
+        else if (queries.length <= 0) //non sono state impostate delle query
+            return (<p>Nessuna query impostata, perfavore impostare prima una o più query.</p>)
+        else{ //è presente un file json compatibile e sono presenti delle query
+            const predictors = this.props.getPredictors();
+            return (
+                <div>
+                    <label htmlFor={"nome_collegamento"}>Nome del collegamento:</label>
+                    <input type="text" placeholder="nome del collegamento" id="nome_collegamento" onChange={this.setName}/>
+                    {predictors.map(predictor => //per ogni predittore mostro una selezione tra tutte le query
+                        <div>
+                            <label htmlFor={predictor.name}>{predictor.name}:</label>
+                            <select id={predictor.name} onChange={this.pushConnectionsList} style={{ margin: "10px" }}>
+                                <option value="" >Seleziona il nodo</option>
+                                {queries.map((query: DataFrame) =>
+                                    <option value={query.name}>{query.name}</option>)
+                                }
+                            </select>
+                        </div>
+                    )}
+                </div>
+            );
         }
-        else
-            return (<select id="collegamento">
-                <option value="noP">No file found</option></select>)
-        return (
-            <div>
-                <label htmlFor={"nome_collegamento"}>Nome del collegamento:</label>
-                <input type="text" placeholder="nome_collegamento" id="nome_collegamento" onChange={this.setName} style={{ marginLeft: "10px" }} />
-                {temp}
-            </div>
-        );
     }
 
 
@@ -128,18 +122,14 @@ class CollegamentoView extends PureComponent<MyProps, State> {
 
     private handleChangeMin = (event: any) => {
         this.setState({ valueMin: event.target.value });
-        this.props.controller.setSogliaMin(event.target.value);
     }
 
     private handleChangeMax = (event: any) => {
         this.setState({ valueMax: event.target.value });
-        this.props.controller.setSogliaMax(event.target.value);
     }
 
     private confermaSoglie = (event: any) => {
-        console.log(this.state.valueMin, this.state.valueMax )
-        //console.log(this.state.valueMax, this.state.valueMin)
-        //this.props.controller.handleSoglie(this.state.valueMin, this.state.valueMax)
+        //console.log(this.state.valueMin, this.state.valueMax )
         this.props.controller.handleSoglie(this.state.valueMin, this.state.valueMax)
     }
 
@@ -154,8 +144,7 @@ class CollegamentoView extends PureComponent<MyProps, State> {
                                 Attenzione: effettuare i collegamenti per tutti i predittori.
                             </p>
                             {this.printPredictors()}
-                            <p></p>
-                            <Button onClick={() => this.sendConnectionToController()}>Inserisci collegamento</Button>
+                            <Button onClick={this.sendConnectionToController}>Inserisci collegamento</Button>
                         </VerticalGroup>
                     </PanelOptionsGroup>
 
