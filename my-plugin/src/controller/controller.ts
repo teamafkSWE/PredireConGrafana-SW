@@ -1,8 +1,8 @@
 import {Predictor, Connection} from "../types";
 import Observable from "./observable";
 import Algorithm from "../model/algorithm";
-import {Svm, SvmData} from "../model/algorithms/svm";
-import {Regression, RLData} from "../model/algorithms/regression";
+import {Svm} from "../model/algorithms/svm";
+import {Regression} from "../model/algorithms/regression";
 import {DataFrame, FieldType} from "@grafana/data";
 //import React from 'react';
 
@@ -42,17 +42,9 @@ export default class Controller extends Observable {
     private _setStrategy() {
         const algorithm: string = this._json.algorithm
         if (algorithm === 'Linear Regression') {
-            const data: RLData = {
-                a: this._json.result.a,
-                b: this._json.result.b
-            }
-            this._algorithm = new Regression(data);
+            this._algorithm = new Regression(this._json.result.a, this._json.result.b);
         } else if (algorithm === 'SVM') {
-            const data: SvmData = {
-                wheits: this._json.result.w,
-                bias: this._json.result.b
-            }
-            this._algorithm = new Svm(data);
+            this._algorithm = new Svm(this._json.result.w, this._json.result.b);
         }
     }
 
