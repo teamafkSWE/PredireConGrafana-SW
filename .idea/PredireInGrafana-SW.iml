@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/prediction_tool/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/prediction_tool/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/PB" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
