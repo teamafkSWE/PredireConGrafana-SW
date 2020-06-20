@@ -3,10 +3,6 @@ import Algorithm from "../algorithm";
 
 export class Regression extends Algorithm{
 
-    public constructor(a: number[], b: number) {
-        super(a, b)
-    }
-
     predict = (input: number[]): number => {
         if (input.length < this.a.length)
             throw new Error("The number of inputs is less than expected")

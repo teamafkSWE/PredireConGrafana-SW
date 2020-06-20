@@ -4,10 +4,6 @@ import Algorithm from "../algorithm";
 
 export class Svm extends Algorithm{
 
-    public constructor(weights: number[], bias:number) {
-        super(weights, bias)
-    }
-
     predict = (input: number[]): 1|-1 => {
         if (input.length < this.a.length)
             throw new Error("The number of inputs is less than expected")
