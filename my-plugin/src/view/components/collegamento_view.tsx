@@ -99,7 +99,7 @@ class CollegamentoView extends PureComponent<MyProps, State> {
             }
 
             if (allPredictorLinked) {
-                console.log(this.state)
+                //console.log(this.state)
                 this.props.addConnection({
                     name: this.state.nameConnection,
                     links: (this.state.predictorsLinks as { predictor: string, query: string }[])

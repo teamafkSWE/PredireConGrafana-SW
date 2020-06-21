@@ -56,7 +56,10 @@ class Editor extends PureComponent<PanelEditorProps<Options>> {
                                                                       setThresholds={this._controller.setThresholds}
                                                                       getThresholds={this._controller.getThresholds}
                                 />}
-                                {state[2].active && <ListaCollegamentiView  controller={this._controller} queries={this.props.data.series}/>}
+                                {state[2].active && <ListaCollegamentiView getConnections={this._controller.getConnections}
+                                                                           controller={this._controller}
+                                                                           queries={this.props.data.series}
+                                />}
                                 {state[3].active && <PrevisioneView isMonitoring={this._controller.isMonitoring} start={this._controller.startMonitoring} stop={this._controller.stopMonitoring} attach={this._controller.attach} detach={this._controller.detach}/>}
                             </TabContent>
                             </>

@@ -64,7 +64,7 @@ export default class Controller extends Observable {
     }
 
     public addConnection = (connection: { name: string, links: { predictor: string, query: string }[] }) => {
-        this._connections.push({id: this._newConnectionIndex.toString(), name: connection.name, queries: connection.links});
+        this._connections.push({id: this._newConnectionIndex.toString(), name: connection.name, links: connection.links});
         this._newConnectionIndex++;
         this.notifyAll();
     }
@@ -73,7 +73,7 @@ export default class Controller extends Observable {
         for (let i = 0; i < this._connections.length; i++) {
             if(this._connections[i].id===id){
                 this._connections[i].name=obj.name;
-                this._connections[i].queries=obj.list;
+                this._connections[i].links=obj.list;
             }
         }
     }
@@ -145,7 +145,7 @@ export default class Controller extends Observable {
             for (let query of series) {
                 //console.log('query', query)
                 const queries: string[] = [] //array che contiene tutti i nomi delle query per questo collegamento
-                connection.queries.forEach(ele => queries.push(ele.query))
+                connection.links.forEach(ele => queries.push(ele.query))
                 //console.log('queries selected', queries)
                 if (queries.includes(query.name as string)) {// questa query serve al calcolo della previsione
                     if (query.fields[0].type === FieldType.number) {

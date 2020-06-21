@@ -1,90 +1,125 @@
 import React, {PureComponent} from 'react';
-import { PanelOptionsGroup, VerticalGroup, HorizontalGroup} from "@grafana/ui";
+import {PanelOptionsGroup, VerticalGroup, Button, HorizontalGroup} from "@grafana/ui";
 import Controller from "../../controller/controller";
 import {DataFrame} from "@grafana/data";
 import FormEdit from "./form_edit"
-//import Observer from "./observer/observer";
+import {Connection} from "../../types";
 
-interface MyProps {
+
+interface Props {
     queries: DataFrame[],
+    getConnections: () => Connection[]
     controller: Controller
 }
 
-class ListaCollegamentiView extends PureComponent<MyProps>{
-    state={
-        listConnection:[] as any,
-        isEditClicked:false,
-        idEdit:""
-    }
-    constructor(props: Readonly<MyProps>) {
-        super(props);
-       this.state.listConnection=this.props.controller.getConnections()
+class ListaCollegamentiView extends PureComponent<Props> {
+    state = {
+        isEditClicked: false,
+        idEdit: ""
     }
 
-    handleDelete=(e:any)=>{
-        if(confirm("Scollegare il predittore?")){
-            this.props.controller.removeListPredictorQuery(e.target.id);
-            this.setState({listConnection:this.props.controller.getConnections()});
-            console.log(this.state.listConnection)
+    handleDelete = (id: string) => {
+        if (confirm("Scollegare il predittore?")) {
+            this.props.controller.removeListPredictorQuery(id);
             this.forceUpdate();
         }
     }
-    handleEdit=(e:any)=>{
-        this.setState({isEditClicked:true,idEdit:e.target.id});
+    handleEdit = (id: string) => {
+        this.setState({isEditClicked: true, idEdit: id});
     }
 
-    showConnection=()=>{
-        let listConn=this.state.listConnection;
-        let viewNameList=[];
-        if(listConn.length=== 0)
-            return <label style={{fontStyle: "italic"}}>Nessun collegamento inserito.</label>
+    showConnection = () => {
+        const connections = this.props.getConnections()
+        if (connections.length === 0)
+            return <p>Nessun collegamento inserito.</p>
         else {
-            for (let i=0;i<listConn.length;i++) {
-                let id=listConn[i].id;
-                let name=listConn[i].name;
-                let list=listConn[i].queries;
-                viewNameList.push(
-                    <div>
-                        <HorizontalGroup>
-                            <label>{name}:</label>
+            const links = []
 
-                            <button id={id} className='btn btn-secondary btn-sm' onClick={this.handleEdit}>Modifica predittore</button>
-                            <button id={id} onClick={this.handleDelete} className='btn btn-secondary btn-sm'>Scollega predittore</button>
-                        </HorizontalGroup>
-                        <p>
-                            {list.map((list:any) => <p>{list.predictor} ---> {list.query}</p>)}
-                        </p>
-                    </div>
-
-                );
+            for (let connection of connections) {
+                links.push(
+                    <Collegamento id={connection.id} nome={connection.name} links={connection.links} onRemove={this.handleDelete} onModify={this.handleEdit}/>
+                )
             }
-
-            return viewNameList;
+            return links
         }
     }
-    closeEdit=()=>{
-        this.setState({isEditClicked:false,idEdit:""});
+
+    closeEdit = () => {
+        this.setState({isEditClicked: false, idEdit: ""});
     }
 
     render() {
-
         return (
             <div>
                 <HorizontalGroup>
-
                     <PanelOptionsGroup title="Lista collegamenti">
                         <VerticalGroup>
-                            <p style={{fontStyle: "italic"}}>Legenda: Predittore ---> Query</p>
                             {this.showConnection()}
                         </VerticalGroup>
-
                     </PanelOptionsGroup>
                     {this.state.isEditClicked && <FormEdit idEdit={this.state.idEdit} closeEdit={this.closeEdit} controller={this.props.controller} queries={this.props.queries}/>}
                 </HorizontalGroup>
-        </div>
-
+            </div>
         );
     }
+}
+
+interface CollegamentoProps {
+    id: string
+    nome: string
+    links: { predictor: string, query: string }[]
+    onModify: (id: string) => void
+    onRemove: (id: string) => void
+}
+
+const Collegamento: React.FC<CollegamentoProps> = (props) => {
+    const predictors: string[] = []
+    const nodes: string[] = []
+    props.links.forEach(link => {
+        predictors.push(link.predictor);
+        nodes.push(link.query)
+    })
+    return (
+        <>
+            <div style={{width: "100%", border: "1pt solid white", borderRadius: "3pt", minWidth: "12rem", marginTop: ".8rem"}}>
+                <p style={{textAlign: "center", borderBottom: "1pt solid white", margin: "0", padding: "0.4rem 0 0.4rem", fontSize: "1.2rem"}}>{props.nome}</p>
+
+                <div style={{display: "flex", justifyContent: "space-evenly"}}>
+                    <div style={{width: "100%"}}>
+                        <p style={{
+                            textAlign: "center",
+                            width: "100%",
+                            margin: "0",
+                            padding: "0.4rem 0.6rem 0.4rem",
+                            borderRight: "1pt solid white",
+                            borderBottom: "1pt solid white"
+                        }}>
+                            Predittore
+                        </p>
+                        {predictors.map(predictor =>
+                            <p style={{textAlign: "center", width: "100%", margin: "0", padding: "0.2rem 0.6rem 0.2rem"}}>
+                                {predictor}
+                            </p>
+                        )}
+                    </div>
+                    <div style={{width: "100%"}}>
+                        <p style={{textAlign: "center", width: "100%", margin: "0", padding: "0.4rem 0.6rem 0.4rem", borderBottom: "1pt solid white"}}>
+                            Nodo
+                        </p>
+                        {nodes.map(node =>
+                            <p style={{textAlign: "center", width: "100%", margin: "0", padding: "0.2rem 0.6rem 0.2rem"}}>
+                                {node}
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </div>
+            <div style={{display: "flex", justifyContent: "space-evenly", width: "100%", margin: ".75rem 0 .5rem"}}>
+                <Button style={{margin: "0 .5rem 0"}} onClick={() => props.onModify(props.id)}>Modifica</Button>
+                <Button style={{margin: "0 .5rem 0"}} onClick={() => props.onRemove(props.id)}>Scollega</Button>
+            </div>
+        </>
+    )
 }
 
 export default ListaCollegamentiView;

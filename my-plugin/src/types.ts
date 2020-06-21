@@ -5,8 +5,8 @@ export interface Options {
 }
 
 export class Predictor {
-    private readonly _name:string;
-    private readonly _value:number;
+    private readonly _name: string;
+    private readonly _value: number;
 
     constructor(name: string, value: number) {
         this._name = name;
@@ -24,10 +24,10 @@ export class Predictor {
 }
 
 export class Threshold {
-    private _min:number
-    private _max:number
+    private _min: number
+    private _max: number
 
-    constructor(min:number, max:number) {
+    constructor(min: number, max: number) {
         this._min = min
         this._max = max
     }
@@ -52,5 +52,5 @@ export class Threshold {
 export interface Connection {
     id: string,
     name: string,
-    queries: { predictor: string, query: string }[]
+    links: { predictor: string, query: string }[]
 }
