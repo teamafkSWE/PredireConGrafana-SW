@@ -1,9 +1,9 @@
-import {Predictor, Connection} from "../types";
+import {Predictor, Connection, Threshold} from "../types";
 import Observable from "./observable";
 import Algorithm from "../model/algorithm";
 import {Svm} from "../model/algorithms/svm";
 import {Regression} from "../model/algorithms/regression";
-import {DataFrame, FieldType} from "@grafana/data";
+import {DataFrame, FieldType,} from "@grafana/data";
 
 export default class Controller extends Observable {
     private _json: any;
@@ -11,8 +11,7 @@ export default class Controller extends Observable {
     private _predictors: Predictor[] = [];
     //private _b: number | undefined;
     private _algorithm: Algorithm | undefined;
-    private _sogliaMin: number | undefined;
-    private _sogliaMax: number | undefined;
+    private _threshold: Threshold | undefined
     //private _queries: DataFrame[] = []; //a che serve questo campo?
     private _connections: Connection[] = [];
     private _newConnectionIndex = 0; //attenzione, può solo incrementare, non credo vada bene
@@ -64,8 +63,8 @@ export default class Controller extends Observable {
         return this
     }
 
-    public setListPredictorQuery = (obj: { name: string, list: { predictor: string, query: string }[] }) => {
-        this._connections.push({id: this._newConnectionIndex.toString(), name: obj.name, queries: obj.list});
+    public addConnection = (connection: { name: string, links: { predictor: string, query: string }[] }) => {
+        this._connections.push({id: this._newConnectionIndex.toString(), name: connection.name, queries: connection.links});
         this._newConnectionIndex++;
         this.notifyAll();
     }
@@ -87,7 +86,7 @@ export default class Controller extends Observable {
         this.notifyAll();
     }
 
-    public handleSoglie = (sMin: number, sMax: number) => {
+    public setThresholds = (sMin: number, sMax: number):boolean => {
         if(sMin !== null && sMin.toString().length === 1)
             sMin = parseInt("0" + sMin)
         if(sMax !== null && sMax.toString().length === 1)
@@ -96,8 +95,14 @@ export default class Controller extends Observable {
             alert("SogliaMin non valida. Inserire un valore minore della sogliaMax.")
             return false
         }else{
-            this._sogliaMin = sMin;
-            this._sogliaMax = sMax;
+            if (this._threshold === undefined){
+                this._threshold = new Threshold(sMin, sMax)
+            }
+            else
+            {
+                this._threshold.min = sMin
+                this._threshold.max = sMax
+            }
             alert("Soglie inserite correttamente.")
         }
         return true
@@ -235,12 +240,8 @@ export default class Controller extends Observable {
         return this._predictors
     }
 
-    public getSogliaMin = () => {
-        return this._sogliaMin;
-    }
-
-    public getSogliaMax = () => {
-        return this._sogliaMax;
+    public getThresholds = () => {
+        return this._threshold;
     }
 
     /*
