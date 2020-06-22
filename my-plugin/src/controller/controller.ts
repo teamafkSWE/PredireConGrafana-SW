@@ -1,9 +1,10 @@
-import {Predictor, Connection, Threshold} from "../types";
+import {Predictor, Connection, Threshold, Datasource} from "../types";
 import Observable from "./observable";
 import Algorithm from "../model/algorithm";
 import {Svm} from "../model/algorithms/svm";
 import {Regression} from "../model/algorithms/regression";
 import {DataFrame, FieldType,} from "@grafana/data";
+import Axios from "axios";
 
 export default class Controller extends Observable {
     private _json: any;
@@ -17,6 +18,9 @@ export default class Controller extends Observable {
     private _newConnectionIndex = 0; //attenzione, può solo incrementare, non credo vada bene
     private _isMonitoring: boolean = false;
     private _predictedData: { name: string, data: number[][] }[] = [];
+    private _datasources: Datasource[] = []
+    private _datasourceID: number | undefined
+    private _measurement: string | undefined
 
     private _definePredictors = () => {
         this._predictors = [];
@@ -33,7 +37,7 @@ export default class Controller extends Observable {
         }
 
         for (let i = 0; i < predictorsNames.length; i++) {
-            this._predictors.push(new Predictor(predictorsNames[i],predictorsValues[i]))
+            this._predictors.push(new Predictor(predictorsNames[i], predictorsValues[i]))
         }
     }
 
@@ -68,12 +72,12 @@ export default class Controller extends Observable {
         this._newConnectionIndex++;
         this.notifyAll();
     }
-    public editListPredictorQuery = (id:string ,obj: { name: string, list: { predictor: string, query: string }[] }) => {
+    public editListPredictorQuery = (id: string, obj: { name: string, list: { predictor: string, query: string }[] }) => {
 
         for (let i = 0; i < this._connections.length; i++) {
-            if(this._connections[i].id===id){
-                this._connections[i].name=obj.name;
-                this._connections[i].links=obj.list;
+            if (this._connections[i].id === id) {
+                this._connections[i].name = obj.name;
+                this._connections[i].links = obj.list;
             }
         }
     }
@@ -86,26 +90,32 @@ export default class Controller extends Observable {
         this.notifyAll();
     }
 
-    public setThresholds = (sMin: number, sMax: number):boolean => {
-        if(sMin !== null && sMin.toString().length === 1)
+    public setThresholds = (sMin: number, sMax: number): boolean => {
+        if (sMin !== null && sMin.toString().length === 1)
             sMin = parseInt("0" + sMin)
-        if(sMax !== null && sMax.toString().length === 1)
+        if (sMax !== null && sMax.toString().length === 1)
             sMax = parseInt("0" + sMax)
-        if(sMin >= sMax || (sMin === 0 && sMax === 0)) {
+        if (sMin >= sMax || (sMin === 0 && sMax === 0)) {
             alert("SogliaMin non valida. Inserire un valore minore della sogliaMax.")
             return false
-        }else{
-            if (this._threshold === undefined){
+        } else {
+            if (this._threshold === undefined) {
                 this._threshold = new Threshold(sMin, sMax)
-            }
-            else
-            {
+            } else {
                 this._threshold.min = sMin
                 this._threshold.max = sMax
             }
             alert("Soglie inserite correttamente.")
         }
         return true
+    }
+
+    public setDatasource = (id: number) => {
+        this._datasourceID = id
+    }
+
+    public setMeasurement = (measurement:string) => {
+        this._measurement = measurement
     }
 
     /*public handleInserimentoCollegamento = (bool: any) => {
@@ -135,6 +145,21 @@ export default class Controller extends Observable {
         this._queries = queries;
     }
     */
+
+    public updateDatasources = async () => {
+        this._datasources = []
+        const response = await Axios.get(window.location.origin + "/api/datasources")
+        return new Promise<Datasource[]>((resolve) => {
+            if (response.status === 200) {
+                const datasources = response.data
+                for (let ds of datasources) {
+                    if (ds.type === "influxdb")
+                        this._datasources.push(new Datasource(ds.id, ds.database, ds.name, ds.url))
+                }
+            }
+            resolve(this._datasources)
+        })
+    }
 
     public updatePredictions = (series: DataFrame[]) => {
         //console.log('updating predictions')
@@ -171,7 +196,7 @@ export default class Controller extends Observable {
                 return;
 
             let time: number = 0 //timestamp da associare alla predizione
-            for (let ele of series[0].fields){
+            for (let ele of series[0].fields) {
                 if (ele.type === FieldType.time) {
                     //appena trovo una serie che contiene gli orari mi fermo (si potrebbe farlo continuare ma secondo me non è sicuro)
                     time = ele.values.get(ele.values.length - 1) //inserisco l'ultimo orario (che dovrebbe essere quello della previsione)
@@ -182,15 +207,15 @@ export default class Controller extends Observable {
             let data = [time, predicted]
             //console.log('data to be written in panel', data)
             let inserted = false
-            for (let serie of this._predictedData){
-                if (serie.name === connection.name){
+            for (let serie of this._predictedData) {
+                if (serie.name === connection.name) {
                     serie.data.push(data)
                     //console.log('data pushed to an already existing connection')
                     inserted = true
                 }
             }
             if (!inserted)
-                this._predictedData.push({name:connection.name, data:[data]})
+                this._predictedData.push({name: connection.name, data: [data]})
             //console.log('created a new serie of data')
         }
         //console.log('update finished')
@@ -222,6 +247,18 @@ export default class Controller extends Observable {
             }
         })
         return data;
+    }
+
+    public getDatasource = () => {
+        if (typeof this._datasourceID === "number")
+            for (let ds of this._datasources)
+                if (ds.id === this._datasourceID)
+                    return ds
+        return null
+    }
+
+    public getMeasurement = () =>{
+        return this._measurement
     }
 
     public getConnections = () => {

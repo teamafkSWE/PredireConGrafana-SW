@@ -54,3 +54,35 @@ export interface Connection {
     name: string,
     links: { predictor: string, query: string }[]
 }
+
+export class Datasource {
+    private readonly _id: number
+    private readonly _database: string;
+    private readonly _name: string
+    private readonly _url: string
+
+
+    constructor(id: number, database: string, name: string, url: string) {
+        this._id = id;
+        this._database = database;
+        this._name = name;
+        this._url = url;
+    }
+
+
+    get id(): number {
+        return this._id;
+    }
+
+    get database(): string {
+        return this._database;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get url(): string {
+        return this._url;
+    }
+}

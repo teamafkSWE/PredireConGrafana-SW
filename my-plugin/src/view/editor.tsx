@@ -60,7 +60,20 @@ class Editor extends PureComponent<PanelEditorProps<Options>> {
                                                                            controller={this._controller}
                                                                            queries={this.props.data.series}
                                 />}
-                                {state[3].active && <PrevisioneView isMonitoring={this._controller.isMonitoring} start={this._controller.startMonitoring} stop={this._controller.stopMonitoring} attach={this._controller.attach} detach={this._controller.detach}/>}
+                                {state[3].active && <PrevisioneView isMonitoring={this._controller.isMonitoring}
+                                                                    startMonitoring={this._controller.startMonitoring}
+                                                                    stopMonitoring={this._controller.stopMonitoring}
+                                                                    startSaving={() => {return}}
+                                                                    stopSaving={() => {return}}
+                                                                    isSaving={() => false}
+                                                                    getConnections={this._controller.getConnections}
+                                                                    getDatasources={this._controller.updateDatasources}
+                                                                    setDatasource={this._controller.setDatasource}
+                                                                    getDatasource={this._controller.getDatasource}
+                                                                    getMeasurement={this._controller.getMeasurement}
+                                                                    setMeasurement={this._controller.setMeasurement}
+                                                                    attach={this._controller.attach}
+                                                                    detach={this._controller.detach}/>}
                             </TabContent>
                             </>
                         );
