@@ -14,7 +14,7 @@ interface Props {
     attach: (o: Observer) => void
     detach: (o: Observer) => void
     getDatasources: () => Promise<Datasource[]>
-    getDatasource: () => Datasource | null
+    getUsedDatasource: () => Datasource | null
     setDatasource: (id: number) => void
     setMeasurement: (measurement: string) => void
     getMeasurement: () => string | undefined
@@ -48,7 +48,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
     }
 
     componentDidMount() {
-        const datasource = this.props.getDatasource()
+        const datasource = this.props.getUsedDatasource()
         let index = 0
         if (datasource != null) {
             while (datasource.id != this.state.datasources[index].id) {
@@ -62,11 +62,8 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         this.props.detach(this)
     }
 
-    update()
-        :
-        void {
-        if (this.props.isMonitoring()
-        )
+    update(): void {
+        if (this.props.isMonitoring())
             this.setState({monitoring: true})
         else
             this.setState({monitoring: false})
@@ -75,6 +72,17 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
             this.setState({saving: true})
         else
             this.setState({saving: false})
+    }
+
+    private setDatasource = (event: any) => {
+        const id = event.target.value
+        this.props.setDatasource(id)
+    }
+
+    private setMeasurement = (event: any) => {
+        const measurement = event.target.value
+        this.setState({measurement: measurement})
+        this.props.setMeasurement(measurement)
     }
 
     private startMonitoring = () => {
@@ -93,18 +101,19 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         }
     }
 
-    private setDatasource = (event: any) => {
-        const id = event.target.value
-        this.props.setDatasource(id)
-    }
-
-    private setMeasurement = (event:any) => {
-        const measurement = event.target.value
-        this.setState({measurement: measurement})
-        this.props.setMeasurement(measurement)
-    }
-
     private savingForm = () => {
+
+        const saveButton = () => {
+            const {saving, measurement} = this.state
+            const datasource = this.props.getUsedDatasource()
+
+            if (saving)
+                return <Button variant={"secondary"} onClick={this.props.stopSaving}>Disabilita salvataggio</Button>
+            else if (measurement != "" && datasource === null)
+                return <Button variant={"primary"} onClick={this.props.startSaving}>Abilita salvataggio</Button>
+            else
+                return <Button disabled={true} variant={"primary"} onClick={this.props.startSaving}>Abilita salvataggio</Button>
+        }
 
         const getOptions = () => {
             const options = []
@@ -127,9 +136,9 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
                 </div>
                 <div>
                     <label htmlFor={"measurement"}>Inserire il nome della misurazione:</label>
-                    <Input id={"measurement"} type={"text"} value={this.state.measurement} onChange={this.setMeasurement} />
+                    <Input id={"measurement"} type={"text"} value={this.state.measurement} onChange={this.setMeasurement}/>
                 </div>
-                <Button>Abilita salvataggio</Button>
+                {saveButton()}
             </>
         )
     }

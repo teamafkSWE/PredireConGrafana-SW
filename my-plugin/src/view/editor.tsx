@@ -47,34 +47,34 @@ class Editor extends PureComponent<PanelEditorProps<Options>> {
                                         })
                                     }
                                 </TabsBar>
-                                 <TabContent>
-                                {state[0].active && <CaricamentoJsonView controller={this._controller} /> }
-                                {state[1].active && <CollegamentoView queries={this.props.data.series}
-                                                                      addConnection={this._controller.addConnection}
-                                                                      getFile={this._controller.getFile}
-                                                                      getPredictors={this._controller.getPredictors}
-                                                                      setThresholds={this._controller.setThresholds}
-                                                                      getThresholds={this._controller.getThresholds}
-                                />}
-                                {state[2].active && <ListaCollegamentiView getConnections={this._controller.getConnections}
-                                                                           controller={this._controller}
-                                                                           queries={this.props.data.series}
-                                />}
-                                {state[3].active && <PrevisioneView isMonitoring={this._controller.isMonitoring}
-                                                                    startMonitoring={this._controller.startMonitoring}
-                                                                    stopMonitoring={this._controller.stopMonitoring}
-                                                                    startSaving={() => {return}}
-                                                                    stopSaving={() => {return}}
-                                                                    isSaving={() => false}
-                                                                    getConnections={this._controller.getConnections}
-                                                                    getDatasources={this._controller.updateDatasources}
-                                                                    setDatasource={this._controller.setDatasource}
-                                                                    getDatasource={this._controller.getDatasource}
-                                                                    getMeasurement={this._controller.getMeasurement}
-                                                                    setMeasurement={this._controller.setMeasurement}
-                                                                    attach={this._controller.attach}
-                                                                    detach={this._controller.detach}/>}
-                            </TabContent>
+                                <TabContent>
+                                    {state[0].active && <CaricamentoJsonView controller={this._controller}/>}
+                                    {state[1].active && <CollegamentoView queries={this.props.data.series}
+                                                                          addConnection={this._controller.addConnection}
+                                                                          getFile={this._controller.getFile}
+                                                                          getPredictors={this._controller.getPredictors}
+                                                                          setThresholds={this._controller.setThresholds}
+                                                                          getThresholds={this._controller.getThresholds}
+                                    />}
+                                    {state[2].active && <ListaCollegamentiView getConnections={this._controller.getConnections}
+                                                                               controller={this._controller}
+                                                                               queries={this.props.data.series}
+                                    />}
+                                    {state[3].active && <PrevisioneView isMonitoring={this._controller.isMonitoring}
+                                                                        startMonitoring={this._controller.startMonitoring}
+                                                                        stopMonitoring={this._controller.stopMonitoring}
+                                                                        startSaving={this._controller.startSaving}
+                                                                        stopSaving={this._controller.stopSaving}
+                                                                        isSaving={this._controller.isSaving}
+                                                                        getConnections={this._controller.getConnections}
+                                                                        getDatasources={this._controller.updateDatasources}
+                                                                        setDatasource={this._controller.setDatasource}
+                                                                        getUsedDatasource={this._controller.getDatasource}
+                                                                        getMeasurement={this._controller.getMeasurement}
+                                                                        setMeasurement={this._controller.setMeasurement}
+                                                                        attach={this._controller.attach}
+                                                                        detach={this._controller.detach}/>}
+                                </TabContent>
                             </>
                         );
                     }
