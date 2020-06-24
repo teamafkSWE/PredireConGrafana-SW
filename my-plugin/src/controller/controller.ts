@@ -7,6 +7,19 @@ import {DataFrame, FieldType,} from "@grafana/data";
 import Axios from "axios";
 
 export default class Controller extends Observable {
+
+    private static _controllers: Map<number, Controller> = new Map<number, Controller>()
+
+    public static requireController = (id: number) => {
+        let controller = Controller._controllers.get(id)
+        if (controller === undefined) {
+            controller = new Controller()
+            Controller._controllers.set(id, controller);
+        }
+        return controller
+    }
+
+
     private _json: any;
     private _file: File | undefined;
     private _predictors: Predictor[] = [];
@@ -22,6 +35,10 @@ export default class Controller extends Observable {
     private _datasources: Datasource[] = []
     private _datasourceID: number | undefined
     private _measurement: string | undefined
+
+    private constructor() {
+        super();
+    }
 
     private _definePredictors = () => {
         this._predictors = [];
@@ -115,7 +132,7 @@ export default class Controller extends Observable {
         this._datasourceID = id
     }
 
-    public setMeasurement = (measurement:string) => {
+    public setMeasurement = (measurement: string) => {
         this._measurement = measurement
     }
 
@@ -258,7 +275,7 @@ export default class Controller extends Observable {
         return null
     }
 
-    public getMeasurement = () =>{
+    public getMeasurement = () => {
         return this._measurement
     }
 
