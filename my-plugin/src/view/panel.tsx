@@ -12,6 +12,10 @@ export default class Panel extends PureComponent<PanelProps<Options>> {
         line: false
     }
 
+    componentWillUnmount() {
+        Controller.unloadController(this.props.id)
+    }
+
     private _randomColor = () => {
         let r = Math.floor(Math.random() * 255);
         let g = Math.floor(Math.random() * 255);

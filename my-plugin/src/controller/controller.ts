@@ -19,6 +19,10 @@ export default class Controller extends Observable {
         return controller
     }
 
+    public static unloadController = (id: number) => {
+        Controller._controllers.delete(id)
+    }
+
 
     private _json: any;
     private _file: File | undefined;
