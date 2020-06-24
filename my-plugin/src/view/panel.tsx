@@ -4,15 +4,19 @@ import {Options} from "../types";
 import Controller from "../controller/controller";
 import {Graph} from "@grafana/ui";
 
-export default class Panel extends PureComponent<PanelProps<Options>>{
-    private _controller: Controller = this.props.options.controller;
+export default class Panel extends PureComponent<PanelProps<Options>> {
+    private _controller: Controller = Controller.requireController(this.props.id);
     private _series: GraphSeriesXY[] = [];
 
     state = {
         line: false
     }
 
-    private _randomColor = ()=> {
+    componentWillUnmount() {
+        Controller.unloadController(this.props.id)
+    }
+
+    private _randomColor = () => {
         let r = Math.floor(Math.random() * 255);
         let g = Math.floor(Math.random() * 255);
         let b = Math.floor(Math.random() * 255);
@@ -22,17 +26,17 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
     //inserisco dentro _series una linea per ogni collegamento impostato
     private _setupGraphSeries = () => {
         const connections = this._controller.getConnections() //tutte le connesioni che devo mostrare
-        for (let connection of connections){
+        for (let connection of connections) {
             let updated = false
-            for (let serie of this._series){ //cerco una serie con il nome della connessione
+            for (let serie of this._series) { //cerco una serie con il nome della connessione
                 //console.log(connection.name, serie.label)
-                if (serie.label === connection.name){ //nelle series c'è già una serie con questo nome, aggiorno i suoi valori
+                if (serie.label === connection.name) { //nelle series c'è già una serie con questo nome, aggiorno i suoi valori
                     serie.data = this._controller.getPredictedData(serie.label)
                     updated = true
                     break
                 }
             }
-            if (!updated){ //se non ho aggiornato i valori vuol dire che non ho trovato una serie con quel nome, procedo ad aggiungerla
+            if (!updated) { //se non ho aggiornato i valori vuol dire che non ho trovato una serie con quel nome, procedo ad aggiungerla
                 this._series.push({ // linea
                     //array 2d, primo valore è il timestamp, il secondo è il valore da mostrare
                     data: this._controller.getPredictedData(connection.name), //aggiorno i punti del grafico
@@ -68,11 +72,8 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
 
     private _viewGraph = () => {
         const json = this._controller.getJson()
-        if (json != undefined){
-            if (json.algorithm === 'Linear Regression')
-                this.state.line = true
-            else
-                this.state.line = false
+        if (json != undefined) {
+            this.state.line = json.algorithm === 'Linear Regression';
         }
         if (this._controller.isMonitoring()) {
             //console.log('panel updating')
@@ -83,14 +84,16 @@ export default class Panel extends PureComponent<PanelProps<Options>>{
     }
 
 
-    render(){
-        {this._viewGraph()}
-        return( <Graph  height={this.props.height}
-                        width={this.props.width /*prende la larghezza del monitor*/}
-                        series={this._series}
-                        timeRange={this.props.data.timeRange /*prende il range orario(last x hours/mins) impostato sulla dashoard*/}
-                        timeZone="browser"
-                        showLines={this.state.line}
-                        showPoints={!this.state.line}/>);
+    render() {
+        {
+            this._viewGraph()
+        }
+        return (<Graph height={this.props.height}
+                       width={this.props.width /*prende la larghezza del monitor*/}
+                       series={this._series}
+                       timeRange={this.props.data.timeRange /*prende il range orario(last x hours/mins) impostato sulla dashoard*/}
+                       timeZone="browser"
+                       showLines={this.state.line}
+                       showPoints={!this.state.line}/>);
     }
 }
