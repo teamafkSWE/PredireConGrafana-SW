@@ -17,6 +17,7 @@ export default class Controller extends Observable {
     private _connections: Connection[] = [];
     private _newConnectionIndex = 0; //attenzione, può solo incrementare, non credo vada bene
     private _isMonitoring: boolean = false;
+    private _isSaving: boolean = false;
     private _predictedData: { name: string, data: number[][] }[] = [];
     private _datasources: Datasource[] = []
     private _datasourceID: number | undefined
@@ -302,6 +303,20 @@ export default class Controller extends Observable {
 
     public stopMonitoring = () => {
         this._isMonitoring = false
+        this.notifyAll()
+    }
+
+    public isSaving = () => {
+        return this._isSaving
+    }
+
+    public startSaving = () => {
+        this._isSaving = true
+        this.notifyAll()
+    }
+
+    public stopSaving = () => {
+        this._isSaving = false
         this.notifyAll()
     }
 }
