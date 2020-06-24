@@ -43,7 +43,7 @@ class Chart extends Component{
 
     formatData=()=> {
 
-        if (this.props.hasFile !== false && this.props.json!=null) {
+        if (this.props.hasFile !== false) {
             this.state.data.datasets = [];
             if (this.props.viewModel.isSVM()) {
                 this.state.data.datasets = this.props.viewModel.SVMChart().data;
@@ -52,7 +52,9 @@ class Chart extends Component{
             else{
                 this.state.data.datasets =this.props.viewModel.RLChart().data;
                 this.state.options.legend.display=this.props.viewModel.RLChart().legend;
-
+                if(this.props.json!==null){
+                    this.state.data.datasets.push(this.props.viewModel.straightLine());
+                }
             }
         }
         else

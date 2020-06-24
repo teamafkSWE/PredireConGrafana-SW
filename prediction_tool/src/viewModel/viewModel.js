@@ -6,16 +6,29 @@ class ViewModel {
     #file;
     #hasFile;
     #strategy;
+    #xAxis;
+    #indexOfMax;
+    #indexOfMin;
+    #maxXAxis;
+    #minXAxis;
     constructor() {
         this.#algorithm = null;
         this.#file = null;
         this.#hasFile = null;
         this.#strategy=null;
-
+        this.#xAxis=null;
+        this.#indexOfMax=null;
+        this.#indexOfMin=null;
+        this.#maxXAxis=null;
+        this.#minXAxis=null;
+    }
+    setXAxis=(xAxis)=>{
+        this.#xAxis=xAxis;
     }
     setFileData=(data,hasFile)=>{
         this.#file = data;
         this.#hasFile = hasFile;
+        this.#xAxis=data[0][0];
     }
     setAlgorithm =(algorithm)=> {
         this.#algorithm = algorithm;
@@ -80,29 +93,75 @@ class ViewModel {
       if(this.#strategy!==null)
         return this.#strategy.getJSON();
     }
-
-    #dynamicColors = ()=> {
-        let r = Math.floor(Math.random() * 255);
-        let g = Math.floor(Math.random() * 255);
-        let b = Math.floor(Math.random() * 255);
-        return "rgb(" + r + "," + g + "," + b + ")";
+    getPredictorsName =()=> {
+                let name = [];
+                for(let i=0; i<this.#file[0].length-1; i++)
+                    name[i] = this.#file[0][i];
+                return  name;
     }
+    ChartAxisX=(label,dataX,dataY)=>{
+        let setData = {
+            label: label, // Name the series
+            data: [], // Specify the data values array
+            backgroundColor: "rgb(204,255,0)"// Add custom color background (Points and Fill)
+        };
+        for (let i = 0; i < dataX.length; i++) {
+            setData.data.push({x:dataX[i], y: dataY[i]});
+        }
+        return setData;
+    }
+    straightLine=(indexOfMax,indexOfMin)=>{
+        if(this.#strategy!==null){
+            let coefficients=this.#strategy.getCoefficients();
+            let FmaxPoint=0;
+            let FminPoint=0;
+            for(let i = 0; i < this.#file[0].length - 1; i++){
+                FmaxPoint=FmaxPoint+this.#file[this.#indexOfMax][i]*coefficients.a[i];
+                FminPoint=FminPoint+this.#file[this.#indexOfMin][i]*coefficients.a[i];
+            }
+            FmaxPoint=FmaxPoint+coefficients.b;
+            FminPoint=FminPoint+coefficients.b;
+
+            return( {
+                type: 'line',
+                fill:false,
+                label: 'Regression', // Name the series
+                borderDash:[5],
+                data: [{x:this.#maxXAxis,y:FmaxPoint},
+                    {x:this.#minXAxis,y:FminPoint}], // Specify the data values array
+                borderColor:"rgb(255,43,0)",
+                pointRadius:0
+            })
+        }
+    }
+
     RLChart=()=>{
         let dataSetsRl=[];
         for (let i = 0; i < this.#file[0].length - 1; i++) {
-            let setData = {
-                label: this.#file[0][i], // Name the series
-                data: [], // Specify the data values array
-                backgroundColor: this.#dynamicColors(), // Add custom color background (Points and Fill)
-            };
-            for (let j = 1; j < this.#file.length; j++) {
-
-                setData.data.push({x: this.#file[j][i], y: this.#file[j][this.#file[0].length - 1]});
-
+            if(this.#file[0][i]===this.#xAxis){
+                let dataX=[];
+                let dataY=[];
+                this.#maxXAxis=Number.NEGATIVE_INFINITY;
+                this.#minXAxis=Number.POSITIVE_INFINITY;
+                this.#indexOfMax=0;
+                this.#indexOfMin=0;
+                for (let j = 1; j < this.#file.length; j++) {
+                    let tempMax=this.#maxXAxis;
+                    let tempMin=this.#minXAxis;
+                    this.#maxXAxis= Math.max(this.#file[j][i], this.#maxXAxis);
+                    this.#minXAxis= Math.min(this.#file[j][i], this.#minXAxis);
+                    if(this.#maxXAxis!==tempMax){
+                        this.#indexOfMax=j;
+                    }
+                    if(this.#minXAxis!==tempMin){
+                        this.#indexOfMin=j;
+                    }
+                    dataX.push(this.#file[j][i]);
+                    dataY.push( this.#file[j][this.#file[0].length - 1]);
+                }
+                dataSetsRl.push(this.ChartAxisX(this.#file[0][i],dataX,dataY));
             }
-            dataSetsRl.push(setData);
         }
-
         return {data:dataSetsRl,legend:true};
     }
 
