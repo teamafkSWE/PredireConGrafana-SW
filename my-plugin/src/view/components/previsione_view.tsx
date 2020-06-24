@@ -15,7 +15,7 @@ interface Props {
     detach: (o: Observer) => void
     getDatasources: () => Promise<Datasource[]>
     getUsedDatasource: () => Datasource | null
-    setDatasource: (id: number) => void
+    setDatasource: (id: string) => void
     setMeasurement: (measurement: string) => void
     getMeasurement: () => string | undefined
 }
@@ -47,15 +47,16 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         )
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
         const datasource = this.props.getUsedDatasource()
-        let index = 0
-        if (datasource != null) {
-            while (datasource.id != this.state.datasources[index].id) {
-                index++
-            }
+        if (datasource === null)
+            this.selectRef.current.options.selectedIndex = 0
+        else {
+            let i = 0
+            while (datasource.id != this.state.datasources[i].id)
+                i++
+            this.selectRef.current.options.selectedIndex = i+1;
         }
-        this.selectRef.current.options.selectedIndex = index
     }
 
     componentWillUnmount() {
@@ -77,6 +78,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
     private setDatasource = (event: any) => {
         const id = event.target.value
         this.props.setDatasource(id)
+        this.forceUpdate()
     }
 
     private setMeasurement = (event: any) => {
@@ -106,10 +108,9 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         const saveButton = () => {
             const {saving, measurement} = this.state
             const datasource = this.props.getUsedDatasource()
-
             if (saving)
                 return <Button variant={"secondary"} onClick={this.props.stopSaving}>Disabilita salvataggio</Button>
-            else if (measurement != "" && datasource === null)
+            else if (measurement != "" && datasource !== null)
                 return <Button variant={"primary"} onClick={this.props.startSaving}>Abilita salvataggio</Button>
             else
                 return <Button disabled={true} variant={"primary"} onClick={this.props.startSaving}>Abilita salvataggio</Button>
@@ -131,6 +132,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
                 <div>
                     <label htmlFor={"dbs"}>Selezionare il Data Source:</label>
                     <select ref={this.selectRef} id={"dbs"} onChange={this.setDatasource}>
+                        <option value={" "}>Datasource...</option>
                         {getOptions()}
                     </select>
                 </div>

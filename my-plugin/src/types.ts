@@ -56,21 +56,32 @@ export interface Connection {
 }
 
 export class Datasource {
-    private readonly _id: number
+    private readonly _id: string
     private readonly _database: string;
     private readonly _name: string
     private readonly _url: string
+    private readonly _user: string
+    private readonly _password: string
 
 
-    constructor(id: number, database: string, name: string, url: string) {
-        this._id = id;
+    constructor(id: string, database: string, name: string, url: string, user: string, password: string) {
+        this._id = id.toString();
         this._database = database;
         this._name = name;
         this._url = url;
+        this._user = user
+        this._password = password
     }
 
+    get user(): string {
+        return this._user;
+    }
 
-    get id(): number {
+    get password(): string {
+        return this._password;
+    }
+
+    get id(): string {
         return this._id;
     }
 

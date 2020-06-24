@@ -5,6 +5,7 @@ import {Svm} from "../model/algorithms/svm";
 import {Regression} from "../model/algorithms/regression";
 import {DataFrame, FieldType,} from "@grafana/data";
 import Axios from "axios";
+import Influx from "../model/database/influx";
 
 export default class Controller extends Observable {
 
@@ -37,8 +38,9 @@ export default class Controller extends Observable {
     private _isSaving: boolean = false;
     private _predictedData: { name: string, data: number[][] }[] = [];
     private _datasources: Datasource[] = []
-    private _datasourceID: number | undefined
+    private _datasourceID: string | undefined
     private _measurement: string | undefined
+    private _influx: Influx | null = null;
 
     private constructor() {
         super();
@@ -132,7 +134,7 @@ export default class Controller extends Observable {
         return true
     }
 
-    public setDatasource = (id: number) => {
+    public setDatasource = (id: string) => {
         this._datasourceID = id
     }
 
@@ -176,7 +178,7 @@ export default class Controller extends Observable {
                 const datasources = response.data
                 for (let ds of datasources) {
                     if (ds.type === "influxdb")
-                        this._datasources.push(new Datasource(ds.id, ds.database, ds.name, ds.url))
+                        this._datasources.push(new Datasource(ds.id, ds.database, ds.name, ds.url, ds.user, ds.password))
                 }
             }
             resolve(this._datasources)
@@ -216,6 +218,14 @@ export default class Controller extends Observable {
             //console.log('predicted value', predicted)
             if (predicted === null) // se non è stato possibilie calcolare la previzione allora non ha senso continuare
                 return;
+
+            if (this._isSaving && this._influx != null) {
+                try {
+                    this._influx.write(predicted)
+                }catch (e) {
+                    console.error(e)
+                }
+            }
 
             let time: number = 0 //timestamp da associare alla predizione
             for (let ele of series[0].fields) {
@@ -272,10 +282,13 @@ export default class Controller extends Observable {
     }
 
     public getDatasource = () => {
-        if (typeof this._datasourceID === "number")
-            for (let ds of this._datasources)
-                if (ds.id === this._datasourceID)
+        if (this._datasourceID != undefined ) {
+            for (let ds of this._datasources) {
+                if (ds.id === this._datasourceID) {
                     return ds
+                }
+            }
+        }
         return null
     }
 
@@ -332,8 +345,24 @@ export default class Controller extends Observable {
     }
 
     public startSaving = () => {
-        this._isSaving = true
-        this.notifyAll()
+        const datasource = this.getDatasource()
+        if (datasource != null) {
+            Influx.connect(datasource.url, datasource.user, datasource.password)
+                .then(ifx => {
+                    if (ifx != null) {
+                        this._influx = ifx
+                        this._isSaving = true
+                        this._influx.useDatabase(datasource.database)
+                        if (this._measurement != undefined)
+                            this._influx.setMeasurement(this._measurement)
+                        this.notifyAll()
+                    }
+                })
+                .catch(e => {
+                    //todo:handle errore
+                    console.error(e)
+                })
+        }
     }
 
     public stopSaving = () => {

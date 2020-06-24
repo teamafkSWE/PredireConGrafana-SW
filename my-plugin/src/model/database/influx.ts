@@ -21,11 +21,11 @@ class Influx {
         this._bucket = `${this._database}/`
     }
 
-    public static connect = async (host: string, port: string | number, username?: string, password?: string) => {
+    public static connect = async (url: string, username?: string, password?: string) => {
         const uname = username ? username : '';
         const pwd = password ? password : '';
         const CO: ClientOptions = {
-            url: `http://${host}:${port}`,
+            url: url,
             token: `${uname}:${pwd}`
         };
 
