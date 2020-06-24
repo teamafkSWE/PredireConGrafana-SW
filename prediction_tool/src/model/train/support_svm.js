@@ -19,7 +19,7 @@ class SupportSvm {
             x[i] = this.#dataSVM[0][i];//[this.props.dataRl[0]][[this.props.dataRl[0][i]]];
         //for(let i=0; i<x.length-1;i++)
         //  x[i] = this.props.dataRl[0];
-        return {w: x, b:"bias"};
+        return {a: x, b:"bias"};
     }
 
     getDate =()=> {

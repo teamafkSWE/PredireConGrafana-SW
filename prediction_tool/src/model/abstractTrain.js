@@ -15,6 +15,7 @@ class  Train{
             "Do not call abstract method getCoefficients from child."
         );
     };
+
     getJSON =()=> {
         throw new TypeError(
             "Do not call abstract method getJSON from child."

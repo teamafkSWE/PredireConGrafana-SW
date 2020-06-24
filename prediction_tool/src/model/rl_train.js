@@ -24,8 +24,6 @@ class RLTrain extends Train {
         return this.#algorithm.JSONData();
     }
 
-
-
 }
 
 export default RLTrain;

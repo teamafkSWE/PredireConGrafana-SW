@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import "bootstrap/dist/css/bootstrap.css"
 import './app.css';
 import Header from "./uiComponents/header";
-import InsertCsvButton from "./uiComponents/insert_csv_button"
-import ComboBoxAlgorithm from "./uiComponents/combo_box_algorithm"
+import InsertCsvButton from "./uiComponents/insert_csv_button";
+import ComboBoxAlgorithm from "./uiComponents/combo_box_algorithm";
+import ComboBoxAxisX from "./uiComponents/combo_box_x_axis";
 import ViewModel from "../viewModel/viewModel";
 import TrainButton from "./uiComponents/train_button";
 import DownloadJson from "./uiComponents/download_Json";
@@ -17,21 +18,24 @@ class App extends Component{
             fileName: null,
             hasFile: false,
             algorithm: "",
-            jsonData:null
+            jsonData:null,
+            xAxis:""
         }
          this.#viewModel= new ViewModel();
     }
     changeAlgorithm =(event)=> {
-
         this.setState({algorithm: event.target.value});
+    }
+    changeXAxis =(event)=> {
+        this.#viewModel.setXAxis(event.target.value);
+        this.setState({xAxis: event.target.value});
     }
     resetAlgorithm =(algorithm)=> {
         this.setState({algorithm:algorithm});
     }
     setDataFromFile =(data, fileInfo)=> {
         this.#viewModel.setFileData(data,true);
-        this.setState({data:data, fileName: fileInfo.name, hasFile:true,algorithm:'',jsonData:null});
-
+        this.setState({data:data, fileName: fileInfo.name, hasFile:true,algorithm:'',jsonData:null, xAxis:data[0][0]});
     };
     handleTraining =()=> {
         this.#viewModel.setAlgorithm(this.state.algorithm)
@@ -44,7 +48,10 @@ class App extends Component{
             this.setState({jsonData:this.#viewModel.getJsonContent()});
         }
     }
-
+    selectAxisX=()=> {
+        if(this.state.hasFile!==false && this.#viewModel.isRL())
+            return <ComboBoxAxisX viewModel={this.#viewModel} changeXAxis={this.changeXAxis} xAxis={this.state.xAxis}/>
+    }
     downloadJsonData =()=> {
         if(this.state.jsonData!==null)
         return <DownloadJson jsonData={this.state.jsonData} viewModel={this.#viewModel}/>
@@ -69,6 +76,7 @@ class App extends Component{
                 </div>
             </div>
             <div id={"chart"}>
+                {this.selectAxisX()}
                 <Chart json={this.state.jsonData} viewModel={this.#viewModel} hasFile={this.state.hasFile}/>
             </div>
         </div>
