@@ -11,6 +11,8 @@ class Chart extends Component{
         options:{
             legend: {
                 display: true,
+                position: "right",
+                align: "middle"
             },
             scales: {
                 xAxes: [{
