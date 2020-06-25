@@ -23,6 +23,10 @@ class Chart extends Component{
                     },
                     gridLines: {
                         zeroLineColor:"white"
+                    },
+                    scaleLabel: {
+                        display: false,
+                        labelString: null
                     }
 
                 }],
@@ -35,6 +39,10 @@ class Chart extends Component{
                     gridLines: {
 
                         zeroLineColor:"white"
+                    },
+                    scaleLabel: {
+                        display: false,
+                        labelString: null
                     }
                 }]
             }
@@ -44,23 +52,26 @@ class Chart extends Component{
 
 
     formatData=()=> {
-
+        this.state.data.datasets = [];
         if (this.props.hasFile !== false) {
-            this.state.data.datasets = [];
             if (this.props.viewModel.isSVM()) {
                 this.state.data.datasets = this.props.viewModel.SVMChart().data;
                 this.state.options.legend.display = this.props.viewModel.SVMChart().legend;
             }
             else{
-                this.state.data.datasets =this.props.viewModel.RLChart().data;
-                this.state.options.legend.display=this.props.viewModel.RLChart().legend;
+                let rlChart=this.props.viewModel.RLChart();
+                this.state.data.datasets =rlChart.data;
+                this.state.options.legend.display=rlChart.legend;
+                this.state.options.scales.yAxes[0].scaleLabel.labelString=rlChart.yAxis;
+                this.state.options.scales.xAxes[0].scaleLabel.labelString=rlChart.xAxis;
+                this.state.options.scales.yAxes[0].scaleLabel.display=true;
+                this.state.options.scales.xAxes[0].scaleLabel.display=true;
                 if(this.props.json!==null){
                     this.state.data.datasets.push(this.props.viewModel.straightLine());
                 }
             }
         }
-        else
-            this.state.data.datasets = [];
+
     }
     render() {
         this.formatData();

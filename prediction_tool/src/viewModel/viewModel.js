@@ -162,7 +162,7 @@ class ViewModel {
                 dataSetsRl.push(this.ChartAxisX(this.#file[0][i],dataX,dataY));
             }
         }
-        return {data:dataSetsRl,legend:true};
+        return {data:dataSetsRl,legend:true,yAxis:this.#file[0][this.#file[0].length - 1],xAxis:this.#xAxis};
     }
 
     SVMChart=()=>{
