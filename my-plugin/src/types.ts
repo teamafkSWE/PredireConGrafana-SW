@@ -49,10 +49,46 @@ export class Threshold {
     }
 }
 
-export interface Connection {
-    id: string,
-    name: string,
-    links: { predictor: string, query: string }[]
+export class Connection {
+    // id: string,
+    // name: string,
+    // links: { predictor: string, query: string }[]
+
+    private _id: string
+    private _name: string
+    private _links: { predictor: string, query: string }[]
+
+
+    constructor(id: string, name: string, links: { predictor: string; query: string }[]) {
+        this._id = id;
+        this._name = name;
+        this._links = links;
+    }
+
+
+    get id(): string {
+        return this._id;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get links(): { predictor: string; query: string }[] {
+        return this._links;
+    }
+
+    set id(value: string) {
+        this._id = value;
+    }
+
+    set name(value: string) {
+        this._name = value;
+    }
+
+    set links(value: { predictor: string; query: string }[]) {
+        this._links = value;
+    }
 }
 
 export class Datasource {
