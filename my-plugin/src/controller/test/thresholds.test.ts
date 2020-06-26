@@ -1,6 +1,6 @@
 import Controller from "../controller";
 
-const controller = new Controller();
+const controller = Controller.requireController(1);
 
 test('max threshold must be 10 and min threshold must be 3', () => {
     window.alert = jest.fn();

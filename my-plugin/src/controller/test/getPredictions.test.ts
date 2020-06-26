@@ -1,6 +1,6 @@
 import Controller from "../controller";
 
-const controller = new Controller();
+const controller = Controller.requireController(1);
 
 test('getPredictions null', () => {
     expect(controller.getPrediction([1,2,3])).toBeNull();

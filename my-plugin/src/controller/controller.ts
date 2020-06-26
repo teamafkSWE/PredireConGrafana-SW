@@ -42,7 +42,7 @@ export default class Controller extends Observable {
     private _measurement: string | undefined
     private _influx: Influx | null = null;
 
-    public constructor() {
+    private constructor() {
         super();
     }
 
