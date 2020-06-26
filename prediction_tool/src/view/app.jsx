@@ -49,7 +49,7 @@ class App extends Component{
         }
     }
     selectAxisX=()=> {
-        if(this.state.hasFile!==false && this.#viewModel.isRL())
+        if(this.state.hasFile!==false)
             return <ComboBoxAxisX viewModel={this.#viewModel} changeXAxis={this.changeXAxis} xAxis={this.state.xAxis}/>
     }
     downloadJsonData =()=> {

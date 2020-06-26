@@ -100,27 +100,94 @@ class ViewModel {
                 return  name;
     }
     ChartAxisX=(label,dataX,dataY)=>{
-        let setData = {
-            label: label, // Name the series
-            data: [], // Specify the data values array
-            backgroundColor: "rgb(204,255,0)"// Add custom color background (Points and Fill)
-        };
-        for (let i = 0; i < dataX.length; i++) {
-            setData.data.push({x:dataX[i], y: dataY[i]});
+        let setData=null;
+        if(this.isSVM())
+        {
+            setData = {
+                label: label, // Name the series
+                data: [], // Specify the data values array
+                backgroundColor: [],
+                pointHoverRadius: 7,
+                pointHitRadius: 5,
+                pointStyle: 'rectRounded'
+
+            }
+
+            for (let i = 0; i < dataX.length; i++) {
+                if (this.#file[i+1][this.#file[0].length - 1] === "1")
+                    setData.backgroundColor.push("green");
+                else
+                    setData.backgroundColor.push("red");
+                setData.data.push({x:dataX[i], y: dataY[i]});
+            }
+            return setData;
         }
-        return setData;
+        else
+        {
+            setData= {
+                label: label, // Name the series
+                data: [], // Specify the data values array
+                backgroundColor: "rgb(204,255,0)",// Add custom color background (Points and Fill)
+                pointHoverRadius:7,
+                pointHitRadius:5,
+                pointStyle:'rectRounded'
+            };
+            for (let i = 0; i < dataX.length; i++) {
+                setData.data.push({x:dataX[i], y: dataY[i]});
+            }
+            return setData;
+        }
+
     }
-    straightLine=(indexOfMax,indexOfMin)=>{
+    straightLine=()=>{
         if(this.#strategy!==null){
             let coefficients=this.#strategy.getCoefficients();
             let FmaxPoint=0;
             let FminPoint=0;
-            for(let i = 0; i < this.#file[0].length - 1; i++){
-                FmaxPoint=FmaxPoint+this.#file[this.#indexOfMax][i]*coefficients.a[i];
-                FminPoint=FminPoint+this.#file[this.#indexOfMin][i]*coefficients.a[i];
+            if(this.isSVM()){
+                if(this.#file[0].length===2){
+                 /*console.log("maxSinglepoint "+(-(coefficients.w[0]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMax][0]));
+                    console.log("minSinglepoint "+(-(coefficients.w[0]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMin][0]));
+                 */
+                    FmaxPoint=FmaxPoint-((coefficients.w[0]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMax][0]);
+                    FminPoint=FminPoint-((coefficients.w[0]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMin][0]);
+                    FmaxPoint=FmaxPoint-(coefficients.b/coefficients.w[coefficients.w.length-1]);
+                    FminPoint=FminPoint-(coefficients.b/coefficients.w[coefficients.w.length-1]);
+                }
+                else{
+                    for(let i = 0; i < this.#file[0].length - 2; i++){
+                     /* console.log("max"+this.#file[this.#indexOfMax][i]);
+                        console.log("min"+this.#file[this.#indexOfMin][i]);
+                        console.log("maxSinglepoint "+(-(coefficients.w[i]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMax][i]));
+                        console.log("minSinglepoint "+(-(coefficients.w[i]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMin][i]));
+                    */
+                        FmaxPoint=FmaxPoint-((coefficients.w[i]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMax][i]);
+                        FminPoint=FminPoint-((coefficients.w[i]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMin][i]);
+                    }
+                    /*   console.log("maxSinglepointB "+(-(coefficients.b/coefficients.w[coefficients.w.length-1])));
+                       console.log("fmax"+FmaxPoint);
+                       console.log("fmin"+FminPoint);*/
+
+                    FmaxPoint=FmaxPoint-(coefficients.b/coefficients.w[coefficients.w.length-1]);
+                    FminPoint=FminPoint-(coefficients.b/coefficients.w[coefficients.w.length-1]);
+                }
+
             }
-            FmaxPoint=FmaxPoint+coefficients.b;
-            FminPoint=FminPoint+coefficients.b;
+            else
+            {
+                for(let i = 0; i < this.#file[0].length - 1; i++){
+                    FmaxPoint=FmaxPoint+this.#file[this.#indexOfMax][i]*coefficients.a[i];
+                    FminPoint=FminPoint+this.#file[this.#indexOfMin][i]*coefficients.a[i];
+                }
+                FmaxPoint=FmaxPoint+coefficients.b;
+                FminPoint=FminPoint+coefficients.b;
+            }
+
+          /*  console.log("w"+coefficients.w);
+            console.log("w-1"+coefficients.w[coefficients.w.length-1]);
+            console.log("b"+coefficients.b);
+            console.log("FmaxPoint"+FmaxPoint);
+            console.log("FminPoint"+FminPoint);*/
 
             return( {
                 type: 'line',
@@ -135,12 +202,13 @@ class ViewModel {
         }
     }
 
-    RLChart=()=>{
+    Chart=()=>{
         let dataSetsRl=[];
         for (let i = 0; i < this.#file[0].length - 1; i++) {
             if(this.#file[0][i]===this.#xAxis){
                 let dataX=[];
                 let dataY=[];
+                let yNameAxis="";
                 this.#maxXAxis=Number.NEGATIVE_INFINITY;
                 this.#minXAxis=Number.POSITIVE_INFINITY;
                 this.#indexOfMax=0;
@@ -157,14 +225,27 @@ class ViewModel {
                         this.#indexOfMin=j;
                     }
                     dataX.push(this.#file[j][i]);
-                    dataY.push( this.#file[j][this.#file[0].length - 1]);
+                    if(this.isSVM()){
+                        if(this.#file[0].length===2){
+                            yNameAxis="Y not present";
+                            dataY.push(0);
+                        }
+                        else{
+                            yNameAxis=this.#file[0][this.#file[0].length - 2];
+                            dataY.push( this.#file[j][this.#file[0].length - 2]);
+                        }
+                    }
+                    else{
+                        yNameAxis=this.#file[0][this.#file[0].length - 1];
+                        dataY.push( this.#file[j][this.#file[0].length - 1]);
+                    }
                 }
-                dataSetsRl.push(this.ChartAxisX(this.#file[0][i],dataX,dataY));
+                dataSetsRl.push(this.ChartAxisX(this.#xAxis,dataX,dataY));
+                return {data:dataSetsRl,yAxis:yNameAxis,xAxis:this.#xAxis};
             }
         }
-        return {data:dataSetsRl,legend:true};
     }
-
+/*
     SVMChart=()=>{
         let dataSetsSvm=[];
         if(this.#file[0].length===2)
@@ -173,6 +254,10 @@ class ViewModel {
                 label: this.#file[0][0], // Name the series
                 data: [], // Specify the data values array
                 backgroundColor: [],
+                pointHoverRadius:7,
+                pointHitRadius:5,
+                pointStyle:'rectRounded'
+
             }
             for (let j = 1; j < this.#file.length; j++) {
                 if(this.#file[j][this.#file[0].length - 1]==="1")
@@ -185,27 +270,31 @@ class ViewModel {
             dataSetsSvm.push(setData);
         }
         else {
-            for (let i = 0; i < this.#file[0].length - 2; i++) {
-                let setData = {
-                    label: this.#file[0][i], // Name the series
-                    data: [], // Specify the data values array
-                    backgroundColor: [],
+            for (let i = 0; i < this.#file[0].length - 1; i++) {
+                console.log(this.#xAxis);
+                console.log(this.#file[0][i]);
+
+                if(this.#file[0][i]===this.#xAxis) {
+                    let dataX=[];
+                    let dataY=[];
+                    this.#maxXAxis=Number.NEGATIVE_INFINITY;
+                    this.#minXAxis=Number.POSITIVE_INFINITY;
+                    this.#indexOfMax=0;
+                    this.#indexOfMin=0;
+                    for (let j = 1; j < this.#file.length; j++) {
+                        dataX.push(this.#file[j][i]);
+                        dataY.push( this.#file[j][this.#file[0].length - 2]);
+                    }
+
+
+                    dataSetsSvm.push(this.ChartAxisX(this.#xAxis,dataX,dataY));
+                    return {data:dataSetsSvm,legend:false};
+
                 }
-
-                for (let j = 1; j < this.#file.length; j++) {
-
-                    if (this.#file[j][this.#file[0].length - 1] === "1")
-                        setData.backgroundColor.push("green");
-                    else
-                        setData.backgroundColor.push("red");
-                    setData.data.push({x: this.#file[j][i], y: this.#file[j][this.#file[0].length - 2]});
-                }
-
-                dataSetsSvm.push(setData);
             }
         }
-        return {data:dataSetsSvm,legend:false};
-    }
+
+    }*/
 
 }
 
