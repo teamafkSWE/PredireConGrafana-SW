@@ -2,16 +2,12 @@ import React, {PureComponent} from 'react';
 import {Button, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
 import {DataFrame} from "@grafana/data";
 
-import {Predictor, Threshold} from "../../types";
+import Controller from "../../controller/controller";
 
 
 interface MyProps {
-    queries: DataFrame[],
-    getPredictors: () => Predictor[],
-    getFile: () => File | undefined,
-    addConnection: (connection: { name: string, links: { predictor: string, query: string }[] }) => void
-    setThresholds: (min: number, max: number) => boolean
-    getThresholds: () => Threshold | undefined
+    controller: Controller
+    queries: DataFrame[]
 }
 
 // interface State {
@@ -37,7 +33,7 @@ class CollegamentoView extends PureComponent<MyProps> {
         // }
         // this.state = state
         // this.selectRef = React.createRef<>()
-        const predictors = this.props.getPredictors()
+        const predictors = this.props.controller.getPredictors()
 
         this.selectRefs = new Array(predictors.length)
         for (let i = 0; i < this.selectRefs.length; i++) {
@@ -53,7 +49,7 @@ class CollegamentoView extends PureComponent<MyProps> {
 
     private resetList = () => {
         const links = []
-        const predictors = this.props.getPredictors();
+        const predictors = this.props.controller.getPredictors();
 
         for (let predictor of predictors) {
             links.push({predictor: predictor.name, query: null})
@@ -93,7 +89,7 @@ class CollegamentoView extends PureComponent<MyProps> {
     }
 
     private setupConnection = () => {
-        const file = this.props.getFile()
+        const file = this.props.controller.getFile()
         const {queries} = this.props;
 
         if (file === undefined) {
@@ -113,7 +109,7 @@ class CollegamentoView extends PureComponent<MyProps> {
             }
 
             if (allPredictorLinked) {
-                this.props.addConnection({
+                this.props.controller.addConnection({
                     name: this.connectionName,
                     links: (this.connectionLinks as { predictor: string, query: string }[])
                 })
@@ -136,7 +132,7 @@ class CollegamentoView extends PureComponent<MyProps> {
     }
 
     private printPredictors = () => {
-        const file = this.props.getFile();
+        const file = this.props.controller.getFile();
         const {queries} = this.props;
 
         if (file === undefined) //non è stato inserito il file json
@@ -144,7 +140,7 @@ class CollegamentoView extends PureComponent<MyProps> {
         else if (queries.length <= 0) //non sono state impostate delle query
             return (<p>Nessuna query impostata, perfavore impostare prima una o più query.</p>)
         else { //è presente un file json compatibile e sono presenti delle query
-            const predictors = this.props.getPredictors();
+            const predictors = this.props.controller.getPredictors();
             return (
                 <div style={{borderLeft: "white 1px solid", paddingLeft: "1rem"}}>
                     <label htmlFor={"nome_collegamento"} style={{display: "block"}}>Nome del collegamento:</label>

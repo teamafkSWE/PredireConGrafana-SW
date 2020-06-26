@@ -9,6 +9,7 @@ import PrevisioneView from "./components/previsione_view";
 import Controller from "../controller/controller";
 import {Options} from "../types";
 import "./components/css/index.css"
+import {SystemJS} from "@grafana/runtime"
 
 
 const tabs = [
@@ -24,6 +25,7 @@ interface State {
 
 class Editor extends PureComponent<PanelEditorProps<Options>, State> {
     private _controller: Controller | undefined;
+    private _eventEmitter: any;
 
     constructor(props: Readonly<PanelEditorProps<Options>>) {
         super(props);
@@ -33,6 +35,9 @@ class Editor extends PureComponent<PanelEditorProps<Options>, State> {
                 console.log("loading"); //aspetta che venga caricata la request
             this.setState({status: "loaded"})
         }, 0)
+        SystemJS.load('app/core/app_events').then((appEvents: any) => {
+            this._eventEmitter = appEvents
+        })
     }
 
     render() {
@@ -67,32 +72,13 @@ class Editor extends PureComponent<PanelEditorProps<Options>, State> {
                                             }
                                         </TabsBar>
                                         <TabContent>
-                                            {state[0].active && <CaricamentoJsonView controller={this._controller}/>}
-                                            {state[1].active && <CollegamentoView queries={this.props.data.series}
-                                                                                  addConnection={this._controller.addConnection}
-                                                                                  getFile={this._controller.getFile}
-                                                                                  getPredictors={this._controller.getPredictors}
-                                                                                  setThresholds={this._controller.setThresholds}
-                                                                                  getThresholds={this._controller.getThresholds}
-                                            />}
-                                            {state[2].active && <ListaCollegamentiView getConnections={this._controller.getConnections}
-                                                                                       controller={this._controller}
+                                            {state[0].active && <CaricamentoJsonView emitter={this._eventEmitter} controller={this._controller}/>}
+                                            {state[1].active && <CollegamentoView controller={this._controller}
+                                                                                  queries={this.props.data.series}/>}
+                                            {state[2].active && <ListaCollegamentiView controller={this._controller}
                                                                                        queries={this.props.data.series}
                                             />}
-                                            {state[3].active && <PrevisioneView isMonitoring={this._controller.isMonitoring}
-                                                                                startMonitoring={this._controller.startMonitoring}
-                                                                                stopMonitoring={this._controller.stopMonitoring}
-                                                                                startSaving={this._controller.startSaving}
-                                                                                stopSaving={this._controller.stopSaving}
-                                                                                isSaving={this._controller.isSaving}
-                                                                                getConnections={this._controller.getConnections}
-                                                                                getDatasources={this._controller.updateDatasources}
-                                                                                setDatasource={this._controller.setDatasource}
-                                                                                getUsedDatasource={this._controller.getDatasource}
-                                                                                getMeasurement={this._controller.getMeasurement}
-                                                                                setMeasurement={this._controller.setMeasurement}
-                                                                                attach={this._controller.attach}
-                                                                                detach={this._controller.detach}/>}
+                                            {state[3].active && <PrevisioneView controller={this._controller}/>}
                                         </TabContent>
                                     </>
                                 );

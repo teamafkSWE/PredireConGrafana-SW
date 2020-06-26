@@ -1,23 +1,11 @@
 import React, {PureComponent} from 'react';
 import {Button, HorizontalGroup, Input, PanelOptionsGroup} from "@grafana/ui";
 import Observer from "./observer/observer";
-import {Connection, Datasource} from "../../types";
+import {Datasource} from "../../types";
+import Controller from "../../controller/controller";
 
 interface Props {
-    startMonitoring: () => void
-    stopMonitoring: () => void
-    startSaving: () => void
-    stopSaving: () => void
-    isMonitoring: () => boolean
-    isSaving: () => boolean
-    getConnections: () => Connection[]
-    attach: (o: Observer) => void
-    detach: (o: Observer) => void
-    getDatasources: () => Promise<Datasource[]>
-    getUsedDatasource: () => Datasource | null
-    setDatasource: (id: string) => void
-    setMeasurement: (measurement: string) => void
-    getMeasurement: () => string | undefined
+    controller: Controller
 }
 
 interface State {
@@ -32,23 +20,23 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
 
     constructor(props: Readonly<Props>) {
         super(props);
-        this.props.attach(this)
+        this.props.controller.attach(this)
         this.selectRef = React.createRef()
-        const measurement = this.props.getMeasurement()
+        const measurement = this.props.controller.getMeasurement()
         this.state = {
-            monitoring: props.isMonitoring(),
-            saving: props.isSaving(),
+            monitoring: props.controller.isMonitoring(),
+            saving: props.controller.isSaving(),
             datasources: [],
             measurement: measurement === undefined ? "" : measurement
         }
-        props.getDatasources().then(datasources => {
+        props.controller.updateDatasources().then(datasources => {
                 this.setState({datasources: datasources})
             }
         )
     }
 
     componentDidUpdate() {
-        const datasource = this.props.getUsedDatasource()
+        const datasource = this.props.controller.getDatasource()
         if (datasource === null)
             this.selectRef.current.options.selectedIndex = 0
         else {
@@ -60,16 +48,16 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
     }
 
     componentWillUnmount() {
-        this.props.detach(this)
+        this.props.controller.detach(this)
     }
 
     update(): void {
-        if (this.props.isMonitoring())
+        if (this.props.controller.isMonitoring())
             this.setState({monitoring: true})
         else
             this.setState({monitoring: false})
 
-        if (this.props.isSaving())
+        if (this.props.controller.isSaving())
             this.setState({saving: true})
         else
             this.setState({saving: false})
@@ -77,19 +65,19 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
 
     private setDatasource = (event: any) => {
         const id = event.target.value
-        this.props.setDatasource(id)
+        this.props.controller.setDatasource(id)
         this.forceUpdate()
     }
 
     private setMeasurement = (event: any) => {
         const measurement = event.target.value
         this.setState({measurement: measurement})
-        this.props.setMeasurement(measurement)
+        this.props.controller.setMeasurement(measurement)
     }
 
     private startMonitoring = () => {
-        if (this.props.getConnections().length != 0)
-            this.props.startMonitoring()
+        if (this.props.controller.getConnections().length != 0)
+            this.props.controller.startMonitoring()
         else
             alert("Nessun collegamento effettuato")
     }
@@ -97,7 +85,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
     private monitoringButton = () => {
         const {monitoring} = this.state
         if (monitoring) {
-            return <Button variant={"secondary"} icon={"pause"} onClick={this.props.stopMonitoring}>Interrompi monitoraggio</Button>
+            return <Button variant={"secondary"} icon={"pause"} onClick={this.props.controller.stopMonitoring}>Interrompi monitoraggio</Button>
         } else {
             return <Button variant={"primary"} icon={"play"} onClick={this.startMonitoring}>Avvia monitoraggio</Button>
         }
@@ -107,13 +95,13 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
 
         const saveButton = () => {
             const {saving, measurement} = this.state
-            const datasource = this.props.getUsedDatasource()
+            const datasource = this.props.controller.getDatasource()
             if (saving)
-                return <Button variant={"secondary"} onClick={this.props.stopSaving}>Disabilita salvataggio</Button>
+                return <Button variant={"secondary"} onClick={this.props.controller.stopSaving}>Disabilita salvataggio</Button>
             else if (measurement != "" && datasource !== null)
-                return <Button variant={"primary"} onClick={this.props.startSaving}>Abilita salvataggio</Button>
+                return <Button variant={"primary"} onClick={this.props.controller.startSaving}>Abilita salvataggio</Button>
             else
-                return <Button disabled={true} variant={"primary"} onClick={this.props.startSaving}>Abilita salvataggio</Button>
+                return <Button disabled={true} variant={"primary"} onClick={this.props.controller.startSaving}>Abilita salvataggio</Button>
         }
 
         const getOptions = () => {

@@ -3,12 +3,10 @@ import {PanelOptionsGroup, VerticalGroup, Button, HorizontalGroup} from "@grafan
 import Controller from "../../controller/controller";
 import {DataFrame} from "@grafana/data";
 import FormEdit from "./form_edit"
-import {Connection} from "../../types";
 
 
 interface Props {
     queries: DataFrame[],
-    getConnections: () => Connection[]
     controller: Controller
 }
 
@@ -29,7 +27,7 @@ class ListaCollegamentiView extends PureComponent<Props> {
     }
 
     showConnection = () => {
-        const connections = this.props.getConnections()
+        const connections = this.props.controller.getConnections()
         if (connections.length === 0)
             return <p>Nessun collegamento inserito.</p>
         else {

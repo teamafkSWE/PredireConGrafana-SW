@@ -5,6 +5,7 @@ import Observer from "./observer/observer";
 import Controller from "../../controller/controller";
 
 interface Props {
+    emitter: any
     controller: Controller
 }
 
