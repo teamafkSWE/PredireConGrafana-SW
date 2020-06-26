@@ -90,7 +90,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                 //resetto le select
                 for (let i = 0; i < this.selectRefs.length; i++) {
                     const ref = this.selectRefs[i].current
-                    if (ref != null){
+                    if (ref != null) {
                         ref.options.selectedIndex = 0
                     }
                 }
@@ -110,22 +110,28 @@ class CollegamentoView extends PureComponent<MyProps> {
         else { //è presente un file json compatibile e sono presenti delle query
             const predictors = this.props.controller.getPredictors();
             return (
-                <div style={{borderLeft: "white 1px solid", paddingLeft: "1rem"}}>
-                    <label htmlFor={"nome_collegamento"} style={{display: "block"}}>Nome del collegamento:</label>
-                    <input type="text" placeholder="nome" id="nome_collegamento"
-                           onChange={this.setName} style={{width: "100%", border: "1px solid #262628"}} ref={this.inputNameRef}/>
-                    {predictors.map((predictor, index) => //per ogni predittore mostro una selezione tra tutte le query
-                        <div style={{display: "flex", justifyContent: "space-between", marginTop: "0.8rem"}}>
-                            <label style={{alignSelf: "center"}} htmlFor={predictor.name}>{predictor.name}:</label>
-                            <select ref={this.selectRefs[index]} id={predictor.name} onChange={this.addLink} style={{marginLeft: "0.8rem"}}>
-                                <option value={" "}>Seleziona il nodo</option>
-                                {queries.map((query: DataFrame) =>
-                                    <option value={query.name}>{query.name}</option>)
-                                }
-                            </select>
-                        </div>
-                    )}
-                </div>
+                <>
+                    <p style={{fontStyle: "italic"}}>
+                        Attenzione: effettuare i collegamenti per tutti i predittori.
+                    </p>
+                    <div style={{borderLeft: "white 1px solid", paddingLeft: "1rem"}}>
+                        <label htmlFor={"nome_collegamento"} style={{display: "block"}}>Nome del collegamento:</label>
+                        <input type="text" placeholder="nome" id="nome_collegamento"
+                               onChange={this.setName} style={{width: "100%", border: "1px solid #262628"}} ref={this.inputNameRef}/>
+                        {predictors.map((predictor, index) => //per ogni predittore mostro una selezione tra tutte le query
+                            <div style={{display: "flex", justifyContent: "space-between", marginTop: "0.8rem"}}>
+                                <label style={{alignSelf: "center"}} htmlFor={predictor.name}>{predictor.name}:</label>
+                                <select ref={this.selectRefs[index]} id={predictor.name} onChange={this.addLink} style={{marginLeft: "0.8rem"}}>
+                                    <option value={" "}>Seleziona il nodo</option>
+                                    {queries.map((query: DataFrame) =>
+                                        <option value={query.name}>{query.name}</option>)
+                                    }
+                                </select>
+                            </div>
+                        )}
+                    </div>
+                    <Button style={{marginTop: "1rem"}} onClick={this.setupConnection}>Inserisci collegamento</Button>
+                </>
             );
         }
     }
@@ -134,28 +140,26 @@ class CollegamentoView extends PureComponent<MyProps> {
         return (
             <div>
                 <PanelOptionsGrid>
-                    <PanelOptionsGroup title="Lista predittori">
+                    <PanelOptionsGroup title="Inserimento collegamenti">
                         <VerticalGroup>
-                            <p style={{fontStyle: "italic"}}>
-                                Attenzione: effettuare i collegamenti per tutti i predittori.
-                            </p>
                             {this.printPredictors()}
-                            <Button onClick={this.setupConnection}>Inserisci collegamento</Button>
                         </VerticalGroup>
                     </PanelOptionsGroup>
 
                     <PanelOptionsGroup title="Impostazione soglie">
-                        {/*<p style={{fontStyle: "italic"}}> Attenzione: vanno impostate entrambe le soglie. </p>*/}
-                        {/*<form>*/}
-                        {/*    <label htmlFor="sogliaMin">Min:</label>*/}
-                        {/*    <input type="number" id="sogliaMin" value={this.state.valueMin} onChange={this.handleChangeMin} style={{marginLeft: "10px"}}/>*/}
-                        {/*    <p></p>*/}
-                        {/*    <label htmlFor="sogliaMax">Max:</label>*/}
-                        {/*    <input type="number" id="sogliaMax" value={this.state.valueMax} onChange={this.handleChangeMax} style={{marginLeft: "10px"}}/>*/}
-                        {/*    <p></p>*/}
-                        {/*</form>*/}
-                        {/*<p></p>*/}
-                        {/*<Button onClick={this.confermaSoglie}>Conferma soglie</Button>*/}
+                        {/*
+                            <p style={{fontStyle: "italic"}}> Attenzione: vanno impostate entrambe le soglie. </p>
+                            <form>
+                            <label htmlFor="sogliaMin">Min:</label>
+                            <input type="number" id="sogliaMin" value={this.state.valueMin} onChange={this.handleChangeMin} style={{marginLeft: "10px"}}/>
+                            <p></p>
+                            <label htmlFor="sogliaMax">Max:</label>
+                            <input type="number" id="sogliaMax" value={this.state.valueMax} onChange={this.handleChangeMax} style={{marginLeft: "10px"}}/>
+                            <p></p>
+                            </form>
+                            <p></p>
+                            <Button onClick={this.confermaSoglie}>Conferma soglie</Button>
+                        */}
                     </PanelOptionsGroup>
                     {/*
                         <PanelOptionsGroup title="Conferma">
@@ -164,10 +168,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                         </PanelOptionsGroup>
                     */}
                 </PanelOptionsGrid>
-
             </div>
-
-
         );
     }
 
