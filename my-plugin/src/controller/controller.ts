@@ -92,7 +92,7 @@ export default class Controller extends Observable {
     }
 
     public addConnection = (connection: { name: string, links: { predictor: string, query: string }[] }) => {
-        this._connections.push({id: this._newConnectionIndex.toString(), name: connection.name, links: connection.links});
+        this._connections.push(new Connection(this._newConnectionIndex.toString(), connection.name, connection.links));
         this._newConnectionIndex++;
         this.notifyAll();
     }
