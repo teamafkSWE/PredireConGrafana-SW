@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Button, PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
-import {DataFrame} from "@grafana/data";
+import {AppEvents, DataFrame} from "@grafana/data";
 
 import Controller from "../../controller/controller";
 
@@ -8,13 +8,9 @@ import Controller from "../../controller/controller";
 interface MyProps {
     controller: Controller
     queries: DataFrame[]
+    emitter: any
 }
 
-// interface State {
-//     valueMin: number,
-//     valueMax: number,
-//     nameConnection: string,
-// }
 
 //todo: controllare se esiste il caso in cui il json inserito non contenga predittori
 class CollegamentoView extends PureComponent<MyProps> {
@@ -25,14 +21,6 @@ class CollegamentoView extends PureComponent<MyProps> {
 
     constructor(props: Readonly<MyProps>) {
         super(props);
-        // const state: State = {valueMin: 0, valueMax: 0, nameConnection: ""}
-        // const threshold = this.props.getThresholds()
-        // if (threshold !== undefined) {
-        //     state.valueMax = threshold.max
-        //     state.valueMin = threshold.min
-        // }
-        // this.state = state
-        // this.selectRef = React.createRef<>()
         const predictors = this.props.controller.getPredictors()
 
         this.selectRefs = new Array(predictors.length)
@@ -56,21 +44,7 @@ class CollegamentoView extends PureComponent<MyProps> {
         }
 
         this.connectionLinks = links
-        // this.state = {valueMax: this.state.valueMax, valueMin: this.state.valueMin, nameConnection: this.state.nameConnection}
     }
-
-    // private handleChangeMin = (event: any) => {
-    //     this.setState({valueMin: event.target.value});
-    // }
-    //
-    // private handleChangeMax = (event: any) => {
-    //     this.setState({valueMax: event.target.value});
-    // }
-    //
-    // private confermaSoglie = () => {
-    //     //console.log(this.state.valueMin, this.state.valueMax )
-    //     // this.props.setThresholds(this.state.valueMin, this.state.valueMax)
-    // }
 
 
     private setName = (e: any) => {
@@ -89,16 +63,10 @@ class CollegamentoView extends PureComponent<MyProps> {
     }
 
     private setupConnection = () => {
-        const file = this.props.controller.getFile()
-        const {queries} = this.props;
-
-        if (file === undefined) {
-            alert("Inserisci un file Json");
-        } else if (this.connectionName === "") {
-            alert("Inserisci un nome per la connessione")
-        } else if (queries.length <= 0) {
-            alert("Imposta delle query")
+        if (this.connectionName === "") {
+            this.props.emitter.emit(AppEvents.alertWarning, ["Inserisci un nome per la connessione"])
         }
+
         //constrollo che siano stati collegati tutti i predittori
         else {
             let allPredictorLinked = true;
@@ -113,7 +81,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                     name: this.connectionName,
                     links: (this.connectionLinks as { predictor: string, query: string }[])
                 })
-                alert("Collegamento inserito.")
+                this.props.emitter.emit(AppEvents.alertSuccess, ["Collegamento inserito."])
                 this.resetList()
                 //resetto il nome del collegamento
                 const ref = this.inputNameRef.current
@@ -127,7 +95,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                     }
                 }
             } else
-                alert("Collega tutti i predittori.")
+                this.props.emitter.emit(AppEvents.alertWarning, ["Collega tutti i predittori."])
         }
     }
 
