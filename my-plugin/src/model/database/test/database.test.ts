@@ -3,13 +3,13 @@ import Axios from "axios";
 
 test('connection', async () => {
     expect.assertions(1)
-    const influx = await Influx.connect('localhost', 8086)
+    const influx = await Influx.connect('http://localhost:8086')
     expect(influx).not.toBe(null)
 })
 /*
 describe('influx', () => {
     let influx: Influx | null = null
-    Influx.connect('localhost', 8086)
+    Influx.connect('http://localhost:8086')
         .then(ifx => {
             influx = ifx;
             //console.log(influx)
@@ -79,7 +79,7 @@ describe('influx', () => {
 test('set database', async () => {
     expect.assertions(1)
     const database = 'mydb';
-    const influx = await Influx.connect('localhost', 8086)
+    const influx = await Influx.connect('http://localhost:8086')
     //.then(influx => {
     //console.log(influx)
     if (influx != null) {
@@ -91,7 +91,7 @@ test('set database', async () => {
 test('set measurement', async () => {
     expect.assertions(1)
     const measurement = 'test'
-    const influx = await Influx.connect('localhost', 8086)
+    const influx = await Influx.connect('http://localhost:8086')
     //.then(influx => {
     //console.log(influx)
     if (influx != null) {
@@ -102,7 +102,7 @@ test('set measurement', async () => {
 })
 test('write - database Error', async () => {
     expect.assertions(1)
-    const influx = await Influx.connect('localhost', 8086)
+    const influx = await Influx.connect('http://localhost:8086')
     //.then(influx => {
     if (influx != null)
         expect(() => influx.write(0)).toThrowError(Error('No database setted.'))
@@ -110,7 +110,7 @@ test('write - database Error', async () => {
 })
 test('write - measurement Error', async () => {
     expect.assertions(1)
-    const influx = await Influx.connect('localhost', 8086)
+    const influx = await Influx.connect('http://localhost:8086')
     //.then(influx => {
     if (influx != null) {
         influx.useDatabase('mydb')
@@ -121,7 +121,7 @@ test('write - measurement Error', async () => {
 test('write - no error', (done) => {
     expect.assertions(1)
     const value = Math.random()
-    Influx.connect('localhost', 8086)
+    Influx.connect('http://localhost:8086')
         .then(influx => {
             //console.log(influx)
             if (influx != null) {
