@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Button, HorizontalGroup, Input, PanelOptionsGroup} from "@grafana/ui";
-import Observer from "./observer/observer";
+import Observer from "../observer/observer";
 import {Datasource} from "../../types";
 import Controller from "../../controller/controller";
 

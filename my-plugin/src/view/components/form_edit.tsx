@@ -1,124 +1,142 @@
-import React, { PureComponent } from 'react';
-import { PanelOptionsGroup, VerticalGroup } from "@grafana/ui";
-import { DataFrame } from "@grafana/data";
-//import {DataFrame, timeZoneAbbrevation} from "@grafana/data";
-
+import React, {PureComponent} from 'react';
+import {Button, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
+import {AppEvents, DataFrame} from "@grafana/data";
 import Controller from "../../controller/controller";
+import {Connection} from "../../types";
 
-//import {Predictor} from "../../types";
 
-
-interface MyProps {
+interface EditProps {
     queries: DataFrame[]
-    closeEdit:()=>void
-    idEdit: string
+    closeEdit: () => void
+    idConnection: string
     controller: Controller
+    emitter: any
 }
 
 
-class FormEdit extends PureComponent<MyProps> {
-    state= {
-        nameConnection: "",
-        connectionsList: [] as any,
-        editConnection:[] as any
+class FormEdit extends PureComponent<EditProps> {
+    private readonly selectRefs: React.RefObject<HTMLSelectElement>[];
+    private readonly inputNameRef: React.RefObject<HTMLInputElement>;
+    private readonly connection: Connection | undefined;
+    private connectionName: string;
+    private readonly connectionLinks: { predictor: string, query: string }[]
 
-    }
 
-    constructor(props: Readonly<MyProps>) {
+    constructor(props: Readonly<EditProps>) {
         super(props);
-        let editConnection = this.props.controller.getConnections();
-        for (let i = 0; i < editConnection.length; i++) {
-            if(editConnection[i].id===this.props.idEdit)
-                this.state.editConnection=editConnection[i];
-        }
-       this.state.nameConnection=this.state.editConnection.name;
 
-        this.resetList();
-    }
-    private resetList=()=>{
-        this.state.connectionsList=[];
-        let listSelectPredictors = this.props.controller.getPredictors();
-        for (let i = 0; i < listSelectPredictors.length; i++) {
-            this.state.connectionsList.push({ predictor: listSelectPredictors[i].name, query: undefined })
-        }
-    }
-    private printPredictors = () => {
-        let predictors = this.props.controller.getPredictors();
-        const { queries } = this.props;
-
-        let temp = [];
-
-
-        for (let i = 0; i < predictors.length; i++) {
-            let name = predictors[i].name;
-            temp.push(
-                <p>
-                    <label>{name}:
-                        <select id={name} onChange={this.pushConnectionsList} style={{ margin: "10px" }}>
-                            <option value="" >Seleziona il nodo</option>
-                            {queries.map((query: DataFrame) => <option value={query.name}>{query.name}</option>)}
-                        </select></label>
-                </p>
-            );
+        const connections = props.controller.getConnections()
+        for (let conn of connections) {
+            if (conn.id === props.idConnection)
+                this.connection = conn
         }
 
-        return (
-            <div>
-                <label htmlFor={"nome_collegamento"}>Nome del collegamento:</label>
-                <input type="text" value={this.state.nameConnection} placeholder="nome_collegamento" id="nome_collegamento" onChange={this.setName} style={{ marginLeft: "10px" }} />
-                {temp}
-            </div>
-        );
-    }
-    private setName = (e: any) => {
-        this.setState({nameConnection: e.target.value})
+        this.selectRefs = []
+        if (this.connection != undefined) {
+            for (let i = 0; i < this.connection.links.length; i++) {
+                this.selectRefs.push(React.createRef())
+            }
+        }
+
+        this.inputNameRef = React.createRef()
+
+        this.connectionName = ""
+        this.connectionLinks = []
+
+        if (this.connection != undefined) {
+            this.connectionName = this.connection.name
+            this.connectionLinks = this.connection.links
+        }
+
     }
 
-    private pushConnectionsList = (e: any) => {
-        for (let i = 0; i < this.state.connectionsList.length; i++) {
-            if (e.target.id === this.state.connectionsList[i].predictor) {
-                this.state.connectionsList[i].query = e.target.value;
+    private updateName = (e: any) => {
+        this.connectionName = e.target.value
+    }
+
+    private updateLinks = (e: any) => {
+        const query = e.target.value
+        const predictor = e.target.id
+
+        for (let i = 0; i < this.connectionLinks.length; i++) {
+            if (predictor === this.connectionLinks[i].predictor) {
+                this.connectionLinks[i].query = query;
             }
         }
     }
 
-    private sendConnectionToController = () => {
-        let notUndefined = true;
-        if(this.state.connectionsList.length===0) {
-                alert("inserisci file");
-        }
-        else {
-            if(this.props.queries.length>0) {
-                for (let i = 0; i < this.state.connectionsList.length; i++) {
-                    if (this.state.connectionsList[i].query === undefined || this.state.nameConnection === "")
-                        notUndefined = false;
-                    }
-                    if (notUndefined) {
-                        this.props.controller.editListPredictorQuery(this.props.idEdit,{
-                            name: this.state.nameConnection,
-                            list: (this.state.connectionsList as { predictor: string, query: string }[])
-                        })
-                        this.resetList();
-                        this.props.closeEdit();
-                        alert("Collegamento modificato.")
-                    } else
-                        alert("Collega tutti i predittori.")
-                }
-                else
-                    alert("inserisci query.")
+    private updateConnection = () => {
+        if (this.connectionName === "") {
+            this.props.emitter.emit(AppEvents.alertWarning, ["Inserisci un nome per la connessione"])
+        } else {
+            this.props.controller.editListPredictorQuery(this.props.idConnection, {
+                name: this.connectionName,
+                list: this.connectionLinks
+            })
+            this.props.closeEdit();
+            this.props.emitter.emit(AppEvents.alertSuccess, ["Collegamento modificato."])
         }
     }
 
+    componentDidMount() {
+        const ref = this.inputNameRef.current
+        if (ref != null && this.connection != undefined) {
+            ref.value = this.connection.name
 
+
+            let index = 0
+            for (let predictor of this.connection.links) {
+                const select = this.selectRefs[index].current
+                index++;
+                if (select != null) {
+                    const options = select.options
+                    let optionindex = 0
+                    for (let i = 0; i < options.length; i++) {
+                        const opt = options.item(i)
+                        if (opt != null && opt.value === predictor.query)
+                            optionindex = opt.index
+                    }
+
+                    select.options.selectedIndex = optionindex
+                }
+            }
+        }
+
+    }
+
+    private printPredictors = () => {
+        const {queries} = this.props;
+        const predictors = [];
+
+        if (this.connection != undefined) {
+            let index = 0
+            for (let link of this.connection.links) {
+                predictors.push(
+                    <div>
+                        <label htmlFor={link.predictor}>{link.predictor}:</label>
+                        <select ref={this.selectRefs[index]} id={link.predictor} onChange={this.updateLinks} style={{margin: "10px"}}>
+                            {queries.map((query: DataFrame) => <option value={query.name}>{query.name}</option>)}
+                        </select>
+                    </div>
+                )
+                index++
+            }
+        }
+
+        return predictors
+    }
 
     render() {
         return (
             <div>
                 <PanelOptionsGroup title="Edit connection">
                     <VerticalGroup>
+                        <label htmlFor={"nome_collegamento"}>Nome del collegamento:</label>
+                        <input ref={this.inputNameRef} type="text" placeholder="nome" id="nome_collegamento" onChange={this.updateName}/>
+
                         {this.printPredictors()}
-                        <button className='btn btn-secondary btn-sm' onClick={this.sendConnectionToController}>Save</button>
-                        <button className='btn btn-secondary btn-sm' onClick={this.props.closeEdit}>Cancel</button>
+                        <Button onClick={this.updateConnection}>Save</Button>
+                        <Button onClick={this.props.closeEdit}>Cancel</Button>
                     </VerticalGroup>
                 </PanelOptionsGroup>
             </div>
@@ -127,7 +145,4 @@ class FormEdit extends PureComponent<MyProps> {
 }
 
 export default FormEdit;
-
-//Readd to matching group "Flusso dati"
-//<InserimentoDB />
 

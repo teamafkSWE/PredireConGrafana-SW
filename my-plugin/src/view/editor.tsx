@@ -2,13 +2,13 @@ import React, {PureComponent} from 'react';
 import {PanelEditorProps} from "@grafana/data";
 import {Tab, TabContent, TabsBar} from "@grafana/ui";
 import {UseState} from "./use_state";
-import CaricamentoJsonView from "./components/caricamento_json_view";
-import CollegamentoView from "./components/collegamento_view";
-import ListaCollegamentiView from "./components/lista_collegamenti_view";
-import PrevisioneView from "./components/previsione_view";
+import CaricamentoJsonView from "./views/caricamento_json_view";
+import CollegamentoView from "./views/collegamento_view";
+import ListaCollegamentiView from "./views/lista_collegamenti_view";
+import PrevisioneView from "./views/previsione_view";
 import Controller from "../controller/controller";
 import {Options} from "../types";
-import "./components/css/index.css"
+import "./css/index.css"
 import {SystemJS} from "@grafana/runtime"
 
 
@@ -79,6 +79,7 @@ class Editor extends PureComponent<PanelEditorProps<Options>, State> {
                                                                                   emitter={this._eventEmitter}/>}
                                             {state[2].active && <ListaCollegamentiView controller={this._controller}
                                                                                        queries={this.props.data.series}
+                                                                                       emitter={this._eventEmitter}
                                             />}
                                             {state[3].active && <PrevisioneView controller={this._controller}/>}
                                         </TabContent>

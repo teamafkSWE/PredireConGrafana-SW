@@ -1,66 +1,5 @@
-import React, {PureComponent} from 'react';
-import {PanelOptionsGroup, VerticalGroup, Button, HorizontalGroup} from "@grafana/ui";
-import Controller from "../../controller/controller";
-import {DataFrame} from "@grafana/data";
-import FormEdit from "./form_edit"
-
-
-interface Props {
-    queries: DataFrame[],
-    controller: Controller
-}
-
-class ListaCollegamentiView extends PureComponent<Props> {
-    state = {
-        isEditClicked: false,
-        idEdit: ""
-    }
-
-    handleDelete = (id: string) => {
-        if (confirm("Scollegare il predittore?")) {
-            this.props.controller.removeListPredictorQuery(id);
-            this.forceUpdate();
-        }
-    }
-    handleEdit = (id: string) => {
-        this.setState({isEditClicked: true, idEdit: id});
-    }
-
-    showConnection = () => {
-        const connections = this.props.controller.getConnections()
-        if (connections.length === 0)
-            return <p>Nessun collegamento inserito.</p>
-        else {
-            const links = []
-
-            for (let connection of connections) {
-                links.push(
-                    <Collegamento id={connection.id} nome={connection.name} links={connection.links} onRemove={this.handleDelete} onModify={this.handleEdit}/>
-                )
-            }
-            return links
-        }
-    }
-
-    closeEdit = () => {
-        this.setState({isEditClicked: false, idEdit: ""});
-    }
-
-    render() {
-        return (
-            <div>
-                <HorizontalGroup>
-                    <PanelOptionsGroup title="Lista collegamenti">
-                        <VerticalGroup>
-                            {this.showConnection()}
-                        </VerticalGroup>
-                    </PanelOptionsGroup>
-                    {this.state.isEditClicked && <FormEdit idEdit={this.state.idEdit} closeEdit={this.closeEdit} controller={this.props.controller} queries={this.props.queries}/>}
-                </HorizontalGroup>
-            </div>
-        );
-    }
-}
+import React from "react";
+import {Button} from "@grafana/ui";
 
 interface CollegamentoProps {
     id: string
@@ -120,4 +59,4 @@ const Collegamento: React.FC<CollegamentoProps> = (props) => {
     )
 }
 
-export default ListaCollegamentiView;
+export default Collegamento

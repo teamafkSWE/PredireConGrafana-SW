@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
 import Files from "react-files";
-import Observer from "./observer/observer";
+import Observer from "../observer/observer";
 import Controller from "../../controller/controller";
 
 interface Props {

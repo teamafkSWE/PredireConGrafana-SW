@@ -1,4 +1,4 @@
-import Observer from "../view/components/observer/observer";
+import Observer from "../view/observer/observer";
 
 abstract class Observable {
     private _observers: Observer[] = []
