@@ -146,7 +146,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                         </VerticalGroup>
                     </PanelOptionsGroup>
 
-                    <PanelOptionsGroup title="Impostazione soglie">
+                    {/*<PanelOptionsGroup title="Impostazione soglie">*/}
                         {/*
                             <p style={{fontStyle: "italic"}}> Attenzione: vanno impostate entrambe le soglie. </p>
                             <form>
@@ -160,7 +160,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                             <p></p>
                             <Button onClick={this.confermaSoglie}>Conferma soglie</Button>
                         */}
-                    </PanelOptionsGroup>
+                    {/*</PanelOptionsGroup>*/}
                     {/*
                         <PanelOptionsGroup title="Conferma">
                             <p style={{fontStyle: "italic"}}> Cliccare il bottone per confermare il collegamento ed aggiungerlo alla lista dei collegamenti disponibili. </p>

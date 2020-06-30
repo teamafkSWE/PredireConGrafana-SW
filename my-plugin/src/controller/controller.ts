@@ -1,4 +1,4 @@
-import {Predictor, Connection, Threshold, Datasource} from "../types";
+import {Predictor, Connection, Datasource} from "../types";
 import Observable from "./observable";
 import Algorithm from "../model/algorithm";
 import {Svm} from "../model/algorithms/svm";
@@ -30,7 +30,7 @@ export default class Controller extends Observable {
     private _predictors: Predictor[] = [];
     //private _b: number | undefined;
     private _algorithm: Algorithm | undefined;
-    private _threshold: Threshold | undefined
+    // private _threshold: Threshold | undefined
     //private _queries: DataFrame[] = []; //a che serve questo campo?
     private _connections: Connection[] = [];
     private _newConnectionIndex = 0; //attenzione, può solo incrementare, non credo vada bene
@@ -114,25 +114,25 @@ export default class Controller extends Observable {
         this.notifyAll();
     }
 
-    public setThresholds = (sMin: number, sMax: number): boolean => {
-        if (sMin !== null && sMin.toString().length === 1)
-            sMin = parseInt("0" + sMin)
-        if (sMax !== null && sMax.toString().length === 1)
-            sMax = parseInt("0" + sMax)
-        if (sMin >= sMax || (sMin === 0 && sMax === 0)) {
-            alert("SogliaMin non valida. Inserire un valore minore della sogliaMax.")
-            return false
-        } else {
-            if (this._threshold === undefined) {
-                this._threshold = new Threshold(sMin, sMax)
-            } else {
-                this._threshold.min = sMin
-                this._threshold.max = sMax
-            }
-            alert("Soglie inserite correttamente.")
-        }
-        return true
-    }
+    // public setThresholds = (sMin: number, sMax: number): boolean => {
+    //     if (sMin !== null && sMin.toString().length === 1)
+    //         sMin = parseInt("0" + sMin)
+    //     if (sMax !== null && sMax.toString().length === 1)
+    //         sMax = parseInt("0" + sMax)
+    //     if (sMin >= sMax || (sMin === 0 && sMax === 0)) {
+    //         alert("SogliaMin non valida. Inserire un valore minore della sogliaMax.")
+    //         return false
+    //     } else {
+    //         if (this._threshold === undefined) {
+    //             this._threshold = new Threshold(sMin, sMax)
+    //         } else {
+    //             this._threshold.min = sMin
+    //             this._threshold.max = sMax
+    //         }
+    //         alert("Soglie inserite correttamente.")
+    //     }
+    //     return true
+    // }
 
     public setDatasource = (id: string) => {
         this._datasourceID = id
@@ -222,7 +222,7 @@ export default class Controller extends Observable {
             if (this._isSaving && this._influx != null) {
                 try {
                     this._influx.write(predicted)
-                }catch (e) {
+                } catch (e) {
                     console.error(e)
                 }
             }
@@ -282,7 +282,7 @@ export default class Controller extends Observable {
     }
 
     public getDatasource = () => {
-        if (this._datasourceID != undefined ) {
+        if (this._datasourceID != undefined) {
             for (let ds of this._datasources) {
                 if (ds.id === this._datasourceID) {
                     return ds
@@ -312,9 +312,9 @@ export default class Controller extends Observable {
         return this._predictors
     }
 
-    public getThresholds = () => {
-        return this._threshold;
-    }
+    // public getThresholds = () => {
+    //     return this._threshold;
+    // }
 
     /*
     public getQueries = () => {
@@ -347,20 +347,21 @@ export default class Controller extends Observable {
     public startSaving = () => {
         const datasource = this.getDatasource()
         if (datasource != null) {
-            Influx.connect(datasource.url, datasource.user, datasource.password)
+            const url = datasource.url
+            Influx.connect(url.hostname, url.port, datasource.database, datasource.user, datasource.password)
                 .then(ifx => {
-                    if (ifx != null) {
-                        this._influx = ifx
-                        this._isSaving = true
-                        this._influx.useDatabase(datasource.database)
-                        if (this._measurement != undefined)
-                            this._influx.setMeasurement(this._measurement)
-                        this.notifyAll()
+                    if (ifx === null) {
+                        throw new Error('Unable to connect to database.')
+                    } else {
+                        if (this._measurement != undefined) {
+                            this._influx = ifx
+                            this._isSaving = true
+                            this._influx.measurement = this._measurement
+                            this.notifyAll()
+                        } else {
+                            throw new Error('The measurement is undefined.')
+                        }
                     }
-                })
-                .catch(e => {
-                    //todo:handle errore
-                    console.error(e)
                 })
         }
     }

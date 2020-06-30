@@ -23,31 +23,31 @@ export class Predictor {
     }
 }
 
-export class Threshold {
-    private _min: number
-    private _max: number
-
-    constructor(min: number, max: number) {
-        this._min = min
-        this._max = max
-    }
-
-    get min(): number {
-        return this._min;
-    }
-
-    set min(value: number) {
-        this._min = value;
-    }
-
-    get max(): number {
-        return this._max;
-    }
-
-    set max(value: number) {
-        this._max = value;
-    }
-}
+// export class Threshold {
+//     private _min: number
+//     private _max: number
+//
+//     constructor(min: number, max: number) {
+//         this._min = min
+//         this._max = max
+//     }
+//
+//     get min(): number {
+//         return this._min;
+//     }
+//
+//     set min(value: number) {
+//         this._min = value;
+//     }
+//
+//     get max(): number {
+//         return this._max;
+//     }
+//
+//     set max(value: number) {
+//         this._max = value;
+//     }
+// }
 
 export class Connection {
     // id: string,
@@ -95,7 +95,7 @@ export class Datasource {
     private readonly _id: string
     private readonly _database: string;
     private readonly _name: string
-    private readonly _url: string
+    private readonly _url: URL
     private readonly _user: string
     private readonly _password: string
 
@@ -104,7 +104,7 @@ export class Datasource {
         this._id = id.toString();
         this._database = database;
         this._name = name;
-        this._url = url;
+        this._url = new URL(url);
         this._user = user
         this._password = password
     }
@@ -129,7 +129,7 @@ export class Datasource {
         return this._name;
     }
 
-    get url(): string {
+    get url(): URL {
         return this._url;
     }
 }
