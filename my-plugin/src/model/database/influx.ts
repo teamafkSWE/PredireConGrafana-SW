@@ -1,158 +1,43 @@
-import {ClientOptions, InfluxDB, Point} from '@influxdata/influxdb-client'
-import Axios from 'axios'
+// import {ClientOptions, InfluxDB, Point} from '@influxdata/influxdb-client'
+import {InfluxDB} from 'influx'
 
-//docs: https://github.com/influxdata/influxdb-client-js/tree/master/examples
-//singleton per il database
-
-//TODO: set/get _retentionPolicy
-//todo: add support for tags
-//todo: add method isInit()
 class Influx {
 
     private readonly _IDB: InfluxDB;
-    private _bucket: string;
-    private _database: string = '';
+    // private readonly _url:string;
     private _measurement: string = '';
-    private _org: string = '';
 
 
-    private constructor(CO: ClientOptions) {
-        this._IDB = new InfluxDB(CO)
-        this._bucket = `${this._database}/`
+    private constructor(db: InfluxDB) {
+        this._IDB = db
     }
 
-    public static connect = async (url: string, username?: string, password?: string) => {
+    public static connect = async (host: string, port: string | number, database: string, username?: string, password?: string) => {
         const uname = username ? username : '';
         const pwd = password ? password : '';
-        const CO: ClientOptions = {
-            url: url,
-            token: `${uname}:${pwd}`
-        };
+        const url = 'http://' + uname + ':' + pwd + '@' + host + ':' + port + '/'
 
-        let res = await Axios.get(`${CO.url}/ping`)
-        if (200 <= res.status && res.status <= 299) {
-            return new Influx(CO)
+        const db = new InfluxDB(url + database)
+
+        const online = await db.ping(1000).then(res => res[0].online)
+        if (online) {
+            return new Influx(db)
         } else
             return null
     }
 
 
-    /*
-    private static _instance: Influx | null = null;
-    private static _clientOptions: ClientOptions | null = null
-    private static _init = false;
-
-    private readonly _IDB: InfluxDB;
-    private _bucket: string;
-    private _database: string = '';
-    private _retentionPolicy: string = '';
-    private _measurement: string = '';
-    private _org: string = '';
-
-    private sleep(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    private constructor(CO: ClientOptions) {
-        this._IDB = new InfluxDB(CO)
-        this._bucket = `${this._database}/${(this._retentionPolicy)}`
-    }
-
-    /**
-     *  @returns true if the connection has been accepted, false otherwise
-     *  @param connectTo object containing the data used to connect to the database
-     *  @return Promise<boolean>
-     *  @throws {Error} when has already been initialized
-     */
-    /*
-    public static async init(connectTo: { host: string, port: string | number, username?: string, password?: string }): Promise<boolean> {
-        if (!this._init) {
-            const {host, port} = connectTo;
-            const username = connectTo.username ? connectTo.username : '';
-            const password = connectTo.password ? connectTo.password : '';
-            this._clientOptions = {
-                url: `http://${host}:${port}`,
-                token: `${username}:${password}`
-            };
-
-
-            //testo se l'host e la porta inseriti corrispondono all'url del database
-            let res = await Axios.get(`${this._clientOptions.url}/ping`)
-            if (200 <= res.status && res.status <= 299) {
-                this._init = true;
-                return true
-            } else
-                return false
-        } else
-            throw new Error('Trying to initialize when already initialized')
-    }
-
-    /**
-     * @returns a new instance of the database
-     * @throws {Error} when has not been initialized
-     */
-
-    /*
-    public static getInstance(): Influx {
-        if (Influx._instance !== null)
-            return Influx._instance;
-        else if (Influx._clientOptions !== null) {
-            Influx._instance = new Influx(Influx._clientOptions)
-            return Influx._instance
-        } else
-            throw new Error('Cannot instantiate a new instance, missing initialization.')
-    }
-*/
-    /**
-     * @returns the database setted
-     * @return string
-     */
-    public getDatabase = (): string => {
-        return this._database;
-    }
-
-    /**
-     * @returns the measurement setted
-     * @return string
-     */
-    public getMeasurement = (): string => {
-        return this._measurement;
-    }
-
-    /**
-     * @returns the organization setted
-     * @return string
-     */
-    public getOrg = (): string => {
-        return this._org;
-    }
-
-    /**
-     * set the database to be used
-     * @param database
-     */
-    public useDatabase = (database: string) => {
-        this._database = database
-        this._bucket = `${this._database}/`
-        return this;
-    }
+    // public ping = async () => {
+    //     const res = await this._IDB.ping(1000)
+    //     return res[0].online
+    // }
 
     /**
      * set the measurement to write on
      * @param measurement
      */
-    public setMeasurement = (measurement: string) => {
+    set measurement(measurement: string) {
         this._measurement = measurement;
-        return this;
-    }
-
-    /**
-     * set the organization to be used
-     * @param org
-     */
-    public setOrganization = (org: string) => {
-        this._org = org;
-        return this;
     }
 
     /**
@@ -163,72 +48,21 @@ class Influx {
      * @return Promise<void>
      */
     public write = (value: number) => {
-        if (this._database === '')
-            throw new Error('No database setted.')
         if (this._measurement === '')
             throw new Error('No measurement setted.')
 
-        const writeAPI = this._IDB.getWriteApi(this._org, this._bucket)
-        const point = new Point(this._measurement)
-            //.tag('host', 'host1')
-            .floatField('value', value)
-        writeAPI.writePoint(point)
-        return writeAPI.close()
-        //writeAPI.close().catch((e)=>console.error(e))
-        //return this.sleep(1500)
+        return this._IDB.writePoints([
+            {
+                measurement: this._measurement,
+                fields: {value}
+            }
+        ])
     }
 
-    /*
-        private _defaultSolver:Solver = {
-            complete: (lines)=>{
-                console.log(lines)},
-            error: (err)=>{
-                console.error(err)}
-        }
-    */
-    /*
-    //todo: implementare test una volta visto se ne è necessario
-    public query(solver: Solver = this._defaultSolver,endRange = '') {
-        if (this._database === '')
-            throw new Error('No database setted.')
-        if (this._measurement === '')
-            throw new Error('No measurement setted.')
-
-        const fluxQuery = `from(bucket:"${this._bucket}")
-                            |> range(start: -${endRange === '' ? '1h' : endRange}) 
-                            |> filter(fn: (r) => r._measurement == "${this._measurement}")
-                            |> sort(columns: ["time"], desc: false)`
-
-        //const query = "select * from test"
-        const queryAPI = this._IDB.getQueryApi(this._org)
-        let lines: { time: any; value: any; }[] = []
-        queryAPI.queryRows(
-            fluxQuery,
-            {
-                error(error: Error) {
-                    solver.error(error)
-                },
-                next(row, tableMeta) {
-                    const o = tableMeta.toObject(row)
-                    const line = {
-                        time: o._time,
-                        value: o._value
-                    }
-                    lines.push(line)
-                },
-                complete() {
-                    solver.complete(lines)
-                },
-            }
-        )
-    }*/
+    public query = (query: string) => {
+        return this._IDB.query<{time:number, value:number}>(query)
+    }
 }
 
-/*
-type Solver = {
-    complete: ((arg0: { time: any; value: any; }[]) => void),
-    error: ((arg0: Error) => void)
-}
-*/
 
 export default Influx;
