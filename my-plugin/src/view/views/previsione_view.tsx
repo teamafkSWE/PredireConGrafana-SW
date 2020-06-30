@@ -3,9 +3,11 @@ import {Button, HorizontalGroup, Input, PanelOptionsGroup} from "@grafana/ui";
 import Observer from "../observer/observer";
 import {Datasource} from "../../types";
 import Controller from "../../controller/controller";
+import {AppEvents} from "@grafana/data";
 
 interface Props {
     controller: Controller
+    emitter: any
 }
 
 interface State {
@@ -79,7 +81,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         if (this.props.controller.getConnections().length != 0)
             this.props.controller.startMonitoring()
         else
-            alert("Nessun collegamento effettuato")
+            this.props.emitter.emit(AppEvents.alertWarning, ["Nessun collegamento effettuato"])
     }
 
     private monitoringButton = () => {
@@ -91,6 +93,14 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         }
     }
 
+    private enableSaving = () =>{
+        try {
+            this.props.controller.startSaving()
+        }catch (e) {
+            this.props.emitter.emit(AppEvents.alertError, [e.name, e.message])
+        }
+    }
+
     private savingForm = () => {
 
         const saveButton = () => {
@@ -99,9 +109,9 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
             if (saving)
                 return <Button variant={"secondary"} onClick={this.props.controller.stopSaving}>Disabilita salvataggio</Button>
             else if (measurement != "" && datasource !== null)
-                return <Button variant={"primary"} onClick={this.props.controller.startSaving}>Abilita salvataggio</Button>
+                return <Button variant={"primary"} onClick={this.enableSaving}>Abilita salvataggio</Button>
             else
-                return <Button disabled={true} variant={"primary"} onClick={this.props.controller.startSaving}>Abilita salvataggio</Button>
+                return <Button disabled={true} variant={"primary"} onClick={this.enableSaving}>Abilita salvataggio</Button>
         }
 
         const getOptions = () => {

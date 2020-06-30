@@ -81,7 +81,8 @@ class Editor extends PureComponent<PanelEditorProps<Options>, State> {
                                                                                        queries={this.props.data.series}
                                                                                        emitter={this._eventEmitter}
                                             />}
-                                            {state[3].active && <PrevisioneView controller={this._controller}/>}
+                                            {state[3].active && <PrevisioneView controller={this._controller}
+                                                                                emitter={this._eventEmitter}/>}
                                         </TabContent>
                                     </>
                                 );
