@@ -127,18 +127,20 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
 
         return (
             <>
-                <div>
-                    <label htmlFor={"dbs"}>Selezionare il Data Source:</label>
+                <div style={{display:"flex", justifyContent:"space-between"}}>
+                    <label style={{alignSelf: "center"}} htmlFor={"dbs"}>Selezionare il Data Source:</label>
                     <select ref={this.selectRef} id={"dbs"} onChange={this.setDatasource}>
                         <option value={" "}>Datasource...</option>
                         {getOptions()}
                     </select>
                 </div>
-                <div>
+                <div style={{margin: "0.8rem 0 1rem"}}>
                     <label htmlFor={"measurement"}>Inserire il nome della misurazione:</label>
-                    <Input id={"measurement"} type={"text"} value={this.state.measurement} onChange={this.setMeasurement}/>
+                    <Input style={{width:"100%"}} id={"measurement"} type={"text"} value={this.state.measurement} onChange={this.setMeasurement}/>
                 </div>
-                {saveButton()}
+                <div style={{display:"flex", justifyContent: "center"}}>
+                    {saveButton()}
+                </div>
             </>
         )
     }
