@@ -4,7 +4,8 @@ abstract class Observable {
     private _observers: Observer[] = []
 
     public attach = (observer:Observer) =>{
-        this._observers.push(observer)
+        if (!this._observers.includes(observer))
+            this._observers.push(observer)
     }
     public detach = (observer:Observer) => {
         this._observers = this._observers.filter((ele) => ele !== observer)
