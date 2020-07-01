@@ -7,7 +7,6 @@ import CollegamentoView from "./views/collegamento_view";
 import ListaCollegamentiView from "./views/lista_collegamenti_view";
 import PrevisioneView from "./views/previsione_view";
 import Controller from "../controller/controller";
-import {Options} from "../types";
 import "./css/index.css"
 import {SystemJS} from "@grafana/runtime"
 
@@ -23,11 +22,11 @@ interface State {
     status: "loading" | "loaded"
 }
 
-class Editor extends PureComponent<PanelEditorProps<Options>, State> {
+class Editor extends PureComponent<PanelEditorProps, State> {
     private _controller: Controller | undefined;
     private _eventEmitter: any;
 
-    constructor(props: Readonly<PanelEditorProps<Options>>) {
+    constructor(props: Readonly<PanelEditorProps>) {
         super(props);
         this.state = {status: "loading"}
         setTimeout(() => {
