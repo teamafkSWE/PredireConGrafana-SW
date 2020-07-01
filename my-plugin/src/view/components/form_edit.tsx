@@ -112,8 +112,8 @@ class FormEdit extends PureComponent<EditProps> {
             let index = 0
             for (let link of this.connection.links) {
                 predictors.push(
-                    <div>
-                        <label htmlFor={link.predictor}>{link.predictor}:</label>
+                    <div style={{display: "flex", justifyContent: "space-between", marginTop: "0.8rem"}}>
+                        <label style={{alignSelf: "center"}} htmlFor={link.predictor}>{link.predictor}:</label>
                         <select ref={this.selectRefs[index]} id={link.predictor} onChange={this.updateLinks} style={{margin: "10px"}}>
                             {queries.map((query: DataFrame) => <option value={query.name}>{query.name}</option>)}
                         </select>
@@ -132,11 +132,13 @@ class FormEdit extends PureComponent<EditProps> {
                 <PanelOptionsGroup title="Edit connection">
                     <VerticalGroup>
                         <label htmlFor={"nome_collegamento"}>Nome del collegamento:</label>
-                        <input ref={this.inputNameRef} type="text" placeholder="nome" id="nome_collegamento" onChange={this.updateName}/>
+                        <input style={{width: "100%"}} ref={this.inputNameRef} type="text" placeholder="nome" id="nome_collegamento" onChange={this.updateName}/>
 
                         {this.printPredictors()}
-                        <Button onClick={this.updateConnection}>Save</Button>
-                        <Button onClick={this.props.closeEdit}>Cancel</Button>
+                        <div style={{display: "flex", justifyContent: "space-evenly"}}>
+                            <Button onClick={this.updateConnection}>Save</Button>
+                            <Button onClick={this.props.closeEdit}>Cancel</Button>
+                        </div>
                     </VerticalGroup>
                 </PanelOptionsGroup>
             </div>
