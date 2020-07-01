@@ -76,8 +76,9 @@ class App extends Component{
                 </div>
             </div>
             <div id={"chart"}>
+                <p>Select the coefficient to display: </p>
                 {this.selectAxisX()}
-                <Chart json={this.state.jsonData} viewModel={this.#viewModel} hasFile={this.state.hasFile}/>
+                    <Chart json={this.state.jsonData} viewModel={this.#viewModel} hasFile={this.state.hasFile}/>
             </div>
         </div>
     );
