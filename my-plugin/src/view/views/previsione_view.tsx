@@ -77,25 +77,44 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         this.props.controller.setMeasurement(measurement)
     }
 
+    private stopMonitoring = () => {
+        if (this.props.controller.getConnections().length != 0) {
+            this.props.controller.stopMonitoring()
+            this.props.emitter.emit(AppEvents.alertSuccess, ["Monitoring stopped."])
+        }else
+            this.props.emitter.emit(AppEvents.alertWarning, ["No connection established."])
+    }
+
     private startMonitoring = () => {
-        if (this.props.controller.getConnections().length != 0)
+        if (this.props.controller.getConnections().length != 0) {
             this.props.controller.startMonitoring()
-        else
-            this.props.emitter.emit(AppEvents.alertWarning, ["Nessun collegamento effettuato"])
+            this.props.emitter.emit(AppEvents.alertSuccess, ["Monitoring started."])
+        }else
+            this.props.emitter.emit(AppEvents.alertWarning, ["No connection established."])
     }
 
     private monitoringButton = () => {
         const {monitoring} = this.state
         if (monitoring) {
-            return <Button variant={"secondary"} icon={"pause"} onClick={this.props.controller.stopMonitoring}>Interrompi monitoraggio</Button>
+            return <Button variant={"secondary"} icon={"pause"} onClick={this.stopMonitoring}>Stop monitoring</Button>
         } else {
-            return <Button variant={"primary"} icon={"play"} onClick={this.startMonitoring}>Avvia monitoraggio</Button>
+            return <Button variant={"primary"} icon={"play"} onClick={this.startMonitoring}>Start monitoring</Button>
         }
     }
 
     private enableSaving = () =>{
         try {
             this.props.controller.startSaving()
+            this.props.emitter.emit(AppEvents.alertSuccess, ["Saving started."])
+        }catch (e) {
+            this.props.emitter.emit(AppEvents.alertError, [e.name, e.message])
+        }
+    }
+
+    private disableSaving = () =>{
+        try {
+            this.props.controller.stopSaving()
+            this.props.emitter.emit(AppEvents.alertSuccess, ["Saving stopped."])
         }catch (e) {
             this.props.emitter.emit(AppEvents.alertError, [e.name, e.message])
         }
@@ -107,17 +126,17 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
             const {saving, measurement} = this.state
             const datasource = this.props.controller.getDatasource()
             if (saving)
-                return <Button variant={"secondary"} onClick={this.props.controller.stopSaving}>Disabilita salvataggio</Button>
+                return <Button variant={"secondary"} onClick={this.disableSaving}>Disable saving</Button>
             else if (measurement != "" && datasource !== null)
-                return <Button variant={"primary"} onClick={this.enableSaving}>Abilita salvataggio</Button>
+                return <Button variant={"primary"} onClick={this.enableSaving}>Enable saving</Button>
             else
-                return <Button disabled={true} variant={"primary"} onClick={this.enableSaving}>Abilita salvataggio</Button>
+                return <Button disabled={true} variant={"primary"} onClick={this.enableSaving}>Enable saving</Button>
         }
 
         const getOptions = () => {
             const options = []
             if (this.state.datasources.length === 0)
-                options.push(<option value={" "}>No datasource found</option>)
+                options.push(<option value={" "}>No datasource found.</option>)
             else
                 for (let ds of this.state.datasources) {
                     options.push(<option value={ds.id}>{ds.name}</option>)
@@ -128,14 +147,14 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         return (
             <>
                 <div style={{display:"flex", justifyContent:"space-between"}}>
-                    <label style={{alignSelf: "center"}} htmlFor={"dbs"}>Selezionare il Data Source:</label>
+                    <label style={{alignSelf: "center"}} htmlFor={"dbs"}>Select the Data Source:</label>
                     <select ref={this.selectRef} id={"dbs"} onChange={this.setDatasource}>
                         <option value={" "}>Datasource...</option>
                         {getOptions()}
                     </select>
                 </div>
                 <div style={{margin: "0.8rem 0 1rem"}}>
-                    <label htmlFor={"measurement"}>Inserire il nome della misurazione:</label>
+                    <label htmlFor={"measurement"}>Enter a name for the measurement:</label>
                     <Input style={{width:"100%"}} id={"measurement"} type={"text"} value={this.state.measurement} onChange={this.setMeasurement}/>
                 </div>
                 <div style={{display:"flex", justifyContent: "center"}}>
@@ -149,11 +168,11 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         return (
             <div>
                 <HorizontalGroup>
-                    <PanelOptionsGroup title="Monitoraggio">
+                    <PanelOptionsGroup title="Monitoring">
                         {this.monitoringButton()}
                     </PanelOptionsGroup>
 
-                    <PanelOptionsGroup title="Salvataggio">
+                    <PanelOptionsGroup title="Saving">
                         {this.savingForm()}
                     </PanelOptionsGroup>
                 </HorizontalGroup>

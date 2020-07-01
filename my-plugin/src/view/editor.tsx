@@ -13,10 +13,10 @@ import {SystemJS} from "@grafana/runtime"
 
 
 const tabs = [
-    {label: 'Caricamento JSON', key: 'first', active: true},
-    {label: 'Collegamento', key: 'second', active: false},
-    {label: 'Lista Collegamenti', key: 'third', active: false},
-    {label: 'Previsione', key: 'fourth', active: false},
+    {label: 'Upload JSON', key: 'first', active: true},
+    {label: 'Connect predictors', key: 'second', active: false},
+    {label: 'Connection list', key: 'third', active: false},
+    {label: 'Prediction', key: 'fourth', active: false},
 ];
 
 interface State {

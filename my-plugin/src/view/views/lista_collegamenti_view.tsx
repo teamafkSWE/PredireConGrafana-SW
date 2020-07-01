@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {PanelOptionsGroup, VerticalGroup, HorizontalGroup} from "@grafana/ui";
 import Controller from "../../controller/controller";
-import {DataFrame} from "@grafana/data";
+import {AppEvents, DataFrame} from "@grafana/data";
 import FormEdit from "../components/form_edit"
 import Collegamento from "../components/collegamento";
 
@@ -26,9 +26,10 @@ class ListaCollegamentiView extends PureComponent<Props, State> {
 
 
     handleDelete = (id: string) => {
-        if (confirm("Scollegare il predittore?")) {
+        if (confirm("Disconnect the predictor?")) {
             this.props.controller.removeListPredictorQuery(id);
             this.forceUpdate();
+            this.props.emitter.emit(AppEvents.alertSuccess, ["Disconnection done."])
         }
     }
     handleEdit = (id: string) => {
@@ -38,7 +39,7 @@ class ListaCollegamentiView extends PureComponent<Props, State> {
     showConnection = () => {
         const connections = this.props.controller.getConnections()
         if (connections.length === 0)
-            return <p>Nessun collegamento inserito.</p>
+            return <p>No connection inserted.</p>
         else {
             const links = []
 
@@ -59,7 +60,7 @@ class ListaCollegamentiView extends PureComponent<Props, State> {
         return (
             <div>
                 <HorizontalGroup>
-                    <PanelOptionsGroup title="Lista collegamenti">
+                    <PanelOptionsGroup title="Connections list">
                         <VerticalGroup>
                             {this.showConnection()}
                         </VerticalGroup>

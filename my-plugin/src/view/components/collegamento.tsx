@@ -52,8 +52,8 @@ const Collegamento: React.FC<CollegamentoProps> = (props) => {
                 </div>
             </div>
             <div style={{display: "flex", justifyContent: "space-evenly", width: "100%", margin: ".75rem 0 .5rem"}}>
-                <Button style={{margin: "0 .5rem 0"}} onClick={() => props.onModify(props.id)}>Modifica</Button>
-                <Button style={{margin: "0 .5rem 0"}} onClick={() => props.onRemove(props.id)}>Scollega</Button>
+                <Button style={{margin: "0 .5rem 0"}} onClick={() => props.onModify(props.id)}>Edit</Button>
+                <Button style={{margin: "0 .5rem 0"}} onClick={() => props.onRemove(props.id)}>Disconnect</Button>
             </div>
         </>
     )
