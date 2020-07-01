@@ -1,11 +1,37 @@
 language: node_js
 node_js:
   - "12.16.2"
-  
-before_script: 
-  - cd prediction_tool
-  - npm install
-  - react-scripts test
 
+cache:
+  directories:
+    - $HOME/.npm
+    - my-plugin/node_modules
+    - prediction_tool/node_modules
+    - docker_images
 
-#TODO: sistemare scripts
+services:
+  - docker
+
+before_install:
+  - docker load -i docker_images/images.tar || true
+  - docker run -d --name influxdb -p 8086:8086 -v influxdb:/var/lib/influxdb influxdb:1.8
+  - sleep 15
+
+before_cache:
+  - docker save -o docker_images/images.tar $(docker images -a -q)
+
+install:
+  - curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
+
+before_script:
+  - cd my-plugin
+  - npm ci
+  - cd ../prediction_tool
+  - npm ci
+  - cd ..
+
+script:
+  - cd my-plugin
+  - npm run test
+  - cd ../prediction_tool
+  - npm run test
