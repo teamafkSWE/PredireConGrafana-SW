@@ -65,7 +65,7 @@ export default class Controller extends Observable {
         }
     }
 
-    private _setStrategy() {
+    private _setStrategy = () => {
         const algorithm: string = this._json.algorithm
         if (algorithm === 'Linear Regression') {
             this._algorithm = new Regression(this._json.result.a, this._json.result.b);
