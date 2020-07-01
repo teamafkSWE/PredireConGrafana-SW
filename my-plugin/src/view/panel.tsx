@@ -1,10 +1,9 @@
 import React, {PureComponent} from "react";
 import {ArrayVector, FieldColorMode, FieldType, GraphSeriesXY, PanelProps} from "@grafana/data";
-import {Options} from "../types";
 import Controller from "../controller/controller";
 import {Graph} from "@grafana/ui";
 
-export default class Panel extends PureComponent<PanelProps<Options>> {
+export default class Panel extends PureComponent<PanelProps> {
     private _controller: Controller = Controller.requireController(this.props.id);
     private _series: GraphSeriesXY[] = [];
 

@@ -1,9 +1,3 @@
-import Controller from "./controller/controller";
-
-export interface Options {
-    controller: Controller
-}
-
 export class Predictor {
     private readonly _name: string;
     private readonly _value: number;
@@ -23,36 +17,7 @@ export class Predictor {
     }
 }
 
-// export class Threshold {
-//     private _min: number
-//     private _max: number
-//
-//     constructor(min: number, max: number) {
-//         this._min = min
-//         this._max = max
-//     }
-//
-//     get min(): number {
-//         return this._min;
-//     }
-//
-//     set min(value: number) {
-//         this._min = value;
-//     }
-//
-//     get max(): number {
-//         return this._max;
-//     }
-//
-//     set max(value: number) {
-//         this._max = value;
-//     }
-// }
-
 export class Connection {
-    // id: string,
-    // name: string,
-    // links: { predictor: string, query: string }[]
 
     private _id: string
     private _name: string
@@ -101,7 +66,7 @@ export class Datasource {
 
 
     constructor(id: string, database: string, name: string, url: string, user: string, password: string) {
-        this._id = id.toString();
+        this._id = id;
         this._database = database;
         this._name = name;
         this._url = new URL(url);
