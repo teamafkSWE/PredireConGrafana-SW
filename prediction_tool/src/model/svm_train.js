@@ -10,11 +10,11 @@ class SVMTrain extends Train{
     train =()=> {
         this.#algorithm.trainSvm();
         if(this.#algorithm.confermaPredizioneSvm()) {
-            alert("Addestramento avvenuto correttamente.");
+            alert("Training done correctly.");
             return true;
         }
         else{
-            alert("Addestramento non riuscito.")
+            alert("Training failed.")
             return false;
         }
     }

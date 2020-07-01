@@ -8,7 +8,7 @@ class InsertCsvButton extends Component {
     render() {
         return (
             <React.Fragment>
-                <label className="btn btn-dark" htmlFor="1">Select file:</label>
+                <label className="btn btn-dark" htmlFor="1">Select file</label>
                 <CSVReader
                     accept={".csv"}
                     inputId="1"

@@ -51,14 +51,14 @@ class ViewModel {
         if(this.#hasFile===true){
             if(this.#algorithm!=="") {
                 if (this.setStrategy() === false)
-                    alert("File CSV incompatibile.");
+                    alert("CSV file incompatible.");
             }
             else
-                alert("Algoritmo non selezionato");
+                alert("Algorithm has not been chosen.");
 
         }
         else
-            alert("File non inserito.");
+            alert("File has not been inserted.");
 
     }
     isSVM =()=>{

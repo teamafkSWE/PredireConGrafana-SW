@@ -9,11 +9,11 @@ class RLTrain extends Train {
     train =()=> {
         this.#algorithm.insert();
         if(this.#algorithm.trainRl()){
-            alert("Addestramento avvenuto correttamente.");
+            alert("Training done correctly.");
             return true;
         }
         else{
-            alert("Addestramento non riuscito.");
+            alert("Training failed.");
             return false;
         }
     }
