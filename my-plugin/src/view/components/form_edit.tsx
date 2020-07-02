@@ -69,7 +69,7 @@ class FormEdit extends PureComponent<EditProps> {
         if (this.connectionName === "") {
             this.props.emitter.emit(AppEvents.alertWarning, ["Enter a name for the connection:"])
         } else {
-            this.props.controller.editListPredictorQuery(this.props.idConnection, {
+            this.props.controller.editConnection(this.props.idConnection, {
                 name: this.connectionName,
                 list: this.connectionLinks
             })
@@ -112,10 +112,10 @@ class FormEdit extends PureComponent<EditProps> {
             let index = 0
             for (let link of this.connection.links) {
                 predictors.push(
-                    <div style={{display: "flex", justifyContent: "space-between", marginTop: "0.8rem"}}>
+                    <div style={{display: "flex", justifyContent: "space-between", marginTop: "0.8rem"}} key={index}>
                         <label style={{alignSelf: "center"}} htmlFor={link.predictor}>{link.predictor}:</label>
                         <select ref={this.selectRefs[index]} id={link.predictor} onChange={this.updateLinks} style={{margin: "10px"}}>
-                            {queries.map((query: DataFrame) => <option value={query.name}>{query.name}</option>)}
+                            {queries.map((query: DataFrame, index) => <option value={query.name} key={index}>{query.name}</option>)}
                         </select>
                     </div>
                 )
@@ -128,7 +128,7 @@ class FormEdit extends PureComponent<EditProps> {
 
     render() {
         return (
-            <div>
+            <>
                 <PanelOptionsGroup title="Edit connection">
                     <VerticalGroup>
                         <label htmlFor={"nome_collegamento"}>Connection name:</label>
@@ -141,7 +141,7 @@ class FormEdit extends PureComponent<EditProps> {
                         </div>
                     </VerticalGroup>
                 </PanelOptionsGroup>
-            </div>
+            </>
         );
     }
 }

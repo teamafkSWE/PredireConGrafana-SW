@@ -29,11 +29,13 @@ describe('Collegamento fc', () => {
         render(<Collegamento id='1' links={links} nome={'name'} onModify={modify} onRemove={remove}/>)
         fireEvent.click(screen.getByText('Edit'))
         expect(modify).toBeCalledTimes(1)
+        expect(modify).toBeCalledWith('1')
     })
 
     test('remove call', () => {
         render(<Collegamento id='1' links={links} nome={'name'} onModify={modify} onRemove={remove}/>)
         fireEvent.click(screen.getByText('Disconnect'))
         expect(remove).toBeCalledTimes(1)
+        expect(remove).toBeCalledWith('1')
     })
 })
