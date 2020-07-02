@@ -31,20 +31,20 @@ const Collegamento: React.FC<CollegamentoProps> = (props) => {
                             borderRight: "1pt solid white",
                             borderBottom: "1pt solid white"
                         }}>
-                            Predittore
+                            Predictor
                         </p>
-                        {predictors.map(predictor =>
-                            <p style={{textAlign: "center", width: "100%", margin: "0", padding: "0.2rem 0.6rem 0.2rem"}}>
+                        {predictors.map((predictor, index) =>
+                            <p style={{textAlign: "center", width: "100%", margin: "0", padding: "0.2rem 0.6rem 0.2rem"}} key={index}>
                                 {predictor}
                             </p>
                         )}
                     </div>
                     <div style={{width: "100%"}}>
                         <p style={{textAlign: "center", width: "100%", margin: "0", padding: "0.4rem 0.6rem 0.4rem", borderBottom: "1pt solid white"}}>
-                            Nodo
+                            Node
                         </p>
-                        {nodes.map(node =>
-                            <p style={{textAlign: "center", width: "100%", margin: "0", padding: "0.2rem 0.6rem 0.2rem"}}>
+                        {nodes.map((node, index) =>
+                            <p style={{textAlign: "center", width: "100%", margin: "0", padding: "0.2rem 0.6rem 0.2rem"}} key={index}>
                                 {node}
                             </p>
                         )}
