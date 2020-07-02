@@ -27,7 +27,7 @@ class ListaCollegamentiView extends PureComponent<Props, State> {
 
     handleDelete = (id: string) => {
         if (confirm("Disconnect the predictor?")) {
-            this.props.controller.removeListPredictorQuery(id);
+            this.props.controller.removeConnection(id);
             this.forceUpdate();
             this.props.emitter.emit(AppEvents.alertSuccess, ["Disconnection done."])
         }
