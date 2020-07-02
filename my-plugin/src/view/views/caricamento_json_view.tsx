@@ -3,6 +3,7 @@ import {PanelOptionsGrid, PanelOptionsGroup, VerticalGroup} from "@grafana/ui";
 import Files from "react-files";
 import Observer from "../observer/observer";
 import Controller from "../../controller/controller";
+import {AppEvents} from "@grafana/data";
 
 interface Props {
     emitter: any
@@ -39,29 +40,37 @@ class CaricamentoJsonView extends PureComponent<Props> implements Observer {
         this.setState({jsonContent: JSON.stringify(json, null, 2), filename: filename})
     }
 
+    checkFile = (event: any) => {
+        if (this.props.controller.getFile() !== undefined) {
+            this.props.emitter.emit(AppEvents.alertWarning, ["Watch out! A file is already imported!"])
+            //event.stopImmediatePropagation()
+        }
+    }
+
     render() {
         return (
             <PanelOptionsGrid>
-                <PanelOptionsGroup title="Inserimento file JSON">
+                <PanelOptionsGroup title="Upload the File">
                     <VerticalGroup>
-                        <Files
-                            className="files-dropzone"
-                            onChange={(files: File[]) => {
-                                this.props.controller.setJson(files[files.length - 1])
-                            }}
-                            onError={(err: any) => console.log(err)}
-                            accepts={[".json"]}
-                            maxFileSize={10000000}
-                            minFileSize={0}
-                            clickable
-                        >
-                            <p>Drop files here or click to upload</p>
-                            <p>File: {this.state.filename}</p>
-                        </Files>
+                        <div onClick={this.checkFile}>
+                            <Files
+                                className="files-dropzone"
+                                onChange={(files: File[]) => {
+                                    this.props.controller.setJson(files[files.length - 1])
+                                }}
+                                onError={(err: any) => console.log(err)}
+                                accepts={[".json"]}
+                                maxFileSize={10000000}
+                                minFileSize={0}
+                                clickable
+                            >
+                                <p>Drop files here or click to upload</p>
+                                <p>File: {this.state.filename}</p>
+                            </Files>
+                        </div>
                     </VerticalGroup>
-
                 </PanelOptionsGroup>
-                <PanelOptionsGroup title="Contenuto file JSON">
+                <PanelOptionsGroup title="File contents">
                     <pre id='textarea'>{this.state.jsonContent}</pre>
                 </PanelOptionsGroup>
             </PanelOptionsGrid>

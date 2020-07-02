@@ -67,14 +67,14 @@ class FormEdit extends PureComponent<EditProps> {
 
     private updateConnection = () => {
         if (this.connectionName === "") {
-            this.props.emitter.emit(AppEvents.alertWarning, ["Inserisci un nome per la connessione"])
+            this.props.emitter.emit(AppEvents.alertWarning, ["Enter a name for the connection:"])
         } else {
             this.props.controller.editListPredictorQuery(this.props.idConnection, {
                 name: this.connectionName,
                 list: this.connectionLinks
             })
             this.props.closeEdit();
-            this.props.emitter.emit(AppEvents.alertSuccess, ["Collegamento modificato."])
+            this.props.emitter.emit(AppEvents.alertSuccess, ["Connection changed."])
         }
     }
 
@@ -131,7 +131,7 @@ class FormEdit extends PureComponent<EditProps> {
             <div>
                 <PanelOptionsGroup title="Edit connection">
                     <VerticalGroup>
-                        <label htmlFor={"nome_collegamento"}>Nome del collegamento:</label>
+                        <label htmlFor={"nome_collegamento"}>Connection name:</label>
                         <input style={{width: "100%"}} ref={this.inputNameRef} type="text" placeholder="nome" id="nome_collegamento" onChange={this.updateName}/>
 
                         {this.printPredictors()}

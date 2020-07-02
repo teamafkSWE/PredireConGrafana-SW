@@ -64,7 +64,7 @@ class CollegamentoView extends PureComponent<MyProps> {
 
     private setupConnection = () => {
         if (this.connectionName === "") {
-            this.props.emitter.emit(AppEvents.alertWarning, ["Inserisci un nome per la connessione"])
+            this.props.emitter.emit(AppEvents.alertWarning, ["Enter a name for the connection:"])
         }
 
         //constrollo che siano stati collegati tutti i predittori
@@ -81,7 +81,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                     name: this.connectionName,
                     links: (this.connectionLinks as { predictor: string, query: string }[])
                 })
-                this.props.emitter.emit(AppEvents.alertSuccess, ["Collegamento inserito."])
+                this.props.emitter.emit(AppEvents.alertSuccess, ["Connection inserted."])
                 this.resetList()
                 //resetto il nome del collegamento
                 const ref = this.inputNameRef.current
@@ -95,7 +95,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                     }
                 }
             } else
-                this.props.emitter.emit(AppEvents.alertWarning, ["Collega tutti i predittori."])
+                this.props.emitter.emit(AppEvents.alertWarning, ["You must connect all the predictors."])
         }
     }
 
@@ -104,25 +104,25 @@ class CollegamentoView extends PureComponent<MyProps> {
         const {queries} = this.props;
 
         if (file === undefined) //non è stato inserito il file json
-            return (<p>Nessun json inserito, perfavore inserire prima un file json compatibile.</p>)
+            return (<p>No JSON file found. Please, insert a compatible one to start.</p>)
         else if (queries.length <= 0) //non sono state impostate delle query
-            return (<p>Nessuna query impostata, perfavore impostare prima una o più query.</p>)
+            return (<p>No query set. Please, set one (or more) to continue.</p>)
         else { //è presente un file json compatibile e sono presenti delle query
             const predictors = this.props.controller.getPredictors();
             return (
                 <>
                     <p style={{fontStyle: "italic"}}>
-                        Attenzione: effettuare i collegamenti per tutti i predittori.
+                        Watch out: you must connect all the predictors!
                     </p>
                     <div style={{borderLeft: "white 1px solid", paddingLeft: "1rem"}}>
-                        <label htmlFor={"nome_collegamento"} style={{display: "block"}}>Nome del collegamento:</label>
+                        <label htmlFor={"nome_collegamento"} style={{display: "block"}}>Connection name:</label>
                         <input type="text" placeholder="nome" id="nome_collegamento"
                                onChange={this.setName} style={{width: "100%", border: "1px solid #262628"}} ref={this.inputNameRef}/>
                         {predictors.map((predictor, index) => //per ogni predittore mostro una selezione tra tutte le query
                             <div style={{display: "flex", justifyContent: "space-between", marginTop: "0.8rem"}}>
                                 <label style={{alignSelf: "center"}} htmlFor={predictor.name}>{predictor.name}:</label>
                                 <select ref={this.selectRefs[index]} id={predictor.name} onChange={this.addLink} style={{marginLeft: "0.8rem"}}>
-                                    <option value={" "}>Seleziona il nodo</option>
+                                    <option value={" "}>Select the node:</option>
                                     {queries.map((query: DataFrame) =>
                                         <option value={query.name}>{query.name}</option>)
                                     }
@@ -130,7 +130,7 @@ class CollegamentoView extends PureComponent<MyProps> {
                             </div>
                         )}
                     </div>
-                    <Button style={{marginTop: "1rem"}} onClick={this.setupConnection}>Inserisci collegamento</Button>
+                    <Button style={{marginTop: "1rem"}} onClick={this.setupConnection}>Add connection</Button>
                 </>
             );
         }
@@ -140,7 +140,7 @@ class CollegamentoView extends PureComponent<MyProps> {
         return (
             <div>
                 <PanelOptionsGrid>
-                    <PanelOptionsGroup title="Inserimento collegamenti">
+                    <PanelOptionsGroup title="Insert connection">
                         <VerticalGroup>
                             {this.printPredictors()}
                         </VerticalGroup>
