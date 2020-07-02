@@ -40,9 +40,11 @@ class CaricamentoJsonView extends PureComponent<Props> implements Observer {
         this.setState({jsonContent: JSON.stringify(json, null, 2), filename: filename})
     }
 
-    checkFile = (e: any) => {
-        if (this.props.controller.getFile() !== undefined)
+    checkFile = (event: any) => {
+        if (this.props.controller.getFile() !== undefined) {
             this.props.emitter.emit(AppEvents.alertWarning, ["Watch out! A file is already imported!"])
+            //event.stopImmediatePropagation()
+        }
     }
 
     render() {

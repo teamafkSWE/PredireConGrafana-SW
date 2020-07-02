@@ -127,7 +127,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
             const datasource = this.props.controller.getDatasource()
             if (saving)
                 return <Button variant={"secondary"} onClick={this.disableSaving}>Disable saving</Button>
-            else if (measurement != "" && datasource !== null)
+            else if (measurement !== "" && datasource !== null)
                 return <Button variant={"primary"} onClick={this.enableSaving}>Enable saving</Button>
             else
                 return <Button disabled={true} variant={"primary"} onClick={this.enableSaving}>Enable saving</Button>

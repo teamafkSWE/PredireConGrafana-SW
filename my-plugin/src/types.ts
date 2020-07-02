@@ -66,7 +66,7 @@ export class Datasource {
 
 
     constructor(id: string, database: string, name: string, url: string, user: string, password: string) {
-        this._id = id;
+        this._id = id.toString();
         this._database = database;
         this._name = name;
         this._url = new URL(url);
