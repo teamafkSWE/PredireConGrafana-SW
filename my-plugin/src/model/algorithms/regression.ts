@@ -12,7 +12,7 @@ export class Regression extends Algorithm{
             let sum = 0
             for (let i = 0; i < input.length; i++)
                 sum += input[i]*this.a[i]
-            return sum + this.b //todo: has to be a sum or a subtraction?
+            return sum + this.b
         }
         else
             throw new Error("You should not see this error...")

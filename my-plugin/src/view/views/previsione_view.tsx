@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Button, HorizontalGroup, Input, PanelOptionsGroup} from "@grafana/ui";
+import {Button, HorizontalGroup, PanelOptionsGroup} from "@grafana/ui";
 import Observer from "../observer/observer";
 import {Datasource} from "../../types";
 import Controller from "../../controller/controller";
@@ -45,7 +45,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
             let i = 0
             while (datasource.id != this.state.datasources[i].id)
                 i++
-            this.selectRef.current.options.selectedIndex = i+1;
+            this.selectRef.current.options.selectedIndex = i + 1;
         }
     }
 
@@ -81,7 +81,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         if (this.props.controller.getConnections().length != 0) {
             this.props.controller.stopMonitoring()
             this.props.emitter.emit(AppEvents.alertSuccess, ["Monitoring stopped."])
-        }else
+        } else
             this.props.emitter.emit(AppEvents.alertWarning, ["No connection established."])
     }
 
@@ -89,7 +89,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         if (this.props.controller.getConnections().length != 0) {
             this.props.controller.startMonitoring()
             this.props.emitter.emit(AppEvents.alertSuccess, ["Monitoring started."])
-        }else
+        } else
             this.props.emitter.emit(AppEvents.alertWarning, ["No connection established."])
     }
 
@@ -102,20 +102,20 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
         }
     }
 
-    private enableSaving = () =>{
+    private enableSaving = () => {
         try {
             this.props.controller.startSaving()
             this.props.emitter.emit(AppEvents.alertSuccess, ["Saving started."])
-        }catch (e) {
+        } catch (e) {
             this.props.emitter.emit(AppEvents.alertError, [e.name, e.message])
         }
     }
 
-    private disableSaving = () =>{
+    private disableSaving = () => {
         try {
             this.props.controller.stopSaving()
             this.props.emitter.emit(AppEvents.alertSuccess, ["Saving stopped."])
-        }catch (e) {
+        } catch (e) {
             this.props.emitter.emit(AppEvents.alertError, [e.name, e.message])
         }
     }
@@ -146,7 +146,7 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
 
         return (
             <>
-                <div style={{display:"flex", justifyContent:"space-between"}}>
+                <div style={{display: "flex", justifyContent: "space-between"}}>
                     <label style={{alignSelf: "center"}} htmlFor={"dbs"}>Select the Data Source:</label>
                     <select ref={this.selectRef} id={"dbs"} onChange={this.setDatasource}>
                         <option value={" "}>Datasource...</option>
@@ -155,9 +155,9 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
                 </div>
                 <div style={{margin: "0.8rem 0 1rem"}}>
                     <label htmlFor={"measurement"}>Enter a name for the measurement:</label>
-                    <Input style={{width:"100%"}} id={"measurement"} type={"text"} value={this.state.measurement} onChange={this.setMeasurement}/>
+                    <input style={{width: "100%"}} id={"measurement"} type={"text"} value={this.state.measurement} onChange={this.setMeasurement}/>
                 </div>
-                <div style={{display:"flex", justifyContent: "center"}}>
+                <div style={{display: "flex", justifyContent: "center"}}>
                     {saveButton()}
                 </div>
             </>
@@ -166,17 +166,15 @@ class PrevisioneView extends PureComponent<Props, State> implements Observer {
 
     render() {
         return (
-            <div>
-                <HorizontalGroup>
-                    <PanelOptionsGroup title="Monitoring">
-                        {this.monitoringButton()}
-                    </PanelOptionsGroup>
+            <HorizontalGroup>
+                <PanelOptionsGroup title="Monitoring">
+                    {this.monitoringButton()}
+                </PanelOptionsGroup>
 
-                    <PanelOptionsGroup title="Saving">
-                        {this.savingForm()}
-                    </PanelOptionsGroup>
-                </HorizontalGroup>
-            </div>
+                <PanelOptionsGroup title="Saving">
+                    {this.savingForm()}
+                </PanelOptionsGroup>
+            </HorizontalGroup>
         );
     }
 }

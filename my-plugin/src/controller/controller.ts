@@ -46,6 +46,17 @@ export default class Controller extends Observable {
         super();
     }
 
+    private static _checkJson = (file:any) => {
+        if (file.author === undefined || file.author !== "TeamAFK") return false
+        else if (file.version === undefined) return false
+        else if (file.algorithm === undefined || (file.algorithm !== "Linear Regression" && file.algorithm !== "SVM")) return false
+        else if (file.date === undefined) return false
+        else if (file.predictors === undefined) return false
+        else if (file.result === undefined) return false
+
+        return true
+    }
+
     private _definePredictors = () => {
         this._predictors = [];
         const rawPredictors = this._json.predictors
@@ -75,15 +86,16 @@ export default class Controller extends Observable {
     }
 
     public setJson = (file: any) => {
-        this._file = file
         const fr = new FileReader()
         fr.onload = (event) => {
             if (event.target !== null && typeof event.target.result === "string") {
-                //todo: aggiungere controllo in caso il json caricato non contenga le informazioni a noi utili
-                this._json = JSON.parse(event.target.result);
-                this._definePredictors()
-                this._setStrategy()
-                //this._b = this._json.result.b
+                const jsonParsed = JSON.parse(event.target.result);
+                if (Controller._checkJson(jsonParsed)) {
+                    this._json = jsonParsed
+                    this._file = file
+                    this._definePredictors()
+                    this._setStrategy()
+                }
                 this.notifyAll()
             }
         }

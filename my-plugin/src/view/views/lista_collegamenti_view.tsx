@@ -57,8 +57,8 @@ class ListaCollegamentiView extends PureComponent<Props, State> {
     }
 
     render() {
-        return (
-            <div>
+        if (!this.props.controller.isMonitoring())
+            return (
                 <HorizontalGroup>
                     <PanelOptionsGroup title="Connections list">
                         <VerticalGroup>
@@ -72,8 +72,8 @@ class ListaCollegamentiView extends PureComponent<Props, State> {
                                                            queries={this.props.queries}
                     />}
                 </HorizontalGroup>
-            </div>
-        );
+            );
+        else return (<p>You can't modify something while monitoring.</p>)
     }
 }
 

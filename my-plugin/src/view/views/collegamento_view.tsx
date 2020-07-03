@@ -12,7 +12,6 @@ interface MyProps {
 }
 
 
-//todo: controllare se esiste il caso in cui il json inserito non contenga predittori
 class CollegamentoView extends PureComponent<MyProps> {
     private readonly selectRefs: React.RefObject<HTMLSelectElement>[];
     private readonly inputNameRef: React.RefObject<HTMLInputElement>;
@@ -137,39 +136,17 @@ class CollegamentoView extends PureComponent<MyProps> {
     }
 
     render() {
-        return (
-            <div>
+        if (!this.props.controller.isMonitoring())
+            return (
                 <PanelOptionsGrid>
                     <PanelOptionsGroup title="Insert connection">
                         <VerticalGroup>
                             {this.printPredictors()}
                         </VerticalGroup>
                     </PanelOptionsGroup>
-
-                    {/*<PanelOptionsGroup title="Impostazione soglie">*/}
-                        {/*
-                            <p style={{fontStyle: "italic"}}> Attenzione: vanno impostate entrambe le soglie. </p>
-                            <form>
-                            <label htmlFor="sogliaMin">Min:</label>
-                            <input type="number" id="sogliaMin" value={this.state.valueMin} onChange={this.handleChangeMin} style={{marginLeft: "10px"}}/>
-                            <p></p>
-                            <label htmlFor="sogliaMax">Max:</label>
-                            <input type="number" id="sogliaMax" value={this.state.valueMax} onChange={this.handleChangeMax} style={{marginLeft: "10px"}}/>
-                            <p></p>
-                            </form>
-                            <p></p>
-                            <Button onClick={this.confermaSoglie}>Conferma soglie</Button>
-                        */}
-                    {/*</PanelOptionsGroup>*/}
-                    {/*
-                        <PanelOptionsGroup title="Conferma">
-                            <p style={{fontStyle: "italic"}}> Cliccare il bottone per confermare il collegamento ed aggiungerlo alla lista dei collegamenti disponibili. </p>
-                            <Button>Conferma collegamento</Button>
-                        </PanelOptionsGroup>
-                    */}
                 </PanelOptionsGrid>
-            </div>
-        );
+            );
+        else return (<p>You can't modify something while monitoring.</p>)
     }
 
 }

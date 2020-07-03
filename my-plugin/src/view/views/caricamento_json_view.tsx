@@ -10,7 +10,13 @@ interface Props {
     controller: Controller
 }
 
-class CaricamentoJsonView extends PureComponent<Props> implements Observer {
+interface State {
+    file: File | undefined
+    filename: string
+    jsonContent: string
+}
+
+class CaricamentoJsonView extends PureComponent<Props, State> implements Observer {
 
     constructor(props: Readonly<Props>) {
         super(props);
@@ -19,6 +25,7 @@ class CaricamentoJsonView extends PureComponent<Props> implements Observer {
         const file = this.props.controller.getFile()
         const filename = file === undefined ? '' : file.name
         this.state = {
+            file: file,
             filename: filename,
             jsonContent: JSON.stringify(json, null, 2)
         }
@@ -28,35 +35,30 @@ class CaricamentoJsonView extends PureComponent<Props> implements Observer {
         this.props.controller.detach(this)
     }
 
-    state = {
-        filename: '',
-        jsonContent: ''
-    }
-
     update(): void { //invocata dal controller nel momento in cui viene letto il file json
-        const json = this.props.controller.getJson()
         const file = this.props.controller.getFile()
-        const filename = file === undefined ? '' : file.name
-        this.setState({jsonContent: JSON.stringify(json, null, 2), filename: filename})
-    }
 
-    checkFile = (event: any) => {
-        if (this.props.controller.getFile() !== undefined) {
-            this.props.emitter.emit(AppEvents.alertWarning, ["Watch out! A file is already imported!"])
-            //event.stopImmediatePropagation()
+        if (file === this.state.file)
+            this.props.emitter.emit(AppEvents.alertWarning, ["File JSON not supported", "The file you selected is not compatible with the plugin"])
+        else {
+            const json = this.props.controller.getJson()
+            const filename = file === undefined ? '' : file.name
+            this.props.emitter.emit(AppEvents.alertSuccess, ["File JSON loaded successfully"])
+            this.setState({jsonContent: JSON.stringify(json, null, 2), filename: filename, file: file})
         }
     }
 
     render() {
-        return (
-            <PanelOptionsGrid>
-                <PanelOptionsGroup title="Upload the File">
-                    <VerticalGroup>
-                        <div onClick={this.checkFile}>
+        if (!this.props.controller.isMonitoring())
+            return (
+                <PanelOptionsGrid>
+                    <PanelOptionsGroup title="Upload the File">
+                        <VerticalGroup>
                             <Files
                                 className="files-dropzone"
                                 onChange={(files: File[]) => {
-                                    this.props.controller.setJson(files[files.length - 1])
+                                    if (this.state.file === undefined || confirm("There is already a json file. Do you want to change it?"))
+                                        this.props.controller.setJson(files[files.length - 1])
                                 }}
                                 onError={(err: any) => console.log(err)}
                                 accepts={[".json"]}
@@ -67,14 +69,14 @@ class CaricamentoJsonView extends PureComponent<Props> implements Observer {
                                 <p>Drop files here or click to upload</p>
                                 <p>File: {this.state.filename}</p>
                             </Files>
-                        </div>
-                    </VerticalGroup>
-                </PanelOptionsGroup>
-                <PanelOptionsGroup title="File contents">
-                    <pre id='textarea'>{this.state.jsonContent}</pre>
-                </PanelOptionsGroup>
-            </PanelOptionsGrid>
-        );
+                        </VerticalGroup>
+                    </PanelOptionsGroup>
+                    <PanelOptionsGroup title="File contents">
+                        <pre id='textarea'>{this.state.jsonContent}</pre>
+                    </PanelOptionsGroup>
+                </PanelOptionsGrid>
+            );
+        else return (<p>You can't modify something while monitoring.</p>)
     }
 
 }

@@ -57,6 +57,7 @@ class Editor extends PureComponent<PanelEditorProps, State> {
                                                 state.map((tab, index) => {
                                                     return ( //ritorna una tab per ogni tab contenuta in tabs
                                                         <Tab
+                                                            css
                                                             key={index}
                                                             label={tab.label}
                                                             active={tab.active}
@@ -86,7 +87,7 @@ class Editor extends PureComponent<PanelEditorProps, State> {
                                     </>
                                 );
                             else
-                                return <p>Qualcosa è andato storto... prova ad aggiornare la pagina!</p>
+                                return <p>Something has gone wrong. Try refreshing the page.</p>
                         }
                     }
                 </UseState>
