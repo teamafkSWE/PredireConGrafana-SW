@@ -35,6 +35,8 @@ describe('Form edit', () => {
         cleanup()
     })
 
+    afterAll(() => Controller.unloadController(1))
+
     test('render', () => {
         const {asFragment,} = render(<FormEdit queries={queries} closeEdit={close} idConnection={'1'} controller={controller} emitter={emitter}/>)
         expect(asFragment()).toMatchSnapshot()

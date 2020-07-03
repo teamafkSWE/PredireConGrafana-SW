@@ -48,6 +48,11 @@ class CaricamentoJsonView extends PureComponent<Props, State> implements Observe
         }
     }
 
+    fileUpload(files: File[]) {
+        if (this.state.file === undefined || confirm("There is already a json file. Do you want to change it?"))
+            this.props.controller.setJson(files[files.length - 1])
+    }
+
     render() {
         if (!this.props.controller.isMonitoring())
             return (
@@ -56,10 +61,7 @@ class CaricamentoJsonView extends PureComponent<Props, State> implements Observe
                         <VerticalGroup>
                             <Files
                                 className="files-dropzone"
-                                onChange={(files: File[]) => {
-                                    if (this.state.file === undefined || confirm("There is already a json file. Do you want to change it?"))
-                                        this.props.controller.setJson(files[files.length - 1])
-                                }}
+                                onChange={this.fileUpload}
                                 onError={(err: any) => console.log(err)}
                                 accepts={[".json"]}
                                 maxFileSize={10000000}
