@@ -76,7 +76,7 @@ exports[`Form edit render 1`] = `
             style="display: flex; justify-content: space-evenly;"
           >
             <button
-              class="css-u6ysb0-button"
+              class="css-1ihbihm-button"
             >
               <span
                 class="css-1beih13"
@@ -87,7 +87,7 @@ exports[`Form edit render 1`] = `
               </span>
             </button>
             <button
-              class="css-u6ysb0-button"
+              class="css-1ihbihm-button"
             >
               <span
                 class="css-1beih13"

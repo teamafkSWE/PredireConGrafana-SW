@@ -57,7 +57,7 @@ exports[`Collegamento fc render 1`] = `
     style="display: flex; justify-content: space-evenly; width: 100%; margin: .75rem 0px .5rem;"
   >
     <button
-      class="css-u6ysb0-button"
+      class="css-1ihbihm-button"
       style="margin: 0px .5rem 0px;"
     >
       <span
@@ -69,7 +69,7 @@ exports[`Collegamento fc render 1`] = `
       </span>
     </button>
     <button
-      class="css-u6ysb0-button"
+      class="css-1ihbihm-button"
       style="margin: 0px .5rem 0px;"
     >
       <span
