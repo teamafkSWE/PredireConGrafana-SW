@@ -35,7 +35,7 @@ class CaricamentoJsonView extends PureComponent<Props, State> implements Observe
         this.props.controller.detach(this)
     }
 
-    update(): void { //invocata dal controller nel momento in cui viene letto il file json
+    update = (): void => { //invocata dal controller nel momento in cui viene letto il file json
         const file = this.props.controller.getFile()
 
         if (file === this.state.file)
@@ -48,7 +48,7 @@ class CaricamentoJsonView extends PureComponent<Props, State> implements Observe
         }
     }
 
-    fileUpload(files: File[]) {
+    fileUpload = (files: File[]) => {
         if (this.state.file === undefined || confirm("There is already a json file. Do you want to change it?"))
             this.props.controller.setJson(files[files.length - 1])
     }
