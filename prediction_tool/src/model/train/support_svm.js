@@ -1,8 +1,6 @@
 
-let svmjs = require ("./library/svm");
-
-
-//Simple implementation of Support Vector Machine algorithm for binary classification in javascript.
+const modules = require("ml-modules");
+const SVM = modules.SVM;
 
 class SupportSvm {
     #dataSVM;
@@ -10,7 +8,14 @@ class SupportSvm {
     #weights;
     constructor(dataSVM) {
         this.#dataSVM=dataSVM;
-        this.#svm = new svmjs.SVM();
+        this.options = {
+            kernel: {
+                linear: true,
+            },
+            karpathy: true,
+        };
+        this.#svm = new SVM();
+        this.#svm.setOptions(this.options);
         this.#weights=null;
     }
     getColumnsName =()=> {
@@ -46,9 +51,12 @@ class SupportSvm {
             }
             labels[i]=this.#dataSVM[i+1][this.#dataSVM[i+1].length-1];
         }
-
-        this.#svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
-        this.#weights =this.#svm.getWeights();
+        this.#svm.train(data,labels);
+        console.log(this.#svm);
+        console.log(this.#svm.toJSON());
+        // this.#svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
+        this.#weights ={w:this.#svm.w,b:this.#svm.b};
+        console.log(this.#weights);
     }
     Weights =()=> {
         return this.#weights;
