@@ -49,6 +49,7 @@ class App extends Component{
 
     setDataFromFile =(data, fileInfo)=> {
         this.#viewModel.setFileData(data,true);
+        this.#viewModel.setNotes(null);
         this.setState({data:data, fileName: fileInfo.name, hasFile:true, algorithm:'', trainSuccessfully:false, notes:'', changeName:'', jsonData:null, xAxis:data[0][0]});
     };
 
