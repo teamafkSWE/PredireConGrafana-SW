@@ -95,7 +95,6 @@ class App extends Component{
     }
 
     handleName = (event) => {
-        this.#viewModel.setFileName(event.target.value)
         this.setState({changeName: event.target.value})
     }
 
