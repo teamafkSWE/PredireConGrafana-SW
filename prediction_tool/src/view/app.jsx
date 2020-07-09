@@ -9,6 +9,8 @@ import ViewModel from "../viewModel/viewModel";
 import TrainButton from "./uiComponents/train_button";
 import DownloadJson from "./uiComponents/download_Json";
 import Chart from "./uiComponents/chart";
+import TextAreaNotes from "./uiComponents/textArea";
+import TextAreaFileName from "./uiComponents/textAreaFileName";
 class App extends Component{
   #viewModel=null;
     constructor(props) {
@@ -16,13 +18,24 @@ class App extends Component{
         this.state = {
             data: [],
             fileName: null,
+            changeName: "",
             hasFile: false,
+            trainSuccessfully: false,
             algorithm: "",
+            notes: "",
             jsonData:null,
             xAxis:""
         }
          this.#viewModel= new ViewModel();
     }
+
+    setDefaultName = () => {
+        if(this.state.algorithm === "svm")
+            return "predictorSVM";
+        else
+            return "predictorRL";
+    }
+
     changeAlgorithm =(event)=> {
         this.setState({algorithm: event.target.value});
     }
@@ -33,10 +46,12 @@ class App extends Component{
     resetAlgorithm =(algorithm)=> {
         this.setState({algorithm:algorithm});
     }
+
     setDataFromFile =(data, fileInfo)=> {
         this.#viewModel.setFileData(data,true);
-        this.setState({data:data, fileName: fileInfo.name, hasFile:true,algorithm:'',jsonData:null, xAxis:data[0][0]});
+        this.setState({data:data, fileName: fileInfo.name, hasFile:true, algorithm:'', trainSuccessfully:false, notes:'', changeName:'', jsonData:null, xAxis:data[0][0]});
     };
+
     handleTraining =()=> {
         this.#viewModel.setAlgorithm(this.state.algorithm)
         let success=this.#viewModel.performTraining();
@@ -45,7 +60,8 @@ class App extends Component{
             this.setState({jsonData:null});
         }
         else {
-            this.setState({jsonData:this.#viewModel.getJsonContent()});
+            this.setState({trainSuccessfully: true});
+            //this.setState({jsonData:this.#viewModel.getJsonContent()});
         }
     }
     selectAxisX=()=> {
@@ -53,31 +69,61 @@ class App extends Component{
             return <ComboBoxAxisX viewModel={this.#viewModel} changeXAxis={this.changeXAxis} xAxis={this.state.xAxis}/>
     }
     downloadJsonData =()=> {
-        if(this.state.jsonData!==null)
-        return <DownloadJson jsonData={this.state.jsonData} viewModel={this.#viewModel}/>
+        if(this.state.trainSuccessfully === true) {
+            return (
+                this.textArea,
+                <DownloadJson jsonData={this.#viewModel.getJsonContent()} viewModel={this.#viewModel} changeName={this.state.changeName} defaultName={this.setDefaultName}/>
+            )
+        }
     }
+
+    showTextArea = () => {
+        if(this.state.trainSuccessfully === true) {
+            return (
+                <div>
+                    <TextAreaFileName handleName={this.handleName} changeName={this.state.changeName}/>
+                    <p></p>
+                    <TextAreaNotes handleNotes={this.handleNotes} notes={this.state.notes}/>
+                </div>
+            )
+        }
+    }
+
+    handleNotes = (event) => {
+        this.#viewModel.setNotes(event.target.value)
+        this.setState({notes: event.target.value})
+    }
+
+    handleName = (event) => {
+        this.#viewModel.setFileName(event.target.value)
+        this.setState({changeName: event.target.value})
+    }
+
     render(){
         return(
         <div className="mt-4 mb-4 text-center" >
             <Header/>
             <div className={"w-100 p-3 row text-center"}>
-                <div className={"col 4"}>
+                <div className={"col 3"}>
                     <InsertCsvButton handleForce={this.setDataFromFile}/>
                     <p>{this.state.fileName}</p>
                 </div>
                 <div className={"col 4"}>
                     <ComboBoxAlgorithm changeAlgorithm={this.changeAlgorithm} algorithm={this.state.algorithm}/>
                 </div>
-                <div className={"col 4"}>
+                <div className={"col 5"}>
                     <TrainButton train={this.handleTraining}/>
                 </div>
-                <div className={"col 4"}>
+                <div className={"col 6"}>
+                    {this.showTextArea()}
+                </div>
+                <div className={"col 7"}>
                     {this.downloadJsonData()}
                 </div>
             </div>
             <div id={"chart"}>
                 {this.selectAxisX()}
-                    <Chart json={this.state.jsonData} viewModel={this.#viewModel} hasFile={this.state.hasFile}/>
+                    <Chart json={this.state.trainSuccessfully} viewModel={this.#viewModel} hasFile={this.state.hasFile}/>
             </div>
         </div>
     );

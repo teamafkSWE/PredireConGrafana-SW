@@ -83,13 +83,15 @@ class SupportRl {
                  author: 'TeamAFK',
                  version: '1.0.0',
                  algorithm: 'Linear Regression',
+                 notes: "",
                  date: this.getDate(),
                  predictors: this.getColumnsName(),//this.predictor(),
                  result: this.#coefficients,
                  line: this.print_retta()
              }; // I am assuming that "this.state.myData"
-             let data = JSON.stringify(myData,null, 1);
-             return data;
+             //let data = JSON.stringify(myData,null, 1);
+             //return data;
+             return myData;
          } else
              return false
      }

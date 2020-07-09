@@ -11,8 +11,10 @@ class ViewModel {
     #indexOfMin;
     #maxXAxis;
     #minXAxis;
+    #notes;
     constructor() {
         this.#algorithm = null;
+        this.#notes = null;
         this.#file = null;
         this.#hasFile = null;
         this.#strategy=null;
@@ -35,6 +37,10 @@ class ViewModel {
         this.#strategy=null;
         this.checkAlgorithm();
     }
+    setNotes =(notes)=>{
+        this.#notes = notes;
+    }
+
     setStrategy =()=>{
         if(this.#algorithm==="svm" && this.isSVM()){
             this.#strategy=new SVMTrain(this.#file);
@@ -61,6 +67,7 @@ class ViewModel {
             alert("File has not been inserted.");
 
     }
+
     isSVM =()=>{
         if (this.#file[0][this.#file[0].length - 1] === "label"){
 
@@ -90,8 +97,11 @@ class ViewModel {
             return false;
     }
     getJsonContent =()=> {
-      if(this.#strategy!==null)
-        return this.#strategy.getJSON();
+        if(this.#strategy!==null) {
+            let s = this.#strategy.getJSON();
+            s.notes = this.#notes;
+            return JSON.stringify(s,null, 1);
+        }
     }
     getPredictorsName =()=> {
                 let name = [];

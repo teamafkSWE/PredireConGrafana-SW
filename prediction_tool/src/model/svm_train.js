@@ -1,5 +1,6 @@
 import SupportSvm from "./train/support_svm"
 import Train from "./abstractTrain";
+
 class SVMTrain extends Train{
     #algorithm=null;
     constructor(dataSVM) {
