@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import {Scatter} from "react-chartjs-2";
-//import * as Zoom from "chartjs-plugin-zoom";
-
 class Chart extends Component{
     state={
         data : {
@@ -47,16 +45,7 @@ class Chart extends Component{
                     }
                 }]
             },
-           /* pan:{
-                enabled:true,
-                mode:"xy",
-                speed:10
-            },
-            zoom:{
-                enabled:true,
-                drag:false,
-                mode:"xy"
-            }*/
+
         }
 
     }
@@ -80,14 +69,10 @@ class Chart extends Component{
 
         }
     }
-
     render() {
         this.formatData();
-
-        return(<div>
+        return(
                 <Scatter data={this.state.data} options={this.state.options} ref={(reference) => this.lineReference = reference}/>
-
-            </div>
             );
     }
 }

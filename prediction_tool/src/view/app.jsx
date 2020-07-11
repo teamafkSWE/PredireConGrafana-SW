@@ -49,7 +49,7 @@ class App extends Component{
 
     setDataFromFile =(data, fileInfo)=> {
         this.#viewModel.setFileData(data,true);
-        this.#viewModel.setNotes(null);
+        this.#viewModel.setNotes("");
         this.setState({data:data, fileName: fileInfo.name, hasFile:true, algorithm:'', trainSuccessfully:false, notes:'', changeName:'', jsonData:null, xAxis:data[0][0]});
     };
 
@@ -72,24 +72,10 @@ class App extends Component{
     downloadJsonData =()=> {
         if(this.state.trainSuccessfully === true) {
             return (
-                this.textArea,
                 <DownloadJson jsonData={this.#viewModel.getJsonContent()} viewModel={this.#viewModel} changeName={this.state.changeName} defaultName={this.setDefaultName}/>
             )
         }
     }
-
-    showTextArea = () => {
-        if(this.state.trainSuccessfully === true) {
-            return (
-                <div>
-                    <TextAreaFileName handleName={this.handleName} changeName={this.state.changeName}/>
-                    <p></p>
-                    <TextAreaNotes handleNotes={this.handleNotes} notes={this.state.notes}/>
-                </div>
-            )
-        }
-    }
-
     handleNotes = (event) => {
         this.#viewModel.setNotes(event.target.value)
         this.setState({notes: event.target.value})
@@ -114,16 +100,25 @@ class App extends Component{
                 <div className={"col 5"}>
                     <TrainButton train={this.handleTraining}/>
                 </div>
-                <div className={"col 6"}>
-                    {this.showTextArea()}
-                </div>
-                <div className={"col 7"}>
+                <div  className={"col 6"}>
                     {this.downloadJsonData()}
                 </div>
             </div>
-            <div id={"chart"}>
+            <div id={"selectXaxis"}>
                 {this.selectAxisX()}
-                    <Chart json={this.state.trainSuccessfully} viewModel={this.#viewModel} hasFile={this.state.hasFile}/>
+            </div>
+            <div id={"chartNote"} >
+                <div className="row">
+                            <div  id={"chart"}  className="col-9">
+                                <Chart json={this.state.trainSuccessfully} viewModel={this.#viewModel} hasFile={this.state.hasFile}/>
+                            </div>
+
+                            <div  className="col-3">
+                                <TextAreaFileName handleName={this.handleName} changeName={this.state.changeName}/>
+                                <p/>
+                                <TextAreaNotes handleNotes={this.handleNotes} notes={this.state.notes}/>
+                            </div>
+                </div>
             </div>
         </div>
     );

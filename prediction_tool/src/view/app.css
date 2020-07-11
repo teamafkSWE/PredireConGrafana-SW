@@ -6,15 +6,30 @@ body{
   background-color: #161719;
 }
 #chart{
-  padding: 1%;
-  /* rgb(64,64,64);*/
-  background-color: rgb(36,41,46);
-  border-radius: 10px;
-
+ width: 100%;
 }
 .header{
   border-bottom-width: thick;
   border-bottom-style: solid;
   border-image-source: linear-gradient(90deg,#f05a28 30%,#fbca0a 99%);
   border-image-slice: 1;
+}
+#chartNote{
+  padding: 1%;
+  /* rgb(64,64,64);*/
+  background-color: rgb(36,41,46);
+  border-radius: 0px 0px 10px 10px;
+  height: 100%;
+
+}
+ul{
+  display: flex;
+}
+#selectXaxis{
+  border-radius: 10px 10px 0px 0px ;
+  background-color: rgb(36,41,46);
+
+}
+#textArea{
+  height: 20em;
 }
