@@ -11,12 +11,14 @@ import DownloadJson from "./uiComponents/download_Json";
 import Chart from "./uiComponents/chart";
 import TextAreaNotes from "./uiComponents/textArea";
 import TextAreaFileName from "./uiComponents/textAreaFileName";
+import Information from "./uiComponents/information";
 class App extends Component{
   #viewModel=null;
     constructor(props) {
         super(props);
         this.state = {
             data: [],
+            hide:false,
             fileName: null,
             changeName: "",
             hasFile: false,
@@ -27,6 +29,16 @@ class App extends Component{
             xAxis:""
         }
          this.#viewModel= new ViewModel();
+    }
+    setShowTrue=()=>{
+        this.setState({hide:true});
+    }
+    setShowFalse=()=>{
+        this.setState({hide:false});
+    }
+    show=()=>{
+
+        return this.state.hide===true? <Information setShowFalse={this.setShowFalse}/> : null;
     }
 
     setDefaultName = () => {
@@ -88,7 +100,8 @@ class App extends Component{
     render(){
         return(
         <div className="mt-4 mb-4 text-center" >
-            <Header/>
+            <Header setShowTrue={this.setShowTrue}/>
+
             <div className={"w-100 p-3 row text-center"}>
                 <div className={"col 3"}>
                     <InsertCsvButton handleForce={this.setDataFromFile}/>
@@ -120,6 +133,7 @@ class App extends Component{
                             </div>
                 </div>
             </div>
+            {this.show()}
         </div>
     );
   }

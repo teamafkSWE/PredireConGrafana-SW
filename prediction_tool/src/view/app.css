@@ -33,3 +33,24 @@ ul{
 #textArea{
   height: 20em;
 }
+
+
+
+#info-btn {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+#info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgb(61, 69, 77);
+  color: #fff;
+  min-height: 100%;
+  width: 20%;
+  padding: 1%;
+  line-height: 1.5;
+}
+
