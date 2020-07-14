@@ -8,9 +8,9 @@ class Information extends Component {
                 <h2>How To Use</h2>
                 <p>
                     <ol>
-                        <li>Insert the CSV file</li>
+                        <li>Select the CSV file</li>
                         <li>Select the algorithm</li>
-                        <li>Start the training</li>
+                        <li>Start training</li>
                         <li>If you want, you can add notes to your file or change the name of the latter</li>
                         <li>Download the JSON file</li>
                     </ol>
