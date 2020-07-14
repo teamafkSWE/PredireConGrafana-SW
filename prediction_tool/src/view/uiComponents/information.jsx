@@ -11,7 +11,7 @@ class Information extends Component {
                         <li>Select the CSV file</li>
                         <li>Select the algorithm</li>
                         <li>Start training</li>
-                        <li>If you want, you can add notes to your file or change the name of the latter</li>
+                        <li>If you want, you can add notes to your file and/or change its name</li>
                         <li>Download the JSON file</li>
                     </ol>
                 </p>
