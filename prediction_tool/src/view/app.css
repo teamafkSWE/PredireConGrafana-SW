@@ -34,12 +34,10 @@ ul{
   height: 20em;
 }
 
-
-
 #info-btn {
   position: absolute;
-  top: 30px;
   left: 30px;
+  top: 30px;
 }
 
 #info {
@@ -48,10 +46,42 @@ ul{
   left: 0;
   background: rgb(61, 69, 77);
   color: #fff;
-  min-height: 118%;
   overflow:auto;
   width: 20%;
   padding: 1%;
   line-height: 1.5;
 }
+
+#closeBtn {
+  position: center;
+}
+
+#bugs {
+  position: center;
+  margin-top: 500px;
+}
+
+#footer{
+  background-color: rgb(61, 69, 77);
+  color: white;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+#copyright{
+  float: right;
+  margin-right: 10px;
+}
+
+#footerText {
+  margin-left: 200px;
+}
+
+#footer p{
+  display: inline-block;
+}
+
+
 

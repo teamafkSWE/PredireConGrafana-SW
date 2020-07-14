@@ -12,6 +12,7 @@ import Chart from "./uiComponents/chart";
 import TextAreaNotes from "./uiComponents/textArea";
 import TextAreaFileName from "./uiComponents/textAreaFileName";
 import Information from "./uiComponents/information";
+import Footer from "./uiComponents/footer";
 class App extends Component{
   #viewModel=null;
     constructor(props) {
@@ -134,6 +135,9 @@ class App extends Component{
                 </div>
             </div>
             {this.show()}
+            <div id={"footer"}>
+                <Footer/>
+            </div>
         </div>
     );
   }
