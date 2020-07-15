@@ -1,4 +1,4 @@
-import SupportRl from "./train/support_rl";
+import SupportRl from "../model/support_rl"
 import Train from "./abstractTrain";
 class RLTrain extends Train {
     #algorithm=null;
