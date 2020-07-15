@@ -63,7 +63,7 @@ ul{
 #footer{
   background-color: rgb(61, 69, 77);
   color: white;
-  position: absolute;
+  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
