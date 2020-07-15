@@ -38,7 +38,6 @@ class App extends Component{
         this.setState({hide:false});
     }
     show=()=>{
-
         return this.state.hide===true? <Information setShowFalse={this.setShowFalse}/> : null;
     }
 
@@ -71,7 +70,8 @@ class App extends Component{
         let success=this.#viewModel.performTraining();
         if(success===false){
             this.resetAlgorithm("");
-            this.setState({jsonData:null});
+            this.setState({jsonData:null,trainSuccessfully:false});
+
         }
         else {
             this.setState({trainSuccessfully: true});

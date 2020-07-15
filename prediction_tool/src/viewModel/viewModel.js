@@ -1,11 +1,9 @@
-
-import SVMTrain from "../model/svm_train";
-import RLTrain from "../model/rl_train";
+import Strategy_train from "./trainProcess/strategy_train";
 class ViewModel {
     #algorithm;
     #file;
     #hasFile;
-    #strategy;
+    #STrain;
     #xAxis;
     #indexOfMax;
     #indexOfMin;
@@ -17,7 +15,7 @@ class ViewModel {
         this.#notes = null;
         this.#file = null;
         this.#hasFile = null;
-        this.#strategy=null;
+        this.#STrain=new Strategy_train();
         this.#xAxis=null;
         this.#indexOfMax=null;
         this.#indexOfMin=null;
@@ -31,42 +29,37 @@ class ViewModel {
         this.#file = data;
         this.#hasFile = hasFile;
         this.#xAxis=data[0][0];
+        this.#STrain.setData(this.#file);
     }
     setAlgorithm =(algorithm)=> {
         this.#algorithm = algorithm;
-        this.#strategy=null;
         this.checkAlgorithm();
     }
     setNotes =(notes)=>{
         this.#notes = notes;
     }
-
-    setStrategy =()=>{
-        if(this.#algorithm==="svm" && this.isSVM()){
-            this.#strategy=new SVMTrain(this.#file);
-            return true;
-        }
-        else if(this.#algorithm==="rl" && this.isRL()){
-            this.#strategy=new RLTrain(this.#file);
-            return true;
-        }
-        else
-            return false;
-    }
     checkAlgorithm =()=> {
         if(this.#hasFile===true){
             if(this.#algorithm!=="") {
-                if (this.setStrategy() === false)
+                let verifyAlgorithm=null;
+                if(this.#algorithm==="svm")
+                    verifyAlgorithm=this.isSVM();
+                if(this.#algorithm==="rl")
+                    verifyAlgorithm=this.isRL();
+                if (this.#STrain.setStrategy(this.#algorithm,verifyAlgorithm) === false)
                     alert("CSV file incompatible.");
             }
-            else
+            else{
+                this.#STrain.resetStrategy();
                 alert("Algorithm has not been chosen.");
-
+            }
         }
-        else
+        else{
+            this.#STrain.resetStrategy();
             alert("File has not been inserted.");
-
+        }
     }
+
 
     isSVM =()=>{
         if (this.#file[0][this.#file[0].length - 1] === "label"){
@@ -91,14 +84,14 @@ class ViewModel {
     }
 
     performTraining =()=> {
-        if(this.#strategy!==null)
-            return this.#strategy.train();
+        if(this.#STrain.hasStrategySet())
+            return this.#STrain.train();
         else
             return false;
     }
     getJsonContent =()=> {
-        if(this.#strategy!==null) {
-            let s = this.#strategy.getJSON();
+        let s = this.#STrain.getJson();
+        if(s!==null) {
             s.notes = this.#notes;
             return JSON.stringify(s,null, 1);
         }
@@ -150,8 +143,9 @@ class ViewModel {
 
     }
     straightLine=()=>{
-        if(this.#strategy!==null){
-            let coefficients=this.#strategy.getCoefficients();
+        if(this.#STrain.hasStrategySet()){
+            let coefficients=this.#STrain.getCoeff();
+            console.log(coefficients)
             let FmaxPoint=0;
             let FminPoint=0;
             if(this.isSVM()){
