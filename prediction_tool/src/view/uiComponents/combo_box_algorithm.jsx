@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 
-
 class ComboBoxAlgorithm extends Component {
-
     render() {
         return (
             <React.Fragment>

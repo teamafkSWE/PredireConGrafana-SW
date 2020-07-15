@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-
 import CSVReader from "react-csv-reader";
 
-
 class InsertCsvButton extends Component {
-
     render() {
         return (
             <React.Fragment>

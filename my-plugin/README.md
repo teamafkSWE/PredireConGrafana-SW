@@ -1,6 +1,6 @@
 # Simple App Plugin
 
-This is just a stub to show how you can create a basic visualization plugin.
+This is just a stub to showInfo how you can create a basic visualization plugin.
 
 To work with this plugin run:
 ```

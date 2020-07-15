@@ -37,7 +37,7 @@ class App extends Component{
     setShowFalse=()=>{
         this.setState({hide:false});
     }
-    show=()=>{
+    showInfo=()=>{
         return this.state.hide===true? <Information setShowFalse={this.setShowFalse}/> : null;
     }
 
@@ -134,7 +134,7 @@ class App extends Component{
                             </div>
                 </div>
             </div>
-            {this.show()}
+            {this.showInfo()}
             <div id={"footer"}>
                 <Footer/>
             </div>

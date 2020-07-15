@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-
 class DownloadJson extends Component {
     downloadJsonFile =()=> {
         let element = document.createElement('a');

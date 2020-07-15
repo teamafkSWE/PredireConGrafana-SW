@@ -1,4 +1,4 @@
-import Strategy_train from "./trainProcess/strategy_train";
+import StrategyTrain from "./trainProcess/strategy_train";
 class ViewModel {
     #algorithm;
     #file;
@@ -15,7 +15,7 @@ class ViewModel {
         this.#notes = null;
         this.#file = null;
         this.#hasFile = null;
-        this.#STrain=new Strategy_train();
+        this.#STrain=new StrategyTrain();
         this.#xAxis=null;
         this.#indexOfMax=null;
         this.#indexOfMin=null;
@@ -60,10 +60,8 @@ class ViewModel {
         }
     }
 
-
     isSVM =()=>{
         if (this.#file[0][this.#file[0].length - 1] === "label"){
-
             let checkLabel=false;
             for(let i=1;i<this.#file.length;i++){
                 if(this.#file[i][this.#file[0].length - 1]==="1" || this.#file[i][this.#file[0].length - 1]==="-1")
@@ -72,7 +70,6 @@ class ViewModel {
                     return false;
             }
             return checkLabel;
-
         }
         return false;
     }
@@ -145,14 +142,11 @@ class ViewModel {
     straightLine=()=>{
         if(this.#STrain.hasStrategySet()){
             let coefficients=this.#STrain.getCoeff();
-            console.log(coefficients)
             let FmaxPoint=0;
             let FminPoint=0;
             if(this.isSVM()){
                 if(this.#file[0].length===2){
-                 /*console.log("maxSinglepoint "+(-(coefficients.w[0]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMax][0]));
-                    console.log("minSinglepoint "+(-(coefficients.w[0]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMin][0]));
-                 */
+
                     FmaxPoint=FmaxPoint-((coefficients.w[0]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMax][0]);
                     FminPoint=FminPoint-((coefficients.w[0]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMin][0]);
                     FmaxPoint=FmaxPoint-(coefficients.b/coefficients.w[coefficients.w.length-1]);
@@ -160,17 +154,10 @@ class ViewModel {
                 }
                 else{
                     for(let i = 0; i < this.#file[0].length - 2; i++){
-                     /* console.log("max"+this.#file[this.#indexOfMax][i]);
-                        console.log("min"+this.#file[this.#indexOfMin][i]);
-                        console.log("maxSinglepoint "+(-(coefficients.w[i]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMax][i]));
-                        console.log("minSinglepoint "+(-(coefficients.w[i]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMin][i]));
-                    */
+
                         FmaxPoint=FmaxPoint-((coefficients.w[i]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMax][i]);
                         FminPoint=FminPoint-((coefficients.w[i]/coefficients.w[coefficients.w.length-1])*this.#file[this.#indexOfMin][i]);
                     }
-                    /*   console.log("maxSinglepointB "+(-(coefficients.b/coefficients.w[coefficients.w.length-1])));
-                       console.log("fmax"+FmaxPoint);
-                       console.log("fmin"+FminPoint);*/
 
                     FmaxPoint=FmaxPoint-(coefficients.b/coefficients.w[coefficients.w.length-1]);
                     FminPoint=FminPoint-(coefficients.b/coefficients.w[coefficients.w.length-1]);
@@ -186,13 +173,6 @@ class ViewModel {
                 FmaxPoint=FmaxPoint+coefficients.b;
                 FminPoint=FminPoint+coefficients.b;
             }
-
-          /*  console.log("w"+coefficients.w);
-            console.log("w-1"+coefficients.w[coefficients.w.length-1]);
-            console.log("b"+coefficients.b);
-            console.log("FmaxPoint"+FmaxPoint);
-            console.log("FminPoint"+FminPoint);*/
-
             return( {
                 type: 'line',
                 fill:false,
@@ -249,57 +229,6 @@ class ViewModel {
             }
         }
     }
-/*
-    SVMChart=()=>{
-        let dataSetsSvm=[];
-        if(this.#file[0].length===2)
-        {
-            let setData = {
-                label: this.#file[0][0], // Name the series
-                data: [], // Specify the data values array
-                backgroundColor: [],
-                pointHoverRadius:7,
-                pointHitRadius:5,
-                pointStyle:'rectRounded'
-
-            }
-            for (let j = 1; j < this.#file.length; j++) {
-                if(this.#file[j][this.#file[0].length - 1]==="1")
-                    setData.backgroundColor.push("green");
-                else
-                    setData.backgroundColor.push("red");
-
-                setData.data.push({x: this.#file[j][0], y: 0});
-            }
-            dataSetsSvm.push(setData);
-        }
-        else {
-            for (let i = 0; i < this.#file[0].length - 1; i++) {
-                console.log(this.#xAxis);
-                console.log(this.#file[0][i]);
-
-                if(this.#file[0][i]===this.#xAxis) {
-                    let dataX=[];
-                    let dataY=[];
-                    this.#maxXAxis=Number.NEGATIVE_INFINITY;
-                    this.#minXAxis=Number.POSITIVE_INFINITY;
-                    this.#indexOfMax=0;
-                    this.#indexOfMin=0;
-                    for (let j = 1; j < this.#file.length; j++) {
-                        dataX.push(this.#file[j][i]);
-                        dataY.push( this.#file[j][this.#file[0].length - 2]);
-                    }
-
-
-                    dataSetsSvm.push(this.ChartAxisX(this.#xAxis,dataX,dataY));
-                    return {data:dataSetsSvm,legend:false};
-
-                }
-            }
-        }
-
-    }*/
-
 }
 
 export default ViewModel;

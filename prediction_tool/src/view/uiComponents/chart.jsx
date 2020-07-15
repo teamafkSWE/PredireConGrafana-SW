@@ -63,11 +63,9 @@ class Chart extends Component{
             if (this.props.viewModel.isSVM()) {
                 this.state.options.legend.display = false;
             }
-            console.log(this.props.json )
             if(this.props.json === true){
                 this.state.data.datasets.push(this.props.viewModel.straightLine());
             }
-
         }
     }
     render() {

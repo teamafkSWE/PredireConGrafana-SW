@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 
-
 class TrainButton extends Component {
-
     render() {
         return (
             <React.Fragment>

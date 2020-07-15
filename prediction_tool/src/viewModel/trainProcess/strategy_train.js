@@ -1,7 +1,7 @@
 import SVMTrain from "./svm_train";
 import RLTrain from "./rl_train";
 
-class Strategy_train  {
+class StrategyTrain  {
     #strategy=null;
     #data=null;
     constructor() {
@@ -52,4 +52,4 @@ class Strategy_train  {
     }
 }
 
-export default Strategy_train;
+export default StrategyTrain;

@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 
-
 class ComboBoxAxisX extends Component {
-
     render() {
-
         return (
             <React.Fragment>
                 <p>Select the coefficient to be displayed in the X axis: </p>
@@ -17,5 +14,4 @@ class ComboBoxAxisX extends Component {
         );
     }
 }
-
 export default ComboBoxAxisX;
