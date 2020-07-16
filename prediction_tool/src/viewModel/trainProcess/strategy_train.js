@@ -1,4 +1,4 @@
-import SVMTrain from "./svm_train";
+ import SVMTrain from "./svm_train";
 import RLTrain from "./rl_train";
 
 class StrategyTrain  {
