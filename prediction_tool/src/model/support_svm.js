@@ -50,11 +50,8 @@ class SupportSvm {
             labels[i]=this.#dataSVM[i+1][this.#dataSVM[i+1].length-1];
         }
         this.#svm.train(data,labels);
-        console.log(this.#svm);
-        console.log(this.#svm.toJSON());
-        // this.#svm.train(data, labels, {C: 3, numpasses: 100}); // C is a parameter to SVM
+
         this.#weights ={w:this.#svm.w,b:this.#svm.b};
-        console.log(this.#weights);
     }
     Weights =()=> {
         return this.#weights;

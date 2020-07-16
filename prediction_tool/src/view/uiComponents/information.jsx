@@ -5,7 +5,7 @@ class Information extends Component {
         return (
             <div id="info">
                 <h2>How To Use</h2>
-                <p>
+
                     <ol>
                         <li>Select the CSV file</li>
                         <li>Select the algorithm</li>
@@ -13,7 +13,7 @@ class Information extends Component {
                         <li>If you want, you can add notes to your file and/or change its name</li>
                         <li>Download the JSON file</li>
                     </ol>
-                </p>
+
                 <button className="btn btn-dark" id="closeBtn" onClick={this.props.setShowFalse}>Close</button>
                 <div id="bugs">
                     <h3>Did you find any bug? Contact us!</h3>

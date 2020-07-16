@@ -75,7 +75,6 @@ class App extends Component{
         }
         else {
             this.setState({trainSuccessfully: true});
-            //this.setState({jsonData:this.#viewModel.getJsonContent()});
         }
     }
     selectAxisX=()=> {
